@@ -1,0 +1,30 @@
+"""File: paladin.py"""
+from soldat import Soldat
+
+import pygame
+
+
+class Paladin(Soldat):
+    
+    def __init__(self, img_path="asset/paladin.png"):
+        super().__init__(img_path=img_path)
+
+        # Meta
+        self.name = "Paladin"
+
+        self.hp = 160
+        self.damage = 14
+        self.armor = 2
+        self.armor_pierce = 3
+        self.attack_range = 0       # melee
+        self.vision_range = 5
+        self.speed = 1.35
+        self.reload_time = 1.9
+        
+        self.frame_delay = 13
+        self.attack_delay = 0.67
+
+        # Bonus
+        self.vs_arbalester = 0
+        self.vs_paladin = -3
+        self.vs_halberdier = 0
