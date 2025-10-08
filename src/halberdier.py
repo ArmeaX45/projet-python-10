@@ -9,9 +9,9 @@ class Halberdier(Soldat):
     def __init__(self, img_path="asset/halberdier.png"):
         super().__init__(img_path=img_path)
 
-        # Meta
         self.name = "Halberdier"
-
+        
+        # Stats
         self.hp = 60
         self.damage = 6
         self.armor = 0
@@ -21,8 +21,14 @@ class Halberdier(Soldat):
         self.speed = 1.0
         self.reload_time = 3.0
 
+        # Boolen Stat
+        self.is_close_combat = True
+        
 
         # Bonus
-        self.vs_arbalester = 0
-        self.vs_paladin = 32
-        self.vs_halberdier = 0
+        # self.vs_arbalester = 0
+        # self.vs_paladin = 32
+        # self.vs_halberdier = 0
+        self.vs = {
+            'paladin' : 32,
+        }

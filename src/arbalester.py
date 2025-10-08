@@ -9,10 +9,10 @@ class Arbalester(Soldat):
     def __init__(self, img_path="asset/arbalester.png"):
         super().__init__(img_path=img_path)
 
-        # Meta
+        
         self.name = "Arbalester"
 
-        # Stats
+        # Static Stats
         self.hp = 40
         self.damage = 6
         self.armor = 0
@@ -26,8 +26,14 @@ class Arbalester(Soldat):
         self.attack_delay = 0.34
         
         self.accuracy = 0.90        # 90%
+        
+        # Boolen Stat
+        self.is_close_combat = False
 
         # Bonus
-        self.vs_arbalester = 0
-        self.vs_paladin = 0
-        self.vs_halberdier = 3
+        # self.vs_arbalester = 0
+        # self.vs_paladin = 0
+        # self.vs_halberdier = 3
+        self.vs = {
+            'halberdier' : 3,
+        }

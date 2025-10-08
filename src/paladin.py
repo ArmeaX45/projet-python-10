@@ -9,9 +9,10 @@ class Paladin(Soldat):
     def __init__(self, img_path="asset/paladin.png"):
         super().__init__(img_path=img_path)
 
-        # Meta
+        
         self.name = "Paladin"
 
+        # Stats
         self.hp = 160
         self.damage = 14
         self.armor = 2
@@ -23,8 +24,15 @@ class Paladin(Soldat):
         
         self.frame_delay = 13
         self.attack_delay = 0.67
+        
+        # Boolen Stat
+        self.is_close_combat = True
 
         # Bonus
-        self.vs_arbalester = 0
-        self.vs_paladin = -3
-        self.vs_halberdier = 0
+        # self.vs_arbalester = 0
+        # self.vs_paladin = -3
+        # self.vs_halberdier = 0
+        self.vs = {
+            'paladin' : -3,
+        }
+        
