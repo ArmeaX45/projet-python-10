@@ -1,5 +1,5 @@
 """File: halberdier.py"""
-from soldat import Soldat
+from src.soldat import Soldat
 
 import pygame
 
@@ -30,5 +30,5 @@ class Halberdier(Soldat):
         # self.vs_paladin = 32
         # self.vs_halberdier = 0
         self.vs = {
-            'paladin' : 32,
+            'Paladin' : 32,
         }

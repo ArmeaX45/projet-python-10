@@ -1,8 +1,26 @@
 """File: main.py"""
 
-from halberdier import Halberdier
-from paladin import Paladin
-from arbalester import Arbalester
+from src.halberdier import Halberdier
+from src.paladin import Paladin
+from src.arbalester import Arbalester
 
 import pygame
+
+halberdier = Halberdier()
+paladin = Paladin()
+arbalester = Arbalester()
+
+print(halberdier)
+print(paladin)
+print(arbalester)
+
+print("")
+halberdier.attack(paladin)
+print("")
+
+print(halberdier)
+print(paladin)
+print(arbalester)
+
+
 

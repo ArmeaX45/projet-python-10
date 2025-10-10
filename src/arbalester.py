@@ -1,5 +1,5 @@
 """File: arbalester.py"""
-from soldat import Soldat
+from src.soldat import Soldat
 
 import pygame
 
@@ -35,5 +35,5 @@ class Arbalester(Soldat):
         # self.vs_paladin = 0
         # self.vs_halberdier = 3
         self.vs = {
-            'halberdier' : 3,
+            'Halberdier' : 3,
         }

@@ -1,5 +1,5 @@
 """File: paladin.py"""
-from soldat import Soldat
+from src.soldat import Soldat
 
 import pygame
 
@@ -9,7 +9,7 @@ class Paladin(Soldat):
     def __init__(self, img_path="asset/paladin.png"):
         super().__init__(img_path=img_path)
 
-        
+
         self.name = "Paladin"
 
         # Stats
@@ -33,6 +33,6 @@ class Paladin(Soldat):
         # self.vs_paladin = -3
         # self.vs_halberdier = 0
         self.vs = {
-            'paladin' : -3,
+            'Paladin' : -3,
         }
         
