@@ -1,22 +1,27 @@
+"""File: soldat.py"""
+
 import pygame
 
 
-"""File: soldat.py"""
 class Soldat(pygame.sprite.Sprite):
     
-    def __init__(self, img_path):
+    instances = []  # Shared list for each object Soldat
+    
+    def __init__(self, x, y, img_path):
         
         super().__init__()
+        Soldat.instances.append(self) # Adding the object to the shared list
 
-        img_path = None     # To remove when we will have the good assets
         if img_path:
             self.image = pygame.image.load(img_path)
             self.rect = self.image.get_rect()
-        
+            self.rect.x = x * self.rect.width
+            self.rect.y = y * self.rect.height
+
         
         self.is_alive = True     # It's true if the soldier has more than 0 HP.
         
-    def __repr__(self):
+    def __str__(self):
         return f"The {self.name} soldat have {self.hp}HP"
     
     def attack(self, soldat):
@@ -32,8 +37,10 @@ class Soldat(pygame.sprite.Sprite):
         
         return None
     
-    def move(self):
+    def move(self, dx, dy):
         pass
+        
+        
     
         
     

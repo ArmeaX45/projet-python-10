@@ -1,4 +1,5 @@
 """File: arbalester.py"""
+
 from src.soldat import Soldat
 
 import pygame
@@ -6,11 +7,11 @@ import pygame
 
 class Arbalester(Soldat):
     
-    def __init__(self, img_path="asset/arbalester.png"):
-        super().__init__(img_path=img_path)
-
+    def __init__(self, x=0, y=0, img_path="./assets/arbalester.png"):
+        super().__init__(x=x, y=y, img_path=img_path)
         
         self.name = "Arbalester"
+        self.tag = "A"
 
         # Static Stats
         self.hp = 40

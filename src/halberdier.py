@@ -1,4 +1,5 @@
 """File: halberdier.py"""
+
 from src.soldat import Soldat
 
 import pygame
@@ -6,10 +7,11 @@ import pygame
 
 class Halberdier(Soldat):
     
-    def __init__(self, img_path="asset/halberdier.png"):
-        super().__init__(img_path=img_path)
+    def __init__(self, x=0, y=0, img_path="./assets/halberdier.png"):
+        super().__init__(x=x, y=y, img_path=img_path)
 
         self.name = "Halberdier"
+        self.tag = "H"
         
         # Stats
         self.hp = 60

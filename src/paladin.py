@@ -1,4 +1,5 @@
 """File: paladin.py"""
+
 from src.soldat import Soldat
 
 import pygame
@@ -6,11 +7,11 @@ import pygame
 
 class Paladin(Soldat):
     
-    def __init__(self, img_path="asset/paladin.png"):
-        super().__init__(img_path=img_path)
-
+    def __init__(self, x=0, y=0, img_path="./assets/paladin.png"):
+        super().__init__(x=x, y=y, img_path=img_path)
 
         self.name = "Paladin"
+        self.tag = "P"
 
         # Stats
         self.hp = 160
