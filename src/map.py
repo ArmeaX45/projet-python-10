@@ -3,7 +3,11 @@
 import pygame
 
 
-class map(self):
+class map():
+  def __init__(self, hauteur = 120, largeur = 120):
+    self.width = largeur
+    self.height = hauteur
+    self.matrice = [
   
 
 
