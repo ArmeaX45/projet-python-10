@@ -2,7 +2,7 @@
 # Added: Captain BrainDead AI class
 
 import math
-from soldat import Soldat
+from src.soldat import Soldat
 
 class GeneralBrainDead:
     def __init__(self, team_name="A"):
@@ -29,7 +29,11 @@ class GeneralBrainDead:
             if other == unit or getattr(other, 'team', None) == unit.team:
                 continue
 
-            distance = self._distance(unit.rect.x, unit.rect.y, other.rect.x, other.rect.y)
+            distance = self._distance(unit.rect.x // unit.rect.width,
+                          unit.rect.y // unit.rect.height,
+                          other.rect.x // other.rect.width,
+                          other.rect.y // other.rect.height)
+
             if distance <= unit.vision_range:
                 return other
         return None

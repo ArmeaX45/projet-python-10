@@ -20,6 +20,7 @@ class Soldat(pygame.sprite.Sprite):
 
         
         self.is_alive = True     # It's true if the soldier has more than 0 HP.
+        self.team = None
         
     def __str__(self):
         return f"The {self.name} soldat have {self.hp}HP"
