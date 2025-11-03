@@ -38,7 +38,24 @@ class Soldat(pygame.sprite.Sprite):
         return None
     
     def move(self, dx, dy):
-        pass
+        """Move the soldier on the grid.
+
+        Parameters
+        ----------
+        dx: int
+            Horizontal displacement expressed in number of tiles.
+        dy: int
+            Vertical displacement expressed in number of tiles.
+        """
+
+        if not hasattr(self, "rect"):
+            raise AttributeError("Soldat has no position defined")
+
+        if not self.is_alive:
+            return
+
+        self.rect.x += dx * self.rect.width
+        self.rect.y += dy * self.rect.height
         
         
     
