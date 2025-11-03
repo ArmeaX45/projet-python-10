@@ -14,7 +14,7 @@ class map():
         grid_x = soldat.rect.x // soldat.rect.width
         
         self.grid[grid_y][grid_x] = soldat.tag
-
+def le bouufehfvbek fugiezgyerz
   
 
 
