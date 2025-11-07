@@ -1,6 +1,7 @@
 """File: map.py"""
 
 import pygame
+import curses
 
 
 class map():
@@ -40,6 +41,13 @@ class map():
     def add_to_soldat_group(self, soldat):
         self.all_soldats.add(soldat)
 
+<<<<<<< HEAD
+=======
+    def print_grid(self):
+        for line in self.grid:
+            print(' '.join(line))
+        print()
+>>>>>>> origin/enrique/ia-braindead
 
 
 
