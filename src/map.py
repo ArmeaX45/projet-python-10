@@ -12,6 +12,20 @@ class map():
         
         self.all_soldats = pygame.sprite.Group()
         
+        self.image = None
+        self.rect = None
+        self.image_lien = "mamap.png"
+        
+        try:
+            # Charge l'image et la convertit pour un affichage rapide
+            self.image = pygame.image.load(self.image_lien)
+            # Récupère le rectangle (position/taille) de l'image
+            self.rect = self.image.get_rect()
+            self.rect.topleft = (0, 0) # Positionne l'image au coin (0,0)
+            
+        except pygame.error as e:
+            print(f"Erreur : Impossible de charger l'image {self.image_lien}")
+            print(e)
         
     
     def add_on_grid(self, soldat):
@@ -41,13 +55,15 @@ class map():
     def add_to_soldat_group(self, soldat):
         self.all_soldats.add(soldat)
 
-<<<<<<< HEAD
-=======
     def print_grid(self):
         for line in self.grid:
             print(' '.join(line))
         print()
->>>>>>> origin/enrique/ia-braindead
+
+
+    def draw_map(self, image):
+        if self.image:
+            image.blit(self.image, self.rect)
 
 
 

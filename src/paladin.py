@@ -13,7 +13,7 @@ class Paladin(Soldat):
         self.name = "Paladin"
         self.tag = "P"
 
-        # Stats
+        # Statsjknjn
         self.hp = 160
         self.damage = 14
         self.armor = 2
