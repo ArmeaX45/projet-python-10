@@ -32,7 +32,11 @@ class Soldat(pygame.sprite.Sprite):
         if soldat.name in self.vs:                   # Bonus Damage ?
             damage = self.damage + self.vs[soldat.name]
         
-        soldat.hp -= max(0, (damage - armor))
+        soldat.hp -= damage - armor
+        
+        if soldat.hp <= 0:
+            soldat.is_alive = False
+            
         
         print(f"{self.name} cause {damage} at {soldat.name}")
         

@@ -15,17 +15,28 @@ class Map():
         
     
     def add_on_grid(self, soldat):
-        grid_y = soldat.rect.y // soldat.rect.height
-        grid_x = soldat.rect.x // soldat.rect.width
-        
-        self.grid[grid_y][grid_x] = soldat.tag
-    
+        if soldat.is_alive:
+            grid_y = soldat.rect.y // soldat.rect.height
+            grid_x = soldat.rect.x // soldat.rect.width
+            
+            self.grid[grid_y][grid_x] = soldat.tag
+
     
     def show_grid(self, stdscr):
         for y, line in enumerate(self.grid):
             for x, tag in enumerate(line):
                 stdscr.addstr(y+1, x * 2, tag) # y+1 because the first line is the title so we add an offset
         stdscr.refresh()
+
+
+    def remove_soldat(self, soldat):
+        self.all_soldats.remove(soldat)
+
+        grid_y = soldat.rect.y // soldat.rect.height
+        grid_x = soldat.rect.x // soldat.rect.width
+
+        if 0 <= grid_y < self.height and 0 <= grid_x < self.width:
+            self.grid[grid_y][grid_x] = '-'
     
     
     def start_cmd(self, stdscr):
