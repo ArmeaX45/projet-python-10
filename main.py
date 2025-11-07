@@ -1,12 +1,37 @@
-"""File: main.py"""
+# main.py
+import time
+import curses
+import pygame
 
 from src.map import map
 from src.halberdier import Halberdier
 from src.paladin import Paladin
 from src.arbalester import Arbalester
+from src.ia_braindead import GeneralBrainDead
 
 import pygame
 import curses 
+
+""" Youssef
+def run_curses(stdscr, game: Game, ticks: int = 200, dt: float = 0.08):
+    curses.curs_set(0)
+    stdscr.nodelay(True)
+
+    for _ in range(ticks):
+        ch = stdscr.getch()
+        if ch in (ord('q'), ord('Q')):
+            break
+
+        game.logic_tick()
+
+        stdscr.erase()
+        max_y, max_x = stdscr.getmaxyx()
+        title = "DAFT (J0) vs BRAINDEAD (J1) — q pour quitter"
+        stdscr.addstr(0, 0, title[:max_x - 1])  # titre tronqué
+        game.show_grid(stdscr)
+        stdscr.refresh()
+        curses.napms(int(dt * 1000))  # évite flicker, portable
+"""
 
 
 if __name__ == "__main__":
