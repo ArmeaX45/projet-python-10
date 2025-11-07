@@ -1,16 +1,12 @@
-"""File: soldat.py"""
-
+# src/soldat.py (ajouts ciblés)
 import pygame
 
-
 class Soldat(pygame.sprite.Sprite):
-    
-    instances = []  # Shared list for each object Soldat
-    
-    def __init__(self, x, y, img_path):
-        
+    instances = []
+
+    def __init__(self, x, y, img_path, owner: int = 0):
         super().__init__()
-        Soldat.instances.append(self) # Adding the object to the shared list
+        Soldat.instances.append(self)
 
         if img_path:
             self.image = pygame.image.load(img_path)
@@ -27,10 +23,9 @@ class Soldat(pygame.sprite.Sprite):
     
     
     def attack(self, soldat):
-        armor = soldat.armor if self.is_close_combat else soldat.armor_pierce   # Select the type of armour to use
-        
+        armor = soldat.armor if self.is_close_combat else soldat.armor_pierce
         damage = self.damage
-        if soldat.name in self.vs:                   # Bonus Damage ?
+        if soldat.name in self.vs:
             damage = self.damage + self.vs[soldat.name]
         
         soldat.hp -= damage - armor
@@ -72,6 +67,16 @@ class Soldat(pygame.sprite.Sprite):
 
         map.grid[grid_y][grid_x] = self.tag
         
+
+        """
+        def can_attack(self, other: "Soldat") -> bool:
+        if not other or not other.is_alive:
+            return False
+        x, y = self.tile_pos()
+        ox, oy = other.tile_pos()
+        dx, dy = x - ox, y - oy
+        return (dx*dx + dy*dy) <= (max(0, self.attack_range) ** 2)
+        """
         
         
             
