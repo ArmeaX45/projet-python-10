@@ -6,7 +6,23 @@ import pygame
 class Soldat(pygame.sprite.Sprite):
     
     instances = []  # Shared list for each object Soldat
-    
+    def __init__(self, name, hp, attack, armor, armor_pierce, range, vision_range, speed, reload, symbol=""):
+        self.name = name
+        self.hp = hp
+        self.attack = attack
+        self.armor = armor
+        self.armor_pierce = armor_pierce
+        self.range = range
+        self.vision_range = vision_range
+        self.speed = speed
+        self.reload = reload
+        self.symbol = symbol
+
+    def __repr__(self):
+        return (f"Unit(name={self.name}, hp={self.hp}, attack={self.attack}, armor={self.armor}, "
+            f"armor_pierce={self.armor_pierce}, range={self.range}, vision_range={self.vision_range}, "
+            f"speed={self.speed}, reload={self.reload}, symbol={self.symbol})")
+
     def __init__(self, x, y, img_path):
         
         super().__init__()
