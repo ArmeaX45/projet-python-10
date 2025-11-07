@@ -1,6 +1,6 @@
 """File: main.py"""
 
-from src.game import Game
+from src.map import map
 from src.halberdier import Halberdier
 from src.paladin import Paladin
 from src.arbalester import Arbalester
@@ -25,23 +25,27 @@ if __name__ == "__main__":
         
     curses.wrapper(game.start_cmd)
     """
-    game = Game()
+    m = map()
 
     h = Halberdier(0,0)
     h.team = "A"
 
-    p = Paladin(4, 0)
+    p = Paladin(0, 4)
     p.team = "B"
 
-    game.add_to_soldat_group(h)
-    game.add_to_soldat_group(p)
+    m.add_to_soldat_group(h)
+    m.add_to_soldat_group(p)
+    m.add_on_grid(h)
+    m.add_on_grid(p)
 
     ia = GeneralBrainDead(team_name="A")
 
     print("Position Halberdier :", h.rect.x, h.rect.y)
     print("Position Paladin :", p.rect.x, p.rect.y)
 
-    actions = ia.update(game)
+    actions = ia.update(m)
+
+    m.print_grid()
 
     print("\\nRésumé des actions retournées :")
     print(actions)
