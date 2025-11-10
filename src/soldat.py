@@ -45,9 +45,9 @@ class Soldat(pygame.sprite.Sprite):
         grid_y = self.rect.y // self.rect.height
         
         map.grid[grid_y][grid_x] = '-'
-        if dx:
+        if dx != 0:
             new_x = self.rect.x + dx * self.rect.width * self.speed
-            if 0 < new_x < map.width * self.rect.width:
+            if 0 <= new_x < map.width * self.rect.width:    #Ajout <=
                 self.rect.x += dx * self.rect.width * self.speed
                 grid_x = self.rect.x // self.rect.width
             elif 0 < new_x:
@@ -55,9 +55,9 @@ class Soldat(pygame.sprite.Sprite):
             elif new_x < map.width * self.rect.width:
                 self.rect.x = map.width * self.rect.width - self.rect.width
 
-        else:
+        if dy != 0:
             new_y = self.rect.y + dy * self.rect.height * self.speed
-            if 0 < new_y < map.height *  self.rect.height:
+            if 0 <= new_y < map.height *  self.rect.height:   #Ajout <=
                 self.rect.y = new_y
                 grid_y = self.rect.y // self.rect.height
             elif 0 < new_y:

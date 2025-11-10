@@ -18,7 +18,7 @@ class Paladin(Soldat):
         self.damage = 14
         self.armor = 2
         self.armor_pierce = 3
-        self.attack_range = 0       # melee
+        self.attack_range = 1       # melee
         self.vision_range = 5
         self.speed = 1.35
         self.reload_time = 1.9

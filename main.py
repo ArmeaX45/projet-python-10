@@ -68,10 +68,10 @@ if __name__ == "__main__":
     """
     m = map()
 
-    h = Halberdier(0,0)
+    h = Halberdier(1,0)
     h.team = "A"
 
-    p = Paladin(0, 4)
+    p = Paladin(2, 3)
     p.team = "B"
 
     m.add_to_soldat_group(h)
@@ -80,16 +80,41 @@ if __name__ == "__main__":
     m.add_on_grid(p)
 
     ia = GeneralBrainDead(team_name="A")
+    ia2 = GeneralBrainDead(team_name="B")
 
-    print("Position Halberdier :", h.rect.x, h.rect.y)
-    print("Position Paladin :", p.rect.x, p.rect.y)
-
-    actions = ia.update(m)
+    
 
     m.print_grid()
+    for tour in range(10):
+        print(f"===== TOUR {tour+1} =====")
+        actions = ia.update(m)
+        actions2 = ia2.update(m)
+        for act in actions:
+            if act[0] == "attack":
+                _, unit, target = act
+                if unit.is_alive and target.is_alive:
+                    unit.attack(target)
+                    print(f"{target.name} a {target.hp} HP.")
+            elif act[0] == "move":
+                _, unit, dx, dy = act
+                unit.move(m, dx, dy)
+        for act in actions2:
+            if act[0] == "attack":
+                _, unit, target = act
+                if unit.is_alive and target.is_alive:
+                    unit.attack(target)
+                    print(f"{target.name} a {target.hp} HP.")
+            elif act[0] == "move":
+                _, unit, dx, dy = act
+                unit.move(m, dx, dy)
+        print(actions)
+        print(actions2)
+        m.print_grid()
+        for s in list(m.all_soldats):
+            if not s.is_alive:
+                print(f"{s.name} est mort !")
+                m.all_soldats.remove(s)
 
-    print("\\nRésumé des actions retournées :")
-    print(actions)
 
 
 

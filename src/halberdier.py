@@ -18,7 +18,7 @@ class Halberdier(Soldat):
         self.damage = 6
         self.armor = 0
         self.armor_pierce = 0
-        self.attack_range = 0       # melee
+        self.attack_range = 1       # melee
         self.vision_range = 4
         self.speed = 1.0
         self.reload_time = 3.0
