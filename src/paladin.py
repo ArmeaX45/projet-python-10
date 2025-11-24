@@ -7,8 +7,9 @@ import pygame
 
 class Paladin(Soldat):
     
-    def __init__(self, x=0, y=0, img_path="./assets/paladin.png"):
-        super().__init__(x=x, y=y, img_path=img_path)
+    def __init__(self, x=0, y=0, team=0):
+        image_path="./assets/paladin.png"
+        super().__init__(x=x, y=y, img_path=image_path, owner=team)
 
         self.name = "Paladin"
         self.tag = "P"
@@ -18,8 +19,8 @@ class Paladin(Soldat):
         self.damage = 14
         self.armor = 2
         self.armor_pierce = 3
-        self.attack_range = 0       # melee
-        self.vision_range = 5
+        self.attack_range = 1       # melee
+        self.vision_range = 50
         self.speed = 1.35
         self.reload_time = 1.9
         

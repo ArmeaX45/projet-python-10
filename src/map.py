@@ -14,7 +14,7 @@ class map():
         
         self.image = None
         self.rect = None
-        self.image_lien = "\\ad-datas.insacvl.intra.insa-cvl.fr\Home-Etudiants$\gpasquie\Bureau\Projet python\projet-python-10\image.png"
+        self.image_lien = "image.png"
         
         try:
             # Charge l'image et la convertit pour un affichage rapide

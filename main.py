@@ -19,6 +19,9 @@ import pygame
 # 🆕 AJOUT : Import des classes nécessaires
 from src.halberdier import Halberdier
 
+print(">>> Démarrage du script main.py")
+
+
 if __name__ == "__main__":
     # --- 1. CONFIGURATION ---
     CHEMIN_IMAGE_MAP = "image.png" 
@@ -31,6 +34,7 @@ if __name__ == "__main__":
 
     # --- 2. INITIALISATION ---
     pygame.init()
+    print(">>> Pygame initialisé !")
 
     # --- 3. CHARGEMENT DE L'IMAGE ---
     try:
@@ -50,8 +54,31 @@ if __name__ == "__main__":
     pygame.display.set_caption("Map Zoomable avec Soldat")
 
     # ajout de soldats pour le test
-    tous_mes_soldats = [{"soldat" : Halberdier(x, y)} for x in range(0, 10) for y in range(0,10)] + [{"soldat" : Paladin(x, y)} for x in range(0, 10) for y in range(10,20)]
+    # Création de la map
+    m = map()
+
+    # --- 1 seul Halberdier (équipe A) ---
+    team_A = []
+    for i in range(10):
+        h = Halberdier(i, 0, 0)
+        team_A.append(h)
+        m.add_to_soldat_group(h)
+        m.add_on_grid(h)
+
+    # --- 1 seul Paladin (équipe B) ---
+    team_B = []
+    for i in range(10):
+        p = Halberdier(i, 9, 1)
+        team_B.append(p)
+        m.add_to_soldat_group(p)
+        m.add_on_grid(p)
+
+    # --- IA BrainDead pour l'équipe A ---
+    ia = GeneralBrainDead(team_name=0)
     
+    ia2 = GeneralBrainDead(team_name=1)
+
+    tous_mes_soldats = team_A + team_B
     # On définit sa position "absolue" sur l'image de la carte (en pixels)
     # Par exemple : sur le chemin pavé vers le milieu
     soldat_world_x = 400 
@@ -63,8 +90,30 @@ if __name__ == "__main__":
     current_map_image = original_map_image.copy()
     current_map_rect = current_map_image.get_rect(center=screen_rect.center)
 
+
+    # IA teste une fois au lancement
+    actions = ia.update(m)
+    actions2 = ia2.update(m)
+    for act in actions:
+        if act[0] == "attack":
+            _, unit, target = act
+            unit.attack(target)
+        elif act[0] == "move":
+            _, unit, dx, dy = act
+            unit.move(m, dx, dy)
+    for act in actions2:
+        if act[0] == "attack":
+            _, unit, target = act
+            unit.attack(target)
+        elif act[0] == "move":
+            _, unit, dx, dy = act
+            unit.move(m, dx, dy)
+
     # --- 6. BOUCLE DE JEU ---
+    IA_INTERVAL = 1.0
+    last_ia_time = time.time()
     running = True
+    font = pygame.font.SysFont("Arial", 18)
     while running:
 
         for event in pygame.event.get():
@@ -109,6 +158,43 @@ if __name__ == "__main__":
                     current_map_rect.y += dy
                     drag_last_pos = event.pos
 
+        # ---  LOGIQUE DE JEU / IA ---
+        current_time = time.time()
+        if current_time - last_ia_time >= IA_INTERVAL:
+            last_ia_time = current_time
+
+            actions = ia.update(m)
+            actions2 = ia2.update(m)
+
+            for act in actions:
+                if act[0] == "attack":
+                    _, unit, target = act
+                    if unit.is_alive and target.is_alive:
+                        unit.attack(target)
+                elif act[0] == "move":
+                    _, unit, dx, dy = act
+                    unit.move(m, dx, dy)
+                for u in list(tous_mes_soldats):
+                    if not u.is_alive:
+                        tous_mes_soldats.remove(u)
+            for act in actions2:
+                if act[0] == "attack":
+                    _, unit, target = act
+                    if unit.is_alive and target.is_alive:
+                        unit.attack(target)
+                elif act[0] == "move":
+                    _, unit, dx, dy = act
+                    unit.move(m, dx, dy)
+                for u in list(tous_mes_soldats):
+                    if not u.is_alive:
+                        tous_mes_soldats.remove(u)
+
+            # Nettoyer les morts
+            for u in list(m.all_soldats):
+                if not u.is_alive:
+                    print(f"{u.name} est mort !")
+                    m.all_soldats.remove(u)
+
         #  AFFICHAGE 
         screen.fill((0,0,0))
 
@@ -117,22 +203,32 @@ if __name__ == "__main__":
         
         #  calcul et dessin du soldat
         
-        for s in tous_mes_soldats:
-            unit = s["soldat"]
-            world_x = s["soldat"].rect.x
-            world_y = s["soldat"].rect.y
+        for unit in tous_mes_soldats:
+            # coordonnées dans le monde (les positions logiques du soldat)
+            world_x = unit.rect.x
+            world_y = unit.rect.y
 
-            # Redimensionner selon le zoom
+            # Taille de l’image du soldat selon le zoom
             soldat_w = int(unit.rect.width * current_scale)
             soldat_h = int(unit.rect.height * current_scale)
             soldat_scaled_img = pygame.transform.scale(unit.image, (soldat_w, soldat_h))
-        
-            #  Calculer la position écran
+
+            # Position sur l’écran (en fonction du zoom et du déplacement de la map)
             screen_soldat_x = current_map_rect.x + (world_x * current_scale)
             screen_soldat_y = current_map_rect.y + (world_y * current_scale)
-            
-            #  Dessiner
+
+            if not unit.is_alive:
+                continue  # ne pas afficher le soldat mort
+
+            # Dessine le soldat
             screen.blit(soldat_scaled_img, (screen_soldat_x, screen_soldat_y))
+
+            # --- Afficher les PV au-dessus du soldat ---
+            if unit.is_alive:
+                hp_text = font.render(str(int(unit.hp)), True, (255, 255, 255))  # texte blanc
+                text_x = screen_soldat_x + soldat_w // 2 - hp_text.get_width() // 2
+                text_y = screen_soldat_y - 15
+                screen.blit(hp_text, (text_x, text_y))
 
         pygame.display.flip()
 

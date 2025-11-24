@@ -8,7 +8,7 @@ import pygame
 class Halberdier(Soldat):
     
     def __init__(self, x=0, y=0, team=0):
-        image_path =  "./assets/halberdie_1.png" if team==1 else "./assets/halberdier_0.png"
+        image_path =  "./assets/halberdier_1.png" if team==1 else "./assets/halberdier_0.png"
 
         super().__init__(x=x, y=y, img_path=image_path, owner=team)
         self.name = "Halberdier"
@@ -19,8 +19,8 @@ class Halberdier(Soldat):
         self.damage = 6
         self.armor = 0
         self.armor_pierce = 0
-        self.attack_range = 0       # melee
-        self.vision_range = 4
+        self.attack_range = 1       # melee
+        self.vision_range = 10
         self.speed = 1.0
         self.reload_time = 3.0
 
