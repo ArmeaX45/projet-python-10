@@ -12,62 +12,54 @@ from src.ia_braindead import GeneralBrainDead
 import pygame
 import curses 
 
-""" Youssef
-def run_curses(stdscr, game: Game, ticks: int = 200, dt: float = 0.08):
-    curses.curs_set(0)
-    stdscr.nodelay(True)
+# main.py
+import sys
+import pygame
 
-    for _ in range(ticks):
-        ch = stdscr.getch()
-        if ch in (ord('q'), ord('Q')):
-            break
-
-        game.logic_tick()
-
-        stdscr.erase()
-        max_y, max_x = stdscr.getmaxyx()
-        title = "DAFT (J0) vs BRAINDEAD (J1) — q pour quitter"
-        stdscr.addstr(0, 0, title[:max_x - 1])  # titre tronqué
-        game.show_grid(stdscr)
-        stdscr.refresh()
-        curses.napms(int(dt * 1000))  # évite flicker, portable
-"""
-
+# 🆕 AJOUT : Import des classes nécessaires
+from src.halberdier import Halberdier
 
 if __name__ == "__main__":
-        # --- 1. CONFIGURATION ---
-    CHEMIN_IMAGE_MAP = "D:\projet-python-10\image.png"  # Mets le bon chemin ici
-    ZOOM_STEP = 0.08  # Vitesse du zoom (10% par coup de molette)
-    MIN_ZOOM = 0.2   # Zoom minimum (20%)
-    MAX_ZOOM = 3.0   # Zoom maximum (300%)
-    dragging = False      # Vrai si on est en train de cliquer-déplacer
-    drag_last_pos = (0, 0)  
+    # --- 1. CONFIGURATION ---
+    CHEMIN_IMAGE_MAP = "image.png" 
+    ZOOM_STEP = 0.08
+    MIN_ZOOM = 0.2
+    MAX_ZOOM = 3.0
+    
+    dragging = False
+    drag_last_pos = (0, 0)
+
     # --- 2. INITIALISATION ---
     pygame.init()
 
     # --- 3. CHARGEMENT DE L'IMAGE ---
     try:
-        #  On charge l'image ORIGINALE (très important)
         original_map_image = pygame.image.load(CHEMIN_IMAGE_MAP)
     except pygame.error as e:
-        print(f"ERREUR FATALE : Impossible de charger l'image : {CHEMIN_IMAGE_MAP}")
-        print(f"Détail Pygame : {e}")
-        pygame.quit()
+        print(f"ERREUR : Impossible de charger l'image : {CHEMIN_IMAGE_MAP}")
         sys.exit()
 
     # --- 4. CRÉATION DE LA FENÊTRE ---
-    # On garde la taille de base de l'image pour la fenêtre
     width, height = original_map_image.get_size()
-    screen = pygame.display.set_mode((width, height))
-    #  On récupère le rectangle de l'écran pour centrer l'image
+    # On limite la taille de la fenêtre si l'image est trop grande (optionnel mais pratique)
+    screen_width = min(1200, width)
+    screen_height = min(900, height)
+    screen = pygame.display.set_mode((screen_width, screen_height))
+    
     screen_rect = screen.get_rect() 
-    pygame.display.set_caption("Ma Carte (Molette pour zoomer, Espace pour quitter)")
+    pygame.display.set_caption("Map Zoomable avec Soldat")
 
-    # --- 5. OPTIMISATION ET VARIABLES DE ZOOM ---
+    # ajout de soldats pour le test
+    tous_mes_soldats = [{"soldat" : Halberdier(x, y)} for x in range(0, 10) for y in range(0,10)] + [{"soldat" : Paladin(x, y)} for x in range(0, 10) for y in range(10,20)]
+    
+    # On définit sa position "absolue" sur l'image de la carte (en pixels)
+    # Par exemple : sur le chemin pavé vers le milieu
+    soldat_world_x = 400 
+    soldat_world_y = 300
+
+    # --- 5. VARIABLES DE ZOOM ---
     original_map_image = original_map_image.convert()
-
-    current_scale = 1.0  #  Le zoom commence à 1.0 (100%)
-    #  L'image qu'on va dessiner (commence comme une copie de l'originale)
+    current_scale = 1.0
     current_map_image = original_map_image.copy()
     current_map_rect = current_map_image.get_rect(center=screen_rect.center)
 
@@ -75,65 +67,73 @@ if __name__ == "__main__":
     running = True
     while running:
 
-        # Gère les actions de l'utilisateur (événements)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-                
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_F11:
-                    running = False
             
-            #  DÉTECTION DE LA MOLETTE
+            # --- GESTION DU ZOOM (MOLETTE) ---
             if event.type == pygame.MOUSEWHEEL:
-                # event.y == 1 (molette vers le haut, zoomer)
-                # event.y == -1 (molette vers le bas, dézoomer)
+                old_scale = current_scale
                 current_scale += event.y * ZOOM_STEP
-                
-                #  Limiter le zoom
                 current_scale = max(MIN_ZOOM, min(current_scale, MAX_ZOOM))
                 
-                #  Calculer la nouvelle taille
+                # Zoom centré sur la souris   
                 new_width = int(original_map_image.get_width() * current_scale)
                 new_height = int(original_map_image.get_height() * current_scale)
                 
-                #  Créer la nouvelle image zoomée (depuis l'originale !)
+                # MAJ carte
                 current_map_image = pygame.transform.scale(original_map_image, (new_width, new_height))
                 
-                #  Mettre à jour le rectangle de l'image en le centrant
-                current_map_rect = current_map_image.get_rect(center=screen_rect.center)
+                # On récupère l'ancien centre 
+                old_center = current_map_rect.center
+                current_map_rect = current_map_image.get_rect(center=old_center)
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_F11:
+                    running = False
 
+            # --- GESTION DU DRAG & DROP ---
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1: # 1 = Clic gauche
-                        dragging = True
-                        drag_last_pos = event.pos # Mémorise où on a cliqué
+                if event.button == 1:
+                    dragging = True
+                    drag_last_pos = event.pos
 
-        # 🆕 FIN DU CLIC
             if event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 1:
                     dragging = False
 
-            # 🆕 DÉPLACEMENT DE LA SOURIS
             if event.type == pygame.MOUSEMOTION:
                 if dragging:
-                    # Calcule le delta (différence) de position
                     dx = event.pos[0] - drag_last_pos[0]
                     dy = event.pos[1] - drag_last_pos[1]
-                    
-                    # Applique le delta au rectangle de l'image
                     current_map_rect.x += dx
                     current_map_rect.y += dy
-                    
-                    # Met à jour la "dernière position" pour le prochain calcul
                     drag_last_pos = event.pos
 
-        # Gère l'affichage
-
-        # 🆕 Dessine l'image zoomée (ou non) à son emplacement centré
+        #  AFFICHAGE 
         screen.fill((0,0,0))
-        screen.blit(current_map_image, current_map_rect)   
-        # Met à jour l'écran
+
+        #  On dessine la carte
+        screen.blit(current_map_image, current_map_rect)
+        
+        #  calcul et dessin du soldat
+        
+        for s in tous_mes_soldats:
+            unit = s["soldat"]
+            world_x = s["soldat"].rect.x
+            world_y = s["soldat"].rect.y
+
+            # Redimensionner selon le zoom
+            soldat_w = int(unit.rect.width * current_scale)
+            soldat_h = int(unit.rect.height * current_scale)
+            soldat_scaled_img = pygame.transform.scale(unit.image, (soldat_w, soldat_h))
+        
+            #  Calculer la position écran
+            screen_soldat_x = current_map_rect.x + (world_x * current_scale)
+            screen_soldat_y = current_map_rect.y + (world_y * current_scale)
+            
+            #  Dessiner
+            screen.blit(soldat_scaled_img, (screen_soldat_x, screen_soldat_y))
+
         pygame.display.flip()
 
-    # --- 7. QUITTER ---
     pygame.quit()

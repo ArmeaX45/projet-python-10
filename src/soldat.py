@@ -4,7 +4,7 @@ import pygame
 class Soldat(pygame.sprite.Sprite):
     instances = []
 
-    def __init__(self, x, y, img_path, owner: int = 0):
+    def __init__(self, x, y, owner, img_path =None):
         super().__init__()
         Soldat.instances.append(self)
 
@@ -15,7 +15,7 @@ class Soldat(pygame.sprite.Sprite):
             self.rect.y = y * self.rect.height
             
         self.is_alive = True     # It's true if the soldier has more than 0 HP.
-        self.team = None
+        self.team = owner
         
         
     def __str__(self):

@@ -7,12 +7,13 @@ import pygame
 
 class Halberdier(Soldat):
     
-    def __init__(self, x=0, y=0, img_path="./assets/halberdier.png"):
-        super().__init__(x=x, y=y, img_path=img_path)
+    def __init__(self, x=0, y=0, team=0):
+        image_path =  "./assets/halberdie_1.png" if team==1 else "./assets/halberdier_0.png"
 
+        super().__init__(x=x, y=y, img_path=image_path, owner=team)
         self.name = "Halberdier"
         self.tag = "H"
-        
+     
         # Stats
         self.hp = 60
         self.damage = 6
