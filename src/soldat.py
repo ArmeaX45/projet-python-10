@@ -2,11 +2,9 @@
 import pygame
 
 class Soldat(pygame.sprite.Sprite):
-    instances = []
 
     def __init__(self, x, y, img_path, owner: int = 0):
         super().__init__()
-        Soldat.instances.append(self)
 
         if img_path:
             self.image = pygame.image.load(img_path)
@@ -32,6 +30,7 @@ class Soldat(pygame.sprite.Sprite):
         
         if soldat.hp <= 0:
             soldat.is_alive = False
+            soldat.remove()
             
         
         print(f"{self.name} cause {damage} at {soldat.name}")
@@ -39,33 +38,35 @@ class Soldat(pygame.sprite.Sprite):
         return None
     
     
-    def move(self,map, dx=None, dy=None):
+    def move(self, map, dx=None, dy=None):
         
-        grid_x = self.rect.x // self.rect.width
-        grid_y = self.rect.y // self.rect.height
+        with map.lock:
         
-        map.grid[grid_y][grid_x] = '-'
-        if dx:
-            new_x = self.rect.x + dx * self.rect.width * self.speed
-            if 0 < new_x < map.width * self.rect.width:
-                self.rect.x += dx * self.rect.width * self.speed
-                grid_x = self.rect.x // self.rect.width
-            elif 0 < new_x:
-                self.rect.x = 0
-            elif new_x < map.width * self.rect.width:
-                self.rect.x = map.width * self.rect.width - self.rect.width
+            grid_x = self.rect.x // self.rect.width
+            grid_y = self.rect.y // self.rect.height
+            
+            map.grid[grid_y][grid_x] = '-'
+            if dx !=0 and dx:
+                new_x = self.rect.x + dx * self.rect.width * self.speed
+                if 0 <= new_x <= map.width * self.rect.width:
+                    self.rect.x += dx * self.rect.width * self.speed
+                    grid_x = self.rect.x // self.rect.width
+                elif 0 < new_x:
+                    self.rect.x = 0
+                elif new_x < map.width * self.rect.width:
+                    self.rect.x = map.width * self.rect.width - self.rect.width
 
-        else:
-            new_y = self.rect.y + dy * self.rect.height * self.speed
-            if 0 < new_y < map.height *  self.rect.height:
-                self.rect.y = new_y
-                grid_y = self.rect.y // self.rect.height
-            elif 0 < new_y:
-                self.rect.y = 0
-            elif new_y < map.height * self.rect.height:
-                self.rect.y = map.height * self.rect.height - self.rect.height
+            if dx != 0 and dy:
+                new_y = self.rect.y + dy * self.rect.height * self.speed
+                if 0 <= new_y <= map.height *  self.rect.height:
+                    self.rect.y = new_y
+                    grid_y = self.rect.y // self.rect.height
+                elif 0 < new_y:
+                    self.rect.y = 0
+                elif new_y < map.height * self.rect.height:
+                    self.rect.y = map.height * self.rect.height - self.rect.height
 
-        map.grid[grid_y][grid_x] = self.tag
+            map.grid[grid_y][grid_x] = self.tag
         
 
         """
@@ -77,6 +78,7 @@ class Soldat(pygame.sprite.Sprite):
         dx, dy = x - ox, y - oy
         return (dx*dx + dy*dy) <= (max(0, self.attack_range) ** 2)
         """
+            
         
         
             

@@ -3,14 +3,15 @@ import time
 import curses
 import pygame
 
-from src.map import map
+from src.map import Map
 from src.halberdier import Halberdier
 from src.paladin import Paladin
 from src.arbalester import Arbalester
 from src.ia_braindead import GeneralBrainDead
 
 import pygame
-import curses 
+import curses
+import threading
 
 """ Youssef
 def run_curses(stdscr, game: Game, ticks: int = 200, dt: float = 0.08):
@@ -66,34 +67,34 @@ if __name__ == "__main__":
         
     curses.wrapper(game.start_cmd)
     """
-    m = map()
+    # m = map()
 
-    h = Halberdier(0,0)
-    h.team = "A"
+    # h = Halberdier(0,0)
+    # h.team = "A"
 
-    p = Paladin(0, 4)
-    p.team = "B"
+    # p = Paladin(0, 4)
+    # p.team = "B"
 
-    m.add_to_soldat_group(h)
-    m.add_to_soldat_group(p)
-    m.add_on_grid(h)
-    m.add_on_grid(p)
+    # m.add_to_soldat_group(h)
+    # m.add_to_soldat_group(p)
+    # m.add_on_grid(h)
+    # m.add_on_grid(p)
 
-    ia = GeneralBrainDead(team_name="A")
+    # ia = GeneralBrainDead(team_name="A")
 
-    print("Position Halberdier :", h.rect.x, h.rect.y)
-    print("Position Paladin :", p.rect.x, p.rect.y)
+    # print("Position Halberdier :", h.rect.x, h.rect.y)
+    # print("Position Paladin :", p.rect.x, p.rect.y)
 
-    actions = ia.update(m)
+    # actions = ia.update(m)
 
-    m.print_grid()
+    # m.print_grid()
 
-    print("\\nRésumé des actions retournées :")
-    print(actions)
+    # print("\\nRésumé des actions retournées :")
+    # print(actions)
 
 
 
-"""
+
 if __name__ == "__main__":
 
     map = Map()
@@ -102,18 +103,28 @@ if __name__ == "__main__":
     paladin = Paladin(10,1)
     arbalester = Arbalester(5,8)
     
-    print(halberdier.instances)
-    for soldat in halberdier.instances:
+    all_soldat = [ halberdier, paladin, arbalester ]
+    
+    for soldat in all_soldat:
         map.add_to_soldat_group(soldat)
         map.add_on_grid(soldat)
     
-    curses.wrapper(map.start_cmd)
+    def run_curses(map):
+        curses.wrapper(map.start_cmd)
     
+    t = threading.Thread(target=run_curses, args=(map,))
+    t.daemon = True   # permet au programme de s'arrêter même si le thread tourne
+    t.start()
+
+    time.sleep(2)
     halberdier.move(map, dx=1)
     paladin.move(map, dy=1)
     arbalester.move(map, dy=-1)
-    curses.wrapper(map.start_cmd)
-"""
+    time.sleep(2)
+    arbalester.is_alive = False
+    time.sleep(2)
+
+
 
     # print(str(halberdier))
     # print(str(paladin))
