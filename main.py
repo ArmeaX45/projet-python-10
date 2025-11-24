@@ -50,7 +50,8 @@ if __name__ == "__main__":
     pygame.display.set_caption("Map Zoomable avec Soldat")
 
     # ajout de soldats pour le test
-    tous_mes_soldats = [{"soldat" : Halberdier(x, y)} for x in range(0, 10) for y in range(0,10)] + [{"soldat" : Paladin(x, y)} for x in range(0, 10) for y in range(10,20)]
+    tous_mes_soldats = [{"soldat" : Halberdier(x, y, 1)} for x in range(0, 10) for y in range(0,10)] + [{"soldat" : Paladin(x, y, 1)} for x in range(0, 10) for y in range(10,20)
+                                                                                                        ] + [{"soldat" : Arbalester(x, y, 1)} for x in range(10, 20) for y in range(0,10)]
     
     # On définit sa position "absolue" sur l'image de la carte (en pixels)
     # Par exemple : sur le chemin pavé vers le milieu

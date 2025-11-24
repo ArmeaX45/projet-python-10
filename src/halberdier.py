@@ -8,9 +8,9 @@ import pygame
 class Halberdier(Soldat):
     
     def __init__(self, x=0, y=0, team=0):
-        image_path =  "./assets/halberdie_1.png" if team==1 else "./assets/halberdier_0.png"
+        image_path =  "./assets/halbardier_1.png" if team==1 else "./assets/harbaldier_0.png"
 
-        super().__init__(x=x, y=y, img_path=image_path, owner=team)
+        super().__init__(x=x, y=y, owner=team, img_path=image_path)
         self.name = "Halberdier"
         self.tag = "H"
      
