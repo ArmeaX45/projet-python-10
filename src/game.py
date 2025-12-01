@@ -7,6 +7,7 @@ class Game():
     def __init__(self):
         self.general_p0 = None
         self.general_p1 = None
+        self.all_soldats = pygame.sprite.Group()
 
         # ====== Moteur logique d’un tick ======
     def logic_tick(self):
