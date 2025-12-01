@@ -21,11 +21,9 @@ if __name__ == "__main__":
     pygame.display.set_caption("Map Zoomable avec Soldat (Refactorisé)")
     
     # --- 2. CRÉATION DE LA MAP ---
-    # On passe le rectangle de l'écran pour centrer la map au départ
     game_map = Map("image.png", screen.get_rect())
 
     # --- 3. CRÉATION DES UNITÉS ---
-    # Note: J'ai gardé ta structure de liste de dictionnaires
     tous_mes_soldats = (
         [{"soldat": Halberdier(x, y, 1)} for x in range(0, 10) for y in range(0, 10)] +
         [{"soldat": Paladin(x, y, 1)} for x in range(0, 10) for y in range(10, 20)] +
@@ -35,6 +33,12 @@ if __name__ == "__main__":
     # --- 4. BOUCLE DE JEU ---
     running = True
     clock = pygame.time.Clock()
+
+    # vie du sprite : 
+    pygame.font.init()
+    font = pygame.font.SysFont(None, 40) # Police taille 40
+    soldat_selectionne = None
+    #vie du sprite fin
 
     while running:
         # Gestion des événements
@@ -46,8 +50,19 @@ if __name__ == "__main__":
                 if event.key == pygame.K_F11: # Petite touche pour quitter proprement aussi
                     running = False
             
-            # On délègue la gestion des inputs map à la classe Map
-            game_map.handle_input(event)
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3: # Clic Droit
+                soldat_selectionne = None # On reset si on clique dans le vide
+                for s in tous_mes_soldats:
+                    unit = s["soldat"]
+                    sx, sy = game_map.nouvelle_map(unit.rect.x, unit.rect.y)
+                    w, h = unit.rect.width * game_map.current_scale, unit.rect.height * game_map.current_scale
+                    
+                    if pygame.Rect(sx, sy, w, h).collidepoint(event.pos):
+                        soldat_selectionne = unit
+                        break
+            
+            # La classe map gère les actions possibles sur la map
+            game_map.mouvement(event)
 
         # Affichage
         screen.fill((0, 0, 0))
@@ -66,7 +81,7 @@ if __name__ == "__main__":
             world_y = unit.rect.y
 
             # Conversion vers Position Écran via la classe Map
-            screen_x, screen_y = game_map.world_to_screen(world_x, world_y)
+            screen_x, screen_y = game_map.nouvelle_map(world_x, world_y)
 
             # Redimensionnement du sprite selon le zoom actuel
             soldat_w = int(unit.rect.width * current_scale)
@@ -76,6 +91,12 @@ if __name__ == "__main__":
             if soldat_w > 0 and soldat_h > 0:
                 soldat_scaled_img = pygame.transform.scale(unit.image, (soldat_w, soldat_h))
                 screen.blit(soldat_scaled_img, (screen_x, screen_y))
+            
+        # Si un soldat est sélectionné, on écrit son nom et ses PV en bas à gauche
+        if soldat_selectionne:
+            texte = f"{soldat_selectionne.name} : {soldat_selectionne.hp} PV"
+            screen.blit(font.render(texte, True, (255, 255, 255)), (20, SCREEN_HEIGHT - 50))
+        
 
         pygame.display.flip()
         clock.tick(60) 

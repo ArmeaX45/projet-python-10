@@ -5,7 +5,6 @@ import sys
 class Map:
     def __init__(self, image_path, screen_rect):
         self.image_path = image_path
-        
         # --- CONFIGURATION DU ZOOM ---
         self.ZOOM_STEP = 0.08
         self.MIN_ZOOM = 0.2
@@ -23,12 +22,15 @@ class Map:
         self.image = self.original_image.copy()
         # On centre la carte au départ par rapport à l'écran
         self.rect = self.image.get_rect(center=screen_rect.center)
-        
+
+        #define de la mini map
+        self.mm_ratio = 0.05 
+        self.mm_img = pygame.transform.scale(self.original_image, (int(self.original_image.get_width() * self.mm_ratio), int(self.original_image.get_height() * self.mm_ratio)))
         # Gestion du Drag & Drop
         self.dragging = False
         self.drag_last_pos = (0, 0)
 
-    def handle_input(self, event):
+    def mouvement(self, event):
         """Gère les événements liés à la map (Zoom et Déplacement)."""
         
         # --- GESTION DU ZOOM (MOLETTE) ---
@@ -47,7 +49,7 @@ class Map:
             # On conserve le centre actuel pour que le zoom soit fluide
             old_center = self.rect.center
             self.rect = self.image.get_rect(center=old_center)
-
+        
         # --- GESTION DU DRAG & DROP ---
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1: # Clic gauche
@@ -70,7 +72,23 @@ class Map:
         """Dessine la map sur l'écran."""
         screen.blit(self.image, self.rect)
 
-    def world_to_screen(self, world_x, world_y):
+        # Position de la minimap (Haut-Droite avec marge de 20px)
+        mx, my = screen.get_width() - self.mm_img.get_width() - 20, 20
+        screen.blit(self.mm_img, (mx, my))
+        
+        vx = (-self.rect.x / self.current_scale) * self.mm_ratio
+        vy = (-self.rect.y / self.current_scale) * self.mm_ratio
+        vw = (screen.get_width() / self.current_scale) * self.mm_ratio
+        vh = (screen.get_height() / self.current_scale) * self.mm_ratio
+        # Définit le rectangle rouge théorique
+        view_rect = pygame.Rect(mx + vx, my + vy, vw, vh)
+        # Définit le rectangle limite (la minimap)
+        limit_rect = pygame.Rect(mx, my, self.mm_img.get_width(), self.mm_img.get_height())
+        
+        # Dessine l'intersection des deux (le clip)
+        pygame.draw.rect(screen, (255, 0, 0), view_rect.clip(limit_rect), 2)
+
+    def nouvelle_map(self, world_x, world_y):
         """
         Convertit une position 'monde' (position réelle sur l'image originale)
         en position 'écran' (prenant en compte le zoom et le déplacement).

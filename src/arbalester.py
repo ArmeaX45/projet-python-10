@@ -8,7 +8,7 @@ import pygame
 class Arbalester(Soldat):
     
     def __init__(self, x=0, y=0, team=0):
-        image_path =  "./assets/arbalester_1.png" if team==1 else "./assets/arbalster_0.png"
+        image_path =  "./assets/arbalester_1.png" if team==1 else "./assets/arbalester_0.png"
         super().__init__(x=x, y=y, img_path=image_path, owner=team)
         
         self.name = "Arbalester"
