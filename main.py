@@ -98,6 +98,9 @@ if __name__ == "__main__":
             screen.blit(font.render(texte, True, (255, 255, 255)), (20, SCREEN_HEIGHT - 50))
         
 
+        # 5) Affichage
+        screen.fill((0, 0, 0))  # fond noir
+        m.draw(screen)          # utilise ta méthode draw de map.py
         pygame.display.flip()
         clock.tick(60) 
 

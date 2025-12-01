@@ -14,16 +14,29 @@ class GeneralBrainDead:
         # On parcourt toutes les unités présentes sur la map
         for unit in map_instance.all_soldats:
             # Ignore les ennemis ou unités sans équipe
-            if getattr(unit, 'team', None) != self.team_name:
+            if getattr(unit, 'team', None) != self.team_name or not unit.is_alive:
                 continue
             
             # Recherche d'une cible dans le champ de vision
             target = self._find_target_in_range(unit, map_instance)
 
-            if target:
+            if not target:
+                print(f"{unit.name} ne voit personne et reste immobile.")
+                continue
+            
+            ux, uy = unit.rect.x // unit.rect.width, unit.rect.y // unit.rect.height
+            tx, ty = target.rect.x // target.rect.width, target.rect.y // target.rect.height
+            distance = max(abs(tx - ux), abs(ty - uy))
+            
+            if distance <= unit.attack_range:
                 actions.append(("attack", unit, target))
                 print(f"{unit.name} voit {target.name} et attaque !")
-            else:
+            elif distance <= unit.vision_range:
+                dx = 1 if tx > ux else -1 if tx < ux else 0
+                dy = 1 if ty > uy else -1 if ty < uy else 0
+                actions.append(("move", unit, dx, dy))
+                print(f"{unit.name} avance vers {target.name} (dx={dx}, dy={dy})")
+            else: 
                 print(f"{unit.name} ne voit personne et reste immobile.")
         return actions
     
