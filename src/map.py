@@ -14,7 +14,7 @@ class map():
         
         self.image = None
         self.rect = None
-        self.image_lien = "\\ad-datas.insacvl.intra.insa-cvl.fr\Home-Etudiants$\gpasquie\Bureau\Projet python\projet-python-10\image.png"
+        self.image_lien = "image.png"
         
         try:
             # Charge l'image et la convertit pour un affichage rapide
@@ -74,6 +74,15 @@ class map():
     def draw_map(self, image):
         if self.image:
             image.blit(self.image, self.rect)
+
+    def draw(self, screen):
+        """Dessine la map + tous les soldats."""
+        # Dessine l'image de fond si présente
+        if self.image:
+            screen.blit(self.image, self.rect)
+
+        # Dessine tous les sprites de soldats
+        self.all_soldats.draw(screen)
 
 
 
