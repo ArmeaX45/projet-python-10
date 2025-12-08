@@ -100,7 +100,7 @@ if __name__ == "__main__":
     map = Map()
 
     halberdier = Halberdier(0,0)
-    paladin = Paladin(10,1)
+    paladin = Paladin(1,0)
     arbalester = Arbalester(5,8)
     
     all_soldat = [ halberdier, paladin, arbalester ]
@@ -118,9 +118,9 @@ if __name__ == "__main__":
 
     time.sleep(2)
     halberdier.move(map, dx=1)
-    paladin.move(map, dy=1)
     arbalester.move(map, dy=-1)
     time.sleep(2)
+    paladin.move(map, dy=1)
     arbalester.is_alive = False
     time.sleep(2)
 
