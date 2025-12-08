@@ -39,8 +39,8 @@ class Soldat(pygame.sprite.Sprite):
         return None
     
     
-    def can_move(self, map, new_x=None, new_y=None):
-        for soldat in map.all_soldats:
+    def can_move(self, game, new_x=None, new_y=None):
+        for soldat in game.all_soldats:
 
             if soldat is self:
                 continue
@@ -64,37 +64,37 @@ class Soldat(pygame.sprite.Sprite):
 
     
     
-    def move(self, map, dx=None, dy=None):
+    def move(self, game, dx=None, dy=None):
         
-        with map.lock:
+        with game.lock:
         
             grid_x = self.rect.x // self.rect.width
             grid_y = self.rect.y // self.rect.height
             
-            map.grid[grid_y][grid_x] = '-'
+            game.grid[grid_y][grid_x] = '-'
             if dx !=0 and dx:
                 new_x = self.rect.x + dx * self.rect.width * self.speed
-                if self.can_move(map=map, new_x=new_x):
-                    if 0 <= new_x <= map.width * self.rect.width:
+                if self.can_move(game=game, new_x=new_x):
+                    if 0 <= new_x <= game.width * self.rect.width:
                         self.rect.x += dx * self.rect.width * self.speed
                         grid_x = self.rect.x // self.rect.width
                     elif 0 < new_x:
                         self.rect.x = 0
-                    elif new_x < map.width * self.rect.width:
-                        self.rect.x = map.width * self.rect.width - self.rect.width
+                    elif new_x < game.width * self.rect.width:
+                        self.rect.x = game.width * self.rect.width - self.rect.width
 
             if dy != 0 and dy:
                 new_y = self.rect.y + dy * self.rect.height * self.speed
-                if self.can_move(map=map, new_y=new_y):
-                    if 0 <= new_y <= map.height *  self.rect.height:
+                if self.can_move(game=game, new_y=new_y):
+                    if 0 <= new_y <= game.height *  self.rect.height:
                         self.rect.y = new_y
                         grid_y = self.rect.y // self.rect.height
                     elif 0 < new_y:
                         self.rect.y = 0
-                    elif new_y < map.height * self.rect.height:
-                        self.rect.y = map.height * self.rect.height - self.rect.height
+                    elif new_y < game.height * self.rect.height:
+                        self.rect.y = game.height * self.rect.height - self.rect.height
 
-            map.grid[grid_y][grid_x] = self.tag
+            game.grid[grid_y][grid_x] = self.tag
             
         
         
