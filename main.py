@@ -21,11 +21,11 @@ if __name__ == "__main__":
     pygame.display.set_caption("Map Zoomable avec Soldat (Refactorisé)")
     
     # --- 2. CRÉATION DE LA MAP ---
-    game_map = Map("image.png", screen.get_rect())
+    game_map = Map("./assets/image.png", screen.get_rect())
 
     # --- 3. CRÉATION DES UNITÉS ---
     tous_mes_soldats = (
-        [{"soldat": Halberdier(x, y, 1)} for x in range(0, 10) for y in range(0, 10)] +
+        [{"soldat": Halberdier(x, y, 0)} for x in range(0, 10) for y in range(0, 10)] +
         [{"soldat": Paladin(x, y, 1)} for x in range(0, 10) for y in range(10, 20)] +
         [{"soldat": Arbalester(x, y, 1)} for x in range(10, 20) for y in range(0, 10)]
     )
@@ -92,15 +92,13 @@ if __name__ == "__main__":
                 soldat_scaled_img = pygame.transform.scale(unit.image, (soldat_w, soldat_h))
                 screen.blit(soldat_scaled_img, (screen_x, screen_y))
             
-        # Si un soldat est sélectionné, on écrit son nom et ses PV en bas à gauche
+        # Si un soldat est sélectionné, on écrit son nom et ses PV 
         if soldat_selectionne:
             texte = f"{soldat_selectionne.name} : {soldat_selectionne.hp} PV"
             screen.blit(font.render(texte, True, (255, 255, 255)), (20, SCREEN_HEIGHT - 50))
         
 
-        # 5) Affichage
-        screen.fill((0, 0, 0))  # fond noir
-        m.draw(screen)          # utilise ta méthode draw de map.py
+        # 5) Affichage          
         pygame.display.flip()
         clock.tick(60) 
 
