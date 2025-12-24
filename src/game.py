@@ -5,21 +5,45 @@ import curses
 import time
 import threading
 
+# Import des unités
+from src.halberdier import Halberdier
+from src.paladin import Paladin
+from src.arbalester import Arbalester
+
 class Game():
-    def __init__(self, game_map=None, general_team0=None, general_team1=None):
+    def __init__(self, game_map, width, height):
         
         self.map = game_map
         
-        self.general_team0 = general_team0
-        self.general_team1 = general_team1
+        # self.general_team0 = general_team0
+        # self.general_team1 = general_team1
         
-        self.width = 12
-        self.height = 12
+        self.width = width
+        self.height = height
         self.grid = [['-' for _ in range(self.width)] for _ in range(self.height)]
         
         self.all_soldats = pygame.sprite.Group()
         
         self.lock = threading.Lock()
+    
+    
+    def create_soldat(self):
+        tous_mes_soldats = (
+            [(Halberdier(x, y, 0)) for x in range(0, 10) for y in range(0, 10)] +
+            [(Paladin(x, y, 1)) for x in range(0, 10) for y in range(10, 20)] +
+            [(Arbalester(x, y, 1)) for x in range(10, 20) for y in range(0, 10)]
+            )
+        
+        for soldat in tous_mes_soldats:
+            self.add_to_soldat_group(soldat)
+            self.add_on_grid(soldat)
+    
+    
+    def check_unit(self):
+        units = []
+        for soldat in self.all_soldats:
+            units.append(soldat)
+        return units
     
     
     def add_on_grid(self, soldat):
@@ -39,7 +63,7 @@ class Game():
 
     def remove_soldat(self, soldat):
         self.all_soldats.remove(soldat)
-
+        
         grid_y = soldat.rect.y // soldat.rect.height
         grid_x = soldat.rect.x // soldat.rect.width
 
@@ -60,10 +84,13 @@ class Game():
                     self.remove_soldat(soldat)
 
             with self.lock:
+                self.grid = [['-' for _ in range(self.width)] for _ in range(self.height)]
+                for soldat in self.all_soldats:
+                    self.add_on_grid(soldat)
+    
                 self.show_grid(stdscr)
 
             stdscr.refresh()    # Refresh the screen
-            stdscr.getch()      # Waiting for a key press
             
             key = stdscr.getch()
             if key == ord('q'):  

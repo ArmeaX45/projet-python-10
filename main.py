@@ -2,12 +2,14 @@
 import time
 import curses
 import pygame
+import math
 
 from src.game import Game
 from src.halberdier import Halberdier
 from src.paladin import Paladin
 from src.arbalester import Arbalester
-from src.ia_braindead import GeneralBrainDead
+# from src.ia_braindead import GeneralBrainDead
+from src.ai_daft import MajorDaftSimple
 
 import pygame
 import curses
@@ -31,25 +33,20 @@ if __name__ == "__main__":
     pygame.init()
     
     # On définit une taille d'écran (tu peux ajuster ou rendre dynamique)
-    SCREEN_WIDTH = 1900
-    SCREEN_HEIGHT = 1000
+    SCREEN_WIDTH = 2752
+    SCREEN_HEIGHT = 1536
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Map Zoomable avec Soldat (Refactorisé)")
     
     # --- 2. CRÉATION DE LA MAP ---
     game_map = Map("./assets/image.png", screen.get_rect())
-    game = Game()
+    game = Game(game_map, SCREEN_WIDTH//64, SCREEN_HEIGHT//64)
 
     # --- 3. CRÉATION DES UNITÉS ---
-    tous_mes_soldats = (
-        [(Halberdier(x, y, 0)) for x in range(0, 10) for y in range(0, 10)] +
-        [(Paladin(x, y, 1)) for x in range(0, 10) for y in range(10, 20)] +
-        [(Arbalester(x, y, 1)) for x in range(10, 20) for y in range(0, 10)]
-    )
+    game.create_soldat()
     
-    for soldat in tous_mes_soldats:
-        game.add_to_soldat_group(soldat)
-        game.add_on_grid(soldat)
+    ia_daft = MajorDaftSimple(team_name=0)
+    ia_brain = MajorDaftSimple(team_name=1)
 
     # --- 4. BOUCLE DE JEU ---
     running = True
@@ -80,7 +77,7 @@ if __name__ == "__main__":
             
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3: # Clic Droit
                 soldat_selectionne = None # On reset si on clique dans le vide
-                for unit in tous_mes_soldats:
+                for unit in game.all_soldats:
                     sx, sy = game_map.nouvelle_map(unit.rect.x, unit.rect.y)
                     w, h = unit.rect.width * game_map.current_scale, unit.rect.height * game_map.current_scale
                     
@@ -100,8 +97,7 @@ if __name__ == "__main__":
         #  Dessiner les soldats
         current_scale = game_map.current_scale # Récupérer le scale pour redimensionner les sprites
 
-        for s in tous_mes_soldats:
-            unit = s["soldat"]
+        for unit in game.all_soldats:
             
             # Position réelle 
             world_x = unit.rect.x
@@ -124,7 +120,23 @@ if __name__ == "__main__":
             texte = f"{soldat_selectionne.name} : {soldat_selectionne.hp} PV"
             screen.blit(font.render(texte, True, (255, 255, 255)), (20, SCREEN_HEIGHT - 50))
         
+        # --- 4. LOGIQUE DU JEU ---
+        # --- décisions IA ---
+        actions_A = ia_daft.update(game)
+        actions_B = ia_brain.update(game)
+        all_actions = actions_A + actions_B
 
+        # --- exécution ---
+        for action in all_actions:
+            if action[0] == "move":
+                _, unit, dx, dy = action
+                unit.move(game, dx=dx, dy=dy)
+
+            elif action[0] == "attack":
+                _, unit, target = action
+                if getattr(target, "is_alive", False):
+                    unit.attack(target)
+        
         # 5) Affichage          
         pygame.display.flip()
         clock.tick(60) 
