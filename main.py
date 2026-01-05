@@ -178,7 +178,7 @@ if __name__ == "__main__":
             screen.blit(text_surf, text_rect)       # Dessine le texte
         
         pygame.display.flip()
-        clock.tick(60) 
+        clock.tick(500) 
 
     pygame.quit()
     sys.exit()
