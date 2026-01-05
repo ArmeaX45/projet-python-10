@@ -2,26 +2,24 @@
 
 from src.soldat import Soldat
 
-import pygame
-
-
 class Paladin(Soldat):
     
-    def __init__(self, x=0, y=0, img_path="./assets/paladin.png"):
-        super().__init__(x=x, y=y, img_path=img_path)
+    def __init__(self, x=0, y=0 , team=0):
+        image_path="./assets/paladin_1.png" if team==1 else "./assets/paladin_0.png"
+        super().__init__(x=x, y=y, owner=team, img_path=image_path)
 
         self.name = "Paladin"
         self.tag = "P"
 
-        # Statsjknjn
-        self.hp = 160
-        self.damage = 14
+        # Static Stats
+        self.hp = 100
+        self.damage = 10
         self.armor = 2
-        self.armor_pierce = 3
+        self.armor_pierce = 2
         self.attack_range = 0       # melee
-        self.vision_range = 5
+        self.vision_range = 4
         self.speed = 1.35
-        self.reload_time = 1.9
+        self.reload_time = 1.8
         
         self.frame_delay = 13
         self.attack_delay = 0.67

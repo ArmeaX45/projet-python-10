@@ -1,152 +1,147 @@
 # main.py
 import time
 import pygame
-import curses
+import math
 
-from src.map import map
+from src.game import Game
 from src.halberdier import Halberdier
 from src.paladin import Paladin
 from src.arbalester import Arbalester
-from src.ia_braindead import GeneralBrainDead
+# from src.ia_braindead import GeneralBrainDead
 from src.ai_daft import MajorDaftSimple
 
+import pygame
+import curses
+import threading
+    
+# main.py
+import pygame
+import sys
 
-""" Youssef
-def run_curses(stdscr, game: Game, ticks: int = 200, dt: float = 0.08):
-    curses.curs_set(0)
-    stdscr.nodelay(True)
+# Import de ta nouvelle classe Map
+from src.map import Map 
 
-    for _ in range(ticks):
-        ch = stdscr.getch()
-        if ch in (ord('q'), ord('Q')):
-            break
-
-        game.logic_tick()
-
-        stdscr.erase()
-        max_y, max_x = stdscr.getmaxyx()
-        title = "DAFT (J0) vs BRAINDEAD (J1) — q pour quitter"
-        stdscr.addstr(0, 0, title[:max_x - 1])  # titre tronqué
-        game.show_grid(stdscr)
-        stdscr.refresh()
-        curses.napms(int(dt * 1000))  # évite flicker, portable
-"""
-
+# Import des unités
+from src.halberdier import Halberdier
+from src.paladin import Paladin
+from src.arbalester import Arbalester
 
 # ============================================================
 #                      BLOC PRINCIPAL UNIQUE
 # ============================================================
 
 if __name__ == "__main__":
-
-    # =========================
-    # 1) Init pygame et la map
-    # =========================
+    # --- 1. INITIALISATION ---
     pygame.init()
+    
+    # On définit une taille d'écran (tu peux ajuster ou rendre dynamique)
+    SCREEN_WIDTH = 2752
+    SCREEN_HEIGHT = 1536
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    pygame.display.set_caption("Map Zoomable avec Soldat (Refactorisé)")
+    
+    # --- 2. CRÉATION DE LA MAP ---
+    game_map = Map("./assets/image.png", screen.get_rect())
+    game = Game(game_map, SCREEN_WIDTH//64, SCREEN_HEIGHT//64)
 
-    m = map()  # utilise mamap.png automatiquement
+    # --- 3. CRÉATION DES UNITÉS ---
+    game.create_soldat()
+    
+    ia_daft = MajorDaftSimple(team_name=0)
+    ia_brain = MajorDaftSimple(team_name=1)
 
-    # Dimension fenêtre = dimension image
-    if m.image:
-        width, height = m.image.get_size()
-    else:
-        width, height = 800, 600
-
-    screen = pygame.display.set_mode((width, height))
-    pygame.display.set_caption("DAFT vs BrainDead - Battle Simulation")
-
-
-    # =========================
-    # 2) Création des troupes
-    # =========================
-
-    # --- Équipe A (DAFT) : 5 halberdiers à gauche ---
-    for i in range(5):
-        h = Halberdier(1, 1 + i * 2)
-        h.team = "A"
-        m.add_to_soldat_group(h)
-        m.add_on_grid(h)
-
-    # --- Équipe B (BrainDead) : 5 paladins à droite ---
-    for i in range(5):
-        p = Paladin(10, 1 + i * 2)
-        p.team = "B"
-        m.add_to_soldat_group(p)
-        m.add_on_grid(p)
-
-
-    # =========================
-    # 3) IA
-    # =========================
-    ia_daft = MajorDaftSimple(team_name="A")
-    ia_brain = GeneralBrainDead(team_name="B")
-
-    print("=== POSITION INITIALE ===")
-    m.print_grid()
-
-    clock = pygame.time.Clock()
+    # --- 4. BOUCLE DE JEU ---
     running = True
-    MAX_TURNS = 50
-    turn = 0
+    clock = pygame.time.Clock()
 
+    # vie du sprite : 
+    pygame.font.init()
+    font = pygame.font.SysFont(None, 40) # Police taille 40
+    soldat_selectionne = None
+    #vie du sprite fin
+    
+    def run_curses(game):
+        curses.wrapper(game.start_cmd)
+    
+    t = threading.Thread(target=run_curses, args=(game,))
+    t.daemon = True   # permet au programme de s'arrêter même si le thread tourne
+    t.start()
 
-    # =========================
-    # 4) Boucle principale
-    # =========================
     while running:
-        turn += 1
-        print(f"\n===== TOUR {turn} =====")
-
-        clock.tick(3)  # ralentir la simulation pour voir le mouvement
-
+        # Gestion des événements
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_F11: # Petite touche pour quitter proprement aussi
+                    running = False
+            
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3: # Clic Droit
+                soldat_selectionne = None # On reset si on clique dans le vide
+                for unit in game.all_soldats:
+                    sx, sy = game_map.nouvelle_map(unit.rect.x, unit.rect.y)
+                    w, h = unit.rect.width * game_map.current_scale, unit.rect.height * game_map.current_scale
+                    
+                    if pygame.Rect(sx, sy, w, h).collidepoint(event.pos):
+                        soldat_selectionne = unit
+                        break
+            
+            # La classe map gère les actions possibles sur la map
+            game_map.mouvement(event)
 
+        # Affichage
+        screen.fill((0, 0, 0))
+
+        #  Dessiner la map
+        game_map.draw(screen)
+
+        #  Dessiner les soldats
+        current_scale = game_map.current_scale # Récupérer le scale pour redimensionner les sprites
+
+        for unit in game.all_soldats:
+            
+            # Position réelle 
+            world_x = unit.rect.x
+            world_y = unit.rect.y
+
+            # Conversion vers Position Écran via la classe Map
+            screen_x, screen_y = game_map.nouvelle_map(world_x, world_y)
+
+            # Redimensionnement du sprite selon le zoom actuel
+            soldat_w = int(unit.rect.width * current_scale)
+            soldat_h = int(unit.rect.height * current_scale)
+            
+            #  vérifie que la taille est valide pour éviter les crashs si zoom  petit
+            if soldat_w > 0 and soldat_h > 0:
+                soldat_scaled_img = pygame.transform.scale(unit.image, (soldat_w, soldat_h))
+                screen.blit(soldat_scaled_img, (screen_x, screen_y))
+            
+        # Si un soldat est sélectionné, on écrit son nom et ses PV 
+        if soldat_selectionne:
+            texte = f"{soldat_selectionne.name} : {soldat_selectionne.hp} PV"
+            screen.blit(font.render(texte, True, (255, 255, 255)), (20, SCREEN_HEIGHT - 50))
+        
+        # --- 4. LOGIQUE DU JEU ---
         # --- décisions IA ---
-        actions_A = ia_daft.update(m)
-        actions_B = ia_brain.update(m)
+        actions_A = ia_daft.update(game)
+        actions_B = ia_brain.update(game)
         all_actions = actions_A + actions_B
 
         # --- exécution ---
         for action in all_actions:
             if action[0] == "move":
                 _, unit, dx, dy = action
-                unit.move(m, dx=dx, dy=dy)
+                unit.move(game, dx=dx, dy=dy)
 
             elif action[0] == "attack":
                 _, unit, target = action
                 if getattr(target, "is_alive", False):
                     unit.attack(target)
-
-        # --- reconstruire la grille ---
-        m.grid = [['-' for _ in range(m.width)] for _ in range(m.height)]
-        for u in m.all_soldats:
-            if getattr(u, "is_alive", False):
-                m.add_on_grid(u)
-
-        m.print_grid()  # affichage console ASCII
-
-        # --- affichage pygame ---
-        screen.fill((0, 0, 0))
-        m.draw_map(screen)
-        m.all_soldats.draw(screen)
+        
+        # 5) Affichage          
         pygame.display.flip()
-
-        # --- conditions de fin ---
-        alive_A = [s for s in m.all_soldats if getattr(s, "team", None) == "A" and s.is_alive]
-        alive_B = [s for s in m.all_soldats if getattr(s, "team", None) == "B" and s.is_alive]
-
-        if not alive_A:
-            print("\n💀 BrainDead (B) gagne !")
-            running = False
-        if not alive_B:
-            print("\n🎉 DAFT (A) gagne !")
-            running = False
-        if turn >= MAX_TURNS:
-            print("\n⏳ Temps écoulé ! Match nul.")
-            running = False
+        clock.tick(60) 
 
     pygame.quit()
-
-
+    sys.exit()

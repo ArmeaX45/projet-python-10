@@ -1,56 +1,111 @@
-# src/game.py
+"""File: game.py"""
+
 import pygame
 import curses
-from .ai_base import OrderType
+import time
+import threading
+
+# Import des unités
+from src.halberdier import Halberdier
+from src.paladin import Paladin
+from src.arbalester import Arbalester
 
 class Game():
-    def __init__(self):
-        self.general_p0 = None
-        self.general_p1 = None
-
-        # ====== Moteur logique d’un tick ======
-    def logic_tick(self):
-        """Calcule les ordres des IA et applique un pas de simulation (naïf)."""
-        # 1) snapshot des unités vivantes
-        units = [s for s in self.all_soldats.sprites() if getattr(s, "is_alive", True)]
-
-        # 2) décisions des deux généraux
-        orders0 = self.general_p0.decide(0, units) if self.general_p0 else {}
-        orders1 = self.general_p1.decide(1, units) if self.general_p1 else {}
-
-        # 3) application
-        self._apply_orders(orders0)
-        self._apply_orders(orders1)
-
-        # 4) reconstruire la grille pour l’affichage terminal
+    def __init__(self, game_map, width, height):
+        
+        self.map = game_map
+        
+        # self.general_team0 = general_team0
+        # self.general_team1 = general_team1
+        
+        self.width = width
+        self.height = height
         self.grid = [['-' for _ in range(self.width)] for _ in range(self.height)]
-        for u in units:
-            if u.is_alive:
-                self.add_on_grid(u)
+        
+        self.all_soldats = pygame.sprite.Group()
+        
+        self.lock = threading.Lock()
+    
+    
+    def create_soldat(self):
+        tous_mes_soldats = (
+            [(Halberdier(x, y, 0)) for x in range(0, 10) for y in range(0, 10)] +
+            [(Paladin(x, y, 1)) for x in range(0, 10) for y in range(10, 20)] +
+            [(Arbalester(x, y, 1)) for x in range(10, 20) for y in range(0, 10)]
+            )
+        
+        for soldat in tous_mes_soldats:
+            self.add_to_soldat_group(soldat)
+            self.add_on_grid(soldat)
+    
+    
+    def check_unit(self):
+        units = []
+        for soldat in self.all_soldats:
+            units.append(soldat)
+        return units
+    
+    
+    def add_on_grid(self, soldat):
+        if soldat.is_alive:
+            grid_y = soldat.rect.y // soldat.rect.height
+            grid_x = soldat.rect.x // soldat.rect.width
 
-    def _apply_orders(self, orders):
-        """Exécute les ordres unitaires (HOLD/MOVE/ATTACK) de manière simple."""
-        for uid, order in orders.items():
-            # retrouver l’objet Soldat via son id() python
-            me = None
-            for s in self.all_soldats:
-                if id(s) == uid:
-                    me = s
-                    break
-            if me is None or not me.is_alive:
-                continue
+            self.grid[grid_y][grid_x] = soldat.tag
 
-            if order.type == OrderType.HOLD:
-                continue
 
-            elif order.type == OrderType.ATTACK and order.target_unit:
-                target = order.target_unit
-                if me.can_attack(target):
-                    me.attack(target)
-                else:
-                    tx, ty = target.tile_pos()
-                    me.move_towards_tile(tx, ty)
+    def show_grid(self, stdscr):
+        for y, line in enumerate(self.grid):
+            for x, tag in enumerate(line):
+                stdscr.addstr(y+1, x * 2, tag) # y+1 because the first line is the title so we add an offset
+        stdscr.refresh()
 
-            elif order.type == OrderType.MOVE and order.target_pos:
-                tx, ty = order.target_pos
-                me.move_towards_tile(tx, ty)
+
+    def remove_soldat(self, soldat):
+        self.all_soldats.remove(soldat)
+        
+        grid_y = soldat.rect.y // soldat.rect.height
+        grid_x = soldat.rect.x // soldat.rect.width
+
+        if 0 <= grid_y < self.height and 0 <= grid_x < self.width:
+            self.grid[grid_y][grid_x] = '-'
+
+
+    def start_cmd(self, stdscr):
+        curses.curs_set(0)  # Hide the cursor
+        stdscr.nodelay(True)  # getch()
+        
+        running = True
+        while running:
+            stdscr.clear()      # Clear the screen
+
+            for soldat in list(self.all_soldats):   # copy group
+                if not soldat.is_alive:
+                    self.remove_soldat(soldat)
+
+            with self.lock:
+                self.grid = [['-' for _ in range(self.width)] for _ in range(self.height)]
+                for soldat in self.all_soldats:
+                    self.add_on_grid(soldat)
+    
+                self.show_grid(stdscr)
+
+            stdscr.refresh()    # Refresh the screen
+            
+            key = stdscr.getch()
+            if key == ord('q'):  
+                break
+            
+            time.sleep(0.2)
+        
+        
+    def add_to_soldat_group(self, soldat):
+        self.all_soldats.add(soldat)
+
+
+
+
+
+
+
+

@@ -7,15 +7,16 @@ import pygame
 
 class Halberdier(Soldat):
     
-    def __init__(self, x=0, y=0, img_path="./assets/halberdier.png"):
-        super().__init__(x=x, y=y, img_path=img_path)
+    def __init__(self, x=0, y=0, team=0):
+        image_path =  "./assets/halbardier_1.png" if team==1 else "./assets/harbaldier_0.png"
 
+        super().__init__(x=x, y=y, owner=team, img_path=image_path)
         self.name = "Halberdier"
         self.tag = "H"
-        
-        # Stats
-        self.hp = 60
-        self.damage = 6
+     
+        # Static Stats
+        self.hp = 55
+        self.damage = 4
         self.armor = 0
         self.armor_pierce = 0
         self.attack_range = 0       # melee
@@ -32,5 +33,5 @@ class Halberdier(Soldat):
         # self.vs_paladin = 32
         # self.vs_halberdier = 0
         self.vs = {
-            'Paladin' : 32,
+            'Paladin' : 22,
         }

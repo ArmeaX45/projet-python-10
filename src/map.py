@@ -1,84 +1,99 @@
 """File: map.py"""
 
 import pygame
-import curses
+import sys
 
+class Map:
+    def __init__(self, image_path, screen_rect):
+        self.image_path = image_path
+        # --- CONFIGURATION DU ZOOM ---
+        self.ZOOM_STEP = 0.08
+        self.MIN_ZOOM = 0.2
+        self.MAX_ZOOM = 3.0
 
-class map():
-    def __init__(self):
-        self.width = 12
-        self.height = 12
-        self.grid = [['-' for _ in range(self.width)] for _ in range(self.height)]
-        
-        self.all_soldats = pygame.sprite.Group()
-        
-        self.image = None
-        self.rect = None
-        self.image_lien = "mamap.png"
-        
+        # --- CHARGEMENT DE L'IMAGE ---
         try:
-            # Charge l'image et la convertit pour un affichage rapide
-            self.image = pygame.image.load(self.image_lien)
-            # Récupère le rectangle (position/taille) de l'image
-            self.rect = self.image.get_rect()
-            self.rect.topleft = (0, 0) # Positionne l'image au coin (0,0)
-            
+            self.original_image = pygame.image.load(image_path).convert()
         except pygame.error as e:
-            print(f"Erreur : Impossible de charger l'image {self.image_lien}")
-            print(e)
+            print(f"ERREUR : Impossible de charger l'image : {image_path}")
+            sys.exit()
+
+        # --- VARIABLES D'ÉTAT ---
+        self.current_scale = 1.0
+        self.image = self.original_image.copy()
+        # On centre la carte au départ par rapport à l'écran
+        self.rect = self.image.get_rect(center=screen_rect.center)
+
+        #define de la mini map
+        self.mm_ratio = 0.05 
+        self.mm_img = pygame.transform.scale(self.original_image, (int(self.original_image.get_width() * self.mm_ratio), int(self.original_image.get_height() * self.mm_ratio)))
+        # Gestion du Drag & Drop
+        self.dragging = False
+        self.drag_last_pos = (0, 0)
+
+    def mouvement(self, event):
+        """Gère les événements liés à la map (Zoom et Déplacement)."""
         
-    
-    def add_on_grid(self, soldat):
-        if soldat.is_alive:
-            grid_y = soldat.rect.y // soldat.rect.height
-            grid_x = soldat.rect.x // soldat.rect.width
+        # --- GESTION DU ZOOM (MOLETTE) ---
+        if event.type == pygame.MOUSEWHEEL:
+            old_scale = self.current_scale
+            self.current_scale += event.y * self.ZOOM_STEP
+            self.current_scale = max(self.MIN_ZOOM, min(self.current_scale, self.MAX_ZOOM))
             
-            self.grid[grid_y][grid_x] = soldat.tag
+            # Recalcul de la taille de l'image
+            new_width = int(self.original_image.get_width() * self.current_scale)
+            new_height = int(self.original_image.get_height() * self.current_scale)
+            
+            # Mise à jour de l'image affichée
+            self.image = pygame.transform.scale(self.original_image, (new_width, new_height))
+            
+            # On conserve le centre actuel pour que le zoom soit fluide
+            old_center = self.rect.center
+            self.rect = self.image.get_rect(center=old_center)
         
-    
-    def show_grid(self, stdscr):
-        for y, line in enumerate(self.grid):
-            for x, tag in enumerate(line):
-                stdscr.addstr(y+1, x * 2, tag) # y+1 because the first line is the title so we add an offset
-        stdscr.refresh()
+        # --- GESTION DU DRAG & DROP ---
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1: # Clic gauche
+                self.dragging = True
+                self.drag_last_pos = event.pos
 
-    def remove_soldat(self, soldat):
-        self.all_soldats.remove(soldat)
+        elif event.type == pygame.MOUSEBUTTONUP:
+            if event.button == 1:
+                self.dragging = False
 
-        grid_y = soldat.rect.y // soldat.rect.height
-        grid_x = soldat.rect.x // soldat.rect.width
+        elif event.type == pygame.MOUSEMOTION:
+            if self.dragging:
+                dx = event.pos[0] - self.drag_last_pos[0]
+                dy = event.pos[1] - self.drag_last_pos[1]
+                self.rect.x += dx
+                self.rect.y += dy
+                self.drag_last_pos = event.pos
 
-        if 0 <= grid_y < self.height and 0 <= grid_x < self.width:
-            self.grid[grid_y][grid_x] = '-'
-    
-    
-    def start_cmd(self, stdscr):
-        curses.curs_set(0)  # Hide the cursor
-    
-        stdscr.clear()      # Clear the screen
+    def draw(self, screen):
+        """Dessine la map sur l'écran."""
+        screen.blit(self.image, self.rect)
+
+        # Position de la minimap (Haut-Droite avec marge de 20px)
+        mx, my = screen.get_width() - self.mm_img.get_width() - 20, 20
+        screen.blit(self.mm_img, (mx, my))
         
-        self.show_grid(stdscr)
+        vx = (-self.rect.x / self.current_scale) * self.mm_ratio
+        vy = (-self.rect.y / self.current_scale) * self.mm_ratio
+        vw = (screen.get_width() / self.current_scale) * self.mm_ratio
+        vh = (screen.get_height() / self.current_scale) * self.mm_ratio
+        # Définit le rectangle rouge théorique
+        view_rect = pygame.Rect(mx + vx, my + vy, vw, vh)
+        # Définit le rectangle limite (la minimap)
+        limit_rect = pygame.Rect(mx, my, self.mm_img.get_width(), self.mm_img.get_height())
         
-        stdscr.refresh()    # Refresh the screen
-        stdscr.getch()      # Waiting for a key press
-        
-    def add_to_soldat_group(self, soldat):
-        self.all_soldats.add(soldat)
+        # Dessine l'intersection des deux (le clip)
+        pygame.draw.rect(screen, (255, 0, 0), view_rect.clip(limit_rect), 2)
 
-    def print_grid(self):
-        for line in self.grid:
-            print(' '.join(line))
-        print()
-
-
-    def draw_map(self, image):
-        if self.image:
-            image.blit(self.image, self.rect)
-
-
-
-
-
-
-
-
+    def nouvelle_map(self, world_x, world_y):
+        """
+        Convertit une position 'monde' (position réelle sur l'image originale)
+        en position 'écran' (prenant en compte le zoom et le déplacement).
+        """
+        screen_x = self.rect.x + (world_x * self.current_scale)
+        screen_y = self.rect.y + (world_y * self.current_scale)
+        return screen_x, screen_y
