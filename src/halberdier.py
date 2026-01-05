@@ -14,9 +14,9 @@ class Halberdier(Soldat):
         self.name = "Halberdier"
         self.tag = "H"
      
-        # Stats
-        self.hp = 60
-        self.damage = 6
+        # Static Stats
+        self.hp = 55
+        self.damage = 4
         self.armor = 0
         self.armor_pierce = 0
         self.attack_range = 0       # melee
@@ -33,5 +33,5 @@ class Halberdier(Soldat):
         # self.vs_paladin = 32
         # self.vs_halberdier = 0
         self.vs = {
-            'Paladin' : 32,
+            'Paladin' : 22,
         }

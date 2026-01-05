@@ -11,15 +11,15 @@ class Paladin(Soldat):
         self.name = "Paladin"
         self.tag = "P"
 
-        # Statsjknjn
-        self.hp = 160
-        self.damage = 14
+        # Static Stats
+        self.hp = 100
+        self.damage = 10
         self.armor = 2
-        self.armor_pierce = 3
+        self.armor_pierce = 2
         self.attack_range = 0       # melee
-        self.vision_range = 5
+        self.vision_range = 4
         self.speed = 1.35
-        self.reload_time = 1.9
+        self.reload_time = 1.8
         
         self.frame_delay = 13
         self.attack_delay = 0.67

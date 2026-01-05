@@ -12,8 +12,8 @@ class Arbalester(Soldat):
         self.tag = "A"
 
         # Static Stats
-        self.hp = 40
-        self.damage = 6
+        self.hp = 35
+        self.damage = 5
         self.armor = 0
         self.armor_pierce = 0
         self.attack_range = 5
@@ -21,10 +21,10 @@ class Arbalester(Soldat):
         self.speed = 0.96
         self.reload_time = 2.0
         
-        self.frame_delay = 20
-        self.attack_delay = 0.34
+        self.frame_delay = 15
+        self.attack_delay = 0.35
         
-        self.accuracy = 0.90        # 90%
+        self.accuracy = 0.85        # 90%
         
         # Boolen Stat
         self.is_close_combat = False
