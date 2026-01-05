@@ -15,7 +15,6 @@ import pygame
 import curses
 import threading
     
-    
 # main.py
 import pygame
 import sys
