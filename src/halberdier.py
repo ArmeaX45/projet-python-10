@@ -11,6 +11,7 @@ class Halberdier(Soldat):
         image_path =  "./assets/halbardier_1.png" if team==1 else "./assets/harbaldier_0.png"
 
         super().__init__(x=x, y=y, owner=team, img_path=image_path)
+        self.img_path = image_path
         self.name = "Halberdier"
         self.tag = "H"
      

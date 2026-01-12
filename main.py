@@ -1,6 +1,5 @@
 # main.py
 import time
-import curses
 import pygame
 import math
 
@@ -27,6 +26,13 @@ from src.halberdier import Halberdier
 from src.paladin import Paladin
 from src.arbalester import Arbalester
 
+from src.save_manager import save_game_state, load_game_state
+from src.stats_generator import check_end_and_report
+
+# ============================================================
+#                      BLOC PRINCIPAL UNIQUE
+# ============================================================
+
 if __name__ == "__main__":
     # --- 1. INITIALISATION ---
     pygame.init()
@@ -41,13 +47,24 @@ if __name__ == "__main__":
     game_map = Map("./assets/image.png", screen.get_rect())
     game = Game(game_map, SCREEN_WIDTH//64, SCREEN_HEIGHT//64)
 
-    # --- 3. CRÉATION DES UNITÉS ---
-    game.create_soldat()
+    # --- 3. GESTION DU CHARGEMENT (CLI) ---
+    is_loaded = False
+    if len(sys.argv) > 2 and sys.argv[1] == "load":
+        filename = sys.argv[2]
+        is_loaded = load_game_state(game, filename)
+
+    # Si on n'a pas chargé de fichier, on crée les soldats par défaut
+    if not is_loaded:
+        game.create_soldat()
+        print("[*] Nouvelle partie lancée.")
+    else:
+        print(f"[*] Partie chargée depuis {sys.argv[2]}")
+
     
     ia_daft = MajorDaftSimple(team_name=0)
     ia_brain = MajorDaftSimple(team_name=1)
 
-    # --- 4. BOUCLE DE JEU ---
+    # --- 5. BOUCLE DE JEU ---
     running = True
     clock = pygame.time.Clock()
 
@@ -71,7 +88,7 @@ if __name__ == "__main__":
                 running = False
             
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_F11: # Petite touche pour quitter proprement aussi
+                if event.key == pygame.K_ESCAPE: # Petite touche pour quitter proprement aussi
                     running = False
             
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3: # Clic Droit
@@ -84,6 +101,15 @@ if __name__ == "__main__":
                         soldat_selectionne = unit
                         break
             
+            if event.type == pygame.KEYDOWN:
+                # Sauvegarde Rapide (F11)
+                if event.key == pygame.K_F11:
+                    save_game_state(game, "quicksave.dat")
+
+                # Chargement Rapide (F12)
+                elif event.key == pygame.K_F12:
+                    load_game_state(game, "quicksave.dat")
+
             # La classe map gère les actions possibles sur la map
             game_map.mouvement(event)
 
@@ -135,7 +161,8 @@ if __name__ == "__main__":
                 _, unit, target = action
                 if getattr(target, "is_alive", False):
                     unit.attack(target)
-        
+            if check_end_and_report(game):
+                print("Fin du match enregistrée.")
         # 5) Affichage          
         pygame.display.flip()
         clock.tick(60) 
