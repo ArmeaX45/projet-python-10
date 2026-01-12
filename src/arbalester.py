@@ -8,6 +8,7 @@ class Arbalester(Soldat):
         image_path =  "./assets/arbalester_1.png" if team==1 else "./assets/arbalester_0.png"
         super().__init__(x=x, y=y, img_path=image_path, owner=team)
         
+        self.img_path = image_path
         self.name = "Arbalester"
         self.tag = "A"
 

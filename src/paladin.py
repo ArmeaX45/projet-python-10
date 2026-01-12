@@ -8,6 +8,7 @@ class Paladin(Soldat):
         image_path="./assets/paladin_1.png" if team==1 else "./assets/paladin_0.png"
         super().__init__(x=x, y=y, owner=team, img_path=image_path)
 
+        self.img_path = image_path
         self.name = "Paladin"
         self.tag = "P"
 
