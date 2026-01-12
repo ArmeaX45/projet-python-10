@@ -21,9 +21,10 @@ class Game():
         self.all_soldats = pygame.sprite.Group()
         self.lock = threading.Lock()
     
-    def create_soldat(self, config):
+    def create_soldat(self, config, ai_team0=None, ai_team1=None):
         """
-        Crée les soldats en formation RECTANGLE (blocs).
+        Crée les soldats avec formations définis par les IA.
+        Si une IA a une méthode get_formation(), elle est utilisée.
         """
         self.all_soldats.empty()
         
@@ -33,76 +34,50 @@ class Game():
             "Arbalester": Arbalester
         }
 
-        # --- FONCTION INTERNE POUR PLACER UN BLOC ---
-        def place_formation_block(team_id, start_x, start_y, unit_class, count, direction_x):
-            """
-            Place 'count' soldats en carré/rectangle à partir de (start_x, start_y).
-            direction_x : 1 pour aller vers la droite (Team 0), -1 pour la gauche (Team 1).
-            Retourne le Y final pour savoir où placer le groupe suivant.
-            """
-            if count <= 0: return start_y
+        # === ÉQUIPE 0 ===
+        if ai_team0 and hasattr(ai_team0, 'get_formation'):
+            positions = ai_team0.get_formation(0, self.width, self.height, config[0])
+            for unit_type, px, py in positions:
+                if 0 <= px < self.width and 0 <= py < self.height:
+                    soldat = class_map[unit_type](px, py, 0)
+                    self.add_to_soldat_group(soldat)
+        else:
+            # Formation par défaut
+            self._default_formation(0, config[0], class_map)
 
-            # On définit la largeur du rectangle (racine carrée pour faire un carré)
-            # Ex: 10 soldats -> largeur 4 (3 rangées de 4, 4, 2)
-            rect_width = math.ceil(math.sqrt(count))
-            
-            units_placed = 0
-            current_row = 0
-            
-            while units_placed < count:
-                for col in range(rect_width):
-                    if units_placed >= count: 
-                        break
-                    
-                    # Calcul des coordonnées
-                    # Team 0 : X augmente. Team 1 : X diminue.
-                    px = start_x + (col * direction_x)
-                    py = start_y + current_row
-                    
-                    # Vérification pour rester dans la carte
-                    if 0 <= px < self.width and 0 <= py < self.height:
-                        soldat = unit_class(px, py, team_id)
-                        self.add_to_soldat_group(soldat)
-                    
-                    units_placed += 1
-                current_row += 1
-            
-            # On retourne la position Y juste après ce bloc (+1 pour espacer)
-            return start_y + current_row + 1
-
-        # --- PLACEMENT ÉQUIPE 0 (GAUCHE) ---
-        current_y = 2
-        base_x = 2 # On commence un peu décollé du bord gauche
-        
-        for unit_name, count in config[0].items():
-            # Estimation simple : est-ce que ça rentre en hauteur ?
-            # Si non, on décale tout le bloc vers la droite (nouvelle colonne de formations)
-            estimated_height = math.ceil(count / math.ceil(math.sqrt(count))) if count > 0 else 0
-            
-            if current_y + estimated_height > self.height:
-                current_y = 2
-                base_x += 6  # On décale vers la droite pour la nouvelle colonne
-            
-            # On place le bloc
-            current_y = place_formation_block(0, base_x, current_y, class_map[unit_name], count, 1)
-
-        # --- PLACEMENT ÉQUIPE 1 (DROITE) ---
-        current_y = 2
-        base_x = self.width - 3 # On commence un peu décollé du bord droit
-        
-        for unit_name, count in config[1].items():
-            estimated_height = math.ceil(count / math.ceil(math.sqrt(count))) if count > 0 else 0
-            
-            if current_y + estimated_height > self.height:
-                current_y = 2
-                base_x -= 6 # On décale vers la gauche pour la nouvelle colonne
-            
-            # On place le bloc (direction -1)
-            current_y = place_formation_block(1, base_x, current_y, class_map[unit_name], count, -1)
+        # === ÉQUIPE 1 ===
+        if ai_team1 and hasattr(ai_team1, 'get_formation'):
+            positions = ai_team1.get_formation(1, self.width, self.height, config[1])
+            for unit_type, px, py in positions:
+                if 0 <= px < self.width and 0 <= py < self.height:
+                    soldat = class_map[unit_type](px, py, 1)
+                    self.add_to_soldat_group(soldat)
+        else:
+            # Formation par défaut
+            self._default_formation(1, config[1], class_map)
 
         # Ajout final sur la grille logique pour l'IA
         for soldat in self.all_soldats:
             self.add_on_grid(soldat)
+
+    def _default_formation(self, team_id, config, class_map):
+        """Formation par défaut en bloc."""
+        if team_id == 0:
+            start_x = 2
+        else:
+            start_x = self.width - 3
+        
+        current_y = 2
+        for unit_name, count in config.items():
+            for i in range(count):
+                px = start_x + (i // 10) * (1 if team_id == 0 else -1)
+                py = current_y
+                if 0 <= px < self.width and 0 <= py < self.height:
+                    soldat = class_map[unit_name](px, py, team_id)
+                    self.add_to_soldat_group(soldat)
+                current_y += 1
+                if current_y > self.height - 2:
+                    current_y = 2
     
     def add_on_grid(self, soldat):
         if soldat.is_alive:

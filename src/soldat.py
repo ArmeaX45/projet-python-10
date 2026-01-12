@@ -8,7 +8,11 @@ class Soldat(pygame.sprite.Sprite):
         super().__init__()
         
         if img_path:
-            self.image = pygame.image.load(img_path)
+            original_img = pygame.image.load(img_path)
+            # Réduire la taille des soldats (50% de l'original)
+            new_w = original_img.get_width() // 2
+            new_h = original_img.get_height() // 2
+            self.image = pygame.transform.scale(original_img, (new_w, new_h))
             self.rect = self.image.get_rect()
             # Position initiale sur la grille (case * taille)
             self.rect.x = x * self.rect.width

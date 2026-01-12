@@ -1,38 +1,69 @@
 # src/ai_braindead.py
-from typing import Dict, List, Optional, TYPE_CHECKING
-from .ai_base import General, Order, OrderType, dist2_tiles
+# IA défensive : fait avancer les soldats puis attaque
+import math
 
-if TYPE_CHECKING:
-    from .soldat import Soldat
 
-class CaptainBraindead(General):
-    name = "BRAINDEAD"
+class CaptainBraindead:
+    """IA simple défensive : avance les soldats vers le centre, attaque à portée."""
+    
+    def __init__(self, team_name=0):
+        self.team_name = team_name
 
-    def decide(self, my_player_id: int, all_units: List["Soldat"]) -> Dict[int, Order]:
-        orders: Dict[int, Order] = {}
-        allies = [u for u in all_units if getattr(u, "owner", None) == my_player_id and u.is_alive]
-        enemies = [u for u in all_units if getattr(u, "owner", None) != my_player_id and u.is_alive]
+    def update(self, map_instance):
+        """Fait avancer les soldats et attaque si ennemi à portée."""
+        actions = []
 
-        for me in allies:
-            # cherche un ennemi à la fois : visible ET à portée
-            target = None
+        allies = [u for u in map_instance.all_soldats if getattr(u, "team", None) == self.team_name]
+        enemies = [u for u in map_instance.all_soldats if getattr(u, "team", None) != self.team_name]
+
+        for unit in allies:
+            if not enemies:
+                continue
+
+            tile = unit.rect.width
+            range_px = (unit.attack_range * tile) if unit.attack_range > 0 else tile * 1.3
+
+            # Chercher ennemi à portée
+            target_in_range = None
             for e in enemies:
-                if self._in_los(me, e) and self._in_range(me, e):
-                    target = e
+                if self._distance(unit, e) <= range_px:
+                    target_in_range = e
                     break
 
-            if target:
-                orders[id(me)] = Order(type=OrderType.ATTACK, target_unit=target)
+            if target_in_range:
+                # Attaquer
+                actions.append(("attack", unit, target_in_range))
             else:
-                orders[id(me)] = Order(type=OrderType.HOLD)
-        return orders
+                # Avancer vers l'ennemi le plus proche
+                target = self._nearest_enemy(unit, enemies)
+                if target:
+                    dx, dy = self._get_direction(unit, target)
+                    actions.append(("move", unit, dx, dy))
 
-    def _in_los(self, me: "Soldat", e: "Soldat") -> bool:
-        return dist2_tiles(self._tile(me), self._tile(e)) <= (me.vision_range ** 2)
+        return actions
 
-    def _in_range(self, me: "Soldat", e: "Soldat") -> bool:
-        return dist2_tiles(self._tile(me), self._tile(e)) <= (max(0, me.attack_range) ** 2)
+    def _get_direction(self, unit, target):
+        """Direction simple vers la cible."""
+        ux, uy = unit.rect.centerx, unit.rect.centery
+        tx, ty = target.rect.centerx, target.rect.centery
 
-    def _tile(self, u: "Soldat"):
-        tw, th = u.rect.width, u.rect.height
-        return (u.rect.x // tw, u.rect.y // th)
+        dx = 1 if tx > ux + 5 else -1 if tx < ux - 5 else 0
+        dy = 1 if ty > uy + 5 else -1 if ty < uy - 5 else 0
+
+        if abs(tx - ux) > abs(ty - uy):
+            return dx, 0
+        return 0, dy
+
+    def _nearest_enemy(self, unit, enemies):
+        best = None
+        best_d = float("inf")
+        for e in enemies:
+            d = self._distance(unit, e)
+            if d < best_d:
+                best_d = d
+                best = e
+        return best
+
+    @staticmethod
+    def _distance(a, b):
+        return math.hypot(b.rect.centerx - a.rect.centerx, b.rect.centery - a.rect.centery)

@@ -24,9 +24,35 @@ class Map:
         # On centre la carte au départ par rapport à l'écran
         self.rect = self.image.get_rect(center=screen_rect.center)
 
-        #define de la mini map
-        self.mm_ratio = 0.05 
-        self.mm_img = pygame.transform.scale(self.original_image, (int(self.original_image.get_width() * self.mm_ratio), int(self.original_image.get_height() * self.mm_ratio)))
+        # --- MINIMAP AVEC TAILLE FIXE GARANTIE ---
+        self.MINIMAP_WIDTH = 300
+        self.MINIMAP_HEIGHT = 170
+        
+        # Calculer le scale pour conserver les proportions
+        orig_w = self.original_image.get_width()
+        orig_h = self.original_image.get_height()
+        
+        # Ratio de l'image originale
+        aspect = orig_w / orig_h
+        
+        # Adapter à la box 300x170 en conservant les proportions
+        if aspect > (self.MINIMAP_WIDTH / self.MINIMAP_HEIGHT):
+            # Image plus large que haute -> limiter par la largeur
+            self.mm_w = self.MINIMAP_WIDTH
+            self.mm_h = int(self.MINIMAP_WIDTH / aspect)
+        else:
+            # Image plus haute que large -> limiter par la hauteur  
+            self.mm_h = self.MINIMAP_HEIGHT
+            self.mm_w = int(self.MINIMAP_HEIGHT * aspect)
+        
+        # Scale pour convertir coordonnées monde -> minimap
+        self.minimap_scale = self.mm_w / orig_w
+        
+        # Image de minimap pré-calculée avec smoothscale (meilleure qualité)
+        self.mm_img = pygame.transform.smoothscale(self.original_image, (self.mm_w, self.mm_h))
+        
+        print(f"[DEBUG MINIMAP] Taille: {self.mm_w}x{self.mm_h}, Scale: {self.minimap_scale}")
+        
         # Gestion du Drag & Drop
         self.dragging = False
         self.drag_last_pos = (0, 0)
@@ -70,50 +96,45 @@ class Map:
                 self.drag_last_pos = event.pos
 
     def draw(self, screen):
-        """Dessine la map principale et la minimap avec gestion des bords."""
-        # 1. Dessiner la carte principale (Zoomée/Déplacée)
+        """Dessine uniquement la carte principale (fond)."""
         screen.blit(self.image, self.rect)
 
-        # --- GESTION DE LA MINIMAP ---
+    def draw_minimap(self, screen):
+        """Dessine la minimap avec le cadre rouge du viewport. À appeler APRÈS les soldats."""
         margin = 20
-        mm_w = self.mm_img.get_width()
-        mm_h = self.mm_img.get_height()
         
-        # Position : Haut-Droite
-        mm_x = screen.get_width() - mm_w - margin
+        # Position en haut à droite
+        mm_x = screen.get_width() - self.mm_w - margin
         mm_y = margin
         
-        # Rectangle contenant la minimap (pour les calculs de collision)
-        minimap_rect = pygame.Rect(mm_x, mm_y, mm_w, mm_h)
-
-        # Dessiner un fond noir et une bordure blanche autour de la minimap pour bien la délimiter
-        pygame.draw.rect(screen, (0, 0, 0), (mm_x - 2, mm_y - 2, mm_w + 4, mm_h + 4)) # Fond noir
-        pygame.draw.rect(screen, (255, 255, 255), (mm_x - 2, mm_y - 2, mm_w + 4, mm_h + 4), 1) # Bord blanc fin
+        # Fond noir avec bordure épaisse pour bien voir
+        border = 4
+        pygame.draw.rect(screen, (0, 0, 0), (mm_x - border, mm_y - border, self.mm_w + border*2, self.mm_h + border*2))
+        pygame.draw.rect(screen, (255, 255, 255), (mm_x - border, mm_y - border, self.mm_w + border*2, self.mm_h + border*2), 3)
         
-        # Dessiner l'image de la minimap
+        # Dessiner la minimap (image pré-calculée)
         screen.blit(self.mm_img, (mm_x, mm_y))
         
-        # --- CALCUL DU CADRE ROUGE (VIEWPORT) ---
-     
+        # --- CADRE ROUGE (VIEWPORT) ---
         view_world_x = -self.rect.x / self.current_scale
         view_world_y = -self.rect.y / self.current_scale
         view_world_w = screen.get_width() / self.current_scale
         view_world_h = screen.get_height() / self.current_scale
         
-        # On convertit ces coordonnées "monde" en coordonnées "minimap"
-        rx = mm_x + (view_world_x * self.mm_ratio)
-        ry = mm_y + (view_world_y * self.mm_ratio)
-        rw = view_world_w * self.mm_ratio
-        rh = view_world_h * self.mm_ratio
+        # Conversion en coordonnées minimap
+        rx = mm_x + (view_world_x * self.minimap_scale)
+        ry = mm_y + (view_world_y * self.minimap_scale)
+        rw = view_world_w * self.minimap_scale
+        rh = view_world_h * self.minimap_scale
         
+        # Limiter le rectangle aux bords de la minimap
+        minimap_rect = pygame.Rect(mm_x, mm_y, self.mm_w, self.mm_h)
         view_rect = pygame.Rect(rx, ry, rw, rh)
-        
-    
         final_rect = view_rect.clip(minimap_rect)
         
-        # On ne dessine que si le rectangle a une taille valide
+        # Dessiner le cadre rouge épais
         if final_rect.width > 0 and final_rect.height > 0:
-            pygame.draw.rect(screen, (255, 0, 0), final_rect, 2)
+            pygame.draw.rect(screen, (255, 0, 0), final_rect, 3)
 
     def nouvelle_map(self, world_x, world_y):
         """

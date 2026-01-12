@@ -13,13 +13,14 @@ class Paladin(Soldat):
 
         # Static Stats
         self.hp = 100
+        self.max_hp = 100
         self.damage = 10
         self.armor = 2
         self.armor_pierce = 2
         self.attack_range = 0       # melee
-        self.vision_range = 4
-        self.speed = 1.35
-        self.reload_time = 1.8
+        self.vision_range = 20
+        self.speed = 2.7
+        self.reload_time = 0.4
         
         self.frame_delay = 13
         self.attack_delay = 0.67
