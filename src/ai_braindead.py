@@ -9,6 +9,9 @@ class CaptainBraindead:
     def __init__(self, team_name=0):
         self.team_name = team_name
 
+    # Pas de get_formation spécifique : utilise la formation par défaut (au fond)
+
+
     def update(self, map_instance):
         """Fait avancer les soldats et attaque si ennemi à portée."""
         actions = []

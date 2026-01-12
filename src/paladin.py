@@ -18,8 +18,8 @@ class Paladin(Soldat):
         self.armor = 2
         self.armor_pierce = 2
         self.attack_range = 0       # melee
-        self.vision_range = 20
-        self.speed = 2.7
+        self.vision_range = 10
+        self.speed = 2.1
         self.reload_time = 0.4
         
         self.frame_delay = 13
@@ -34,5 +34,7 @@ class Paladin(Soldat):
         # self.vs_halberdier = 0
         self.vs = {
             'Paladin' : -3,
+            'Arbalester' : 15,
+            'Halberdier' : -5
         }
         

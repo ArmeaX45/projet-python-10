@@ -63,13 +63,27 @@ class Soldat(pygame.sprite.Sprite):
         if new_y is not None:
             future_rect.y = new_y
 
+        # 1. Identifier les voisins avec qui on est DÉJÀ en collision (overlaps)
+        current_overlaps = []
         for soldat in game.all_soldats:
-            if soldat is self:
-                continue
-            # Vérifie la collision
+            if soldat is self: continue
+            if self.rect.colliderect(soldat.rect):
+                current_overlaps.append(soldat)
+        
+        # 2. Vérifier collision FUTURE
+        # Règle : On ne peut pas entrer dans une NOUVELLE unit.
+        # Mais on a le droit de rester dans (ou traverser) celle qui nous bloque déjà (pour sortir).
+        for soldat in game.all_soldats:
+            if soldat is self: continue
+            
+            # Si on touche ce soldat dans le futur...
             if future_rect.colliderect(soldat.rect):
-                return False
-
+                # Est-ce un nouveau voisin ?
+                if soldat not in current_overlaps:
+                    return False # BLOQUÉ : on ne traverse pas les nouveaux
+                
+                # Si c'est un ancien voisin, c'est toléré (on essaie de sortir)
+        
         return True
 
     def move(self, game, dx=None, dy=None):

@@ -82,11 +82,11 @@ if __name__ == "__main__":
     print(f"[MINIMAP] Créée: {final_mm_w}x{final_mm_h}, scale={minimap_scale:.4f}")
 
     # IA (créées AVANT les soldats pour définir les formations)
-    ia_daft = MajorDaftSimple(team_name=0)
-    ia_brain = ColonelSMART(team_name=1)
+    ia_daft = MajorDaftSimple(team_name=1)
+    ia_brain = ColonelSMART(team_name=0)
     
     # Création des soldats avec les formations définies par les IA
-    game.create_soldat(full_config, ai_team0=ia_daft, ai_team1=ia_brain)
+    game.create_soldat(full_config, ai_team0=ia_brain, ai_team1=ia_daft)
 
     # --- 4. THREAD CONSOLE (Curses) ---
     def run_curses(game):

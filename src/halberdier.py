@@ -35,4 +35,6 @@ class Halberdier(Soldat):
         # self.vs_halberdier = 0
         self.vs = {
             'Paladin' : 22,
+            'Arbalester' : -5,
+            'Halberdier' : 0
         }

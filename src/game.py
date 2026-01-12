@@ -61,23 +61,49 @@ class Game():
             self.add_on_grid(soldat)
 
     def _default_formation(self, team_id, config, class_map):
-        """Formation par défaut en bloc."""
+        """Formation par défaut en bloc (colonnes successives)."""
         if team_id == 0:
             start_x = 2
+            x_dir = 1
         else:
-            start_x = self.width - 3
+            start_x = self.width - 1 # Tout au fond à droite
+            x_dir = -1
         
         current_y = 2
-        for unit_name, count in config.items():
-            for i in range(count):
-                px = start_x + (i // 10) * (1 if team_id == 0 else -1)
+        col_offset = 0
+        
+        # ORDRE STRICT : Arbalester (Fond), Paladin (Milieu), Halberdier (Front)
+        # Car plus on spawn tôt, plus on est "en arrière" (x + col_offset)
+        # Wait... X augmente pour Team 0. Donc col_offset 0 = Gauche (Arrière pour Team 0).
+        # Pour Team 1, X diminue. start_x = Right. col_offset * -1 => Vers gauche (Avant).
+        # Ah ! Team 1 avance vers la gauche.
+        # Start X = Width. Col 0 = Width. Col 1 = Width - 1.
+        # Donc Col 0 est L'ARRIERE pour Team 1 aussi ?
+        # Non, Team 1 est à Droite, regarde à Gauche. L'arrière est à Droite (X grand).
+        # Donc Col 0 (X grand) est l'arrière.
+        # Donc PREMIER spawn = ARRIERE pour les deux équipes !
+        
+        ordered_keys = ["Arbalester", "Paladin", "Halberdier"]
+        
+        for unit_name in ordered_keys:
+            count = config.get(unit_name, 0)
+            if count == 0: continue
+            
+            for _ in range(count):
+                # Calcul de position
+                px = start_x + (col_offset * x_dir)
                 py = current_y
+                
+                # Placement sécurisé
                 if 0 <= px < self.width and 0 <= py < self.height:
                     soldat = class_map[unit_name](px, py, team_id)
                     self.add_to_soldat_group(soldat)
+                
+                # Avancer curseur
                 current_y += 1
                 if current_y > self.height - 2:
                     current_y = 2
+                    col_offset += 1
     
     def add_on_grid(self, soldat):
         if soldat.is_alive:
