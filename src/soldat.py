@@ -27,6 +27,10 @@ class Soldat(pygame.sprite.Sprite):
         
         self.last_attack_time = 0   # Timestamp de la dernière attaque
         
+    def update_animation(self):
+        """Méthode d'animation (stub - peut être surchargée par les sous-classes)."""
+        pass  # Par défaut, pas d'animation spéciale
+        
     def __str__(self):
         return f"The {self.name} soldat have {self.hp}HP"
     

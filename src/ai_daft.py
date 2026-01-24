@@ -1,6 +1,7 @@
 # src/ai_daft.py
 # IA offensive simple : avance directement vers l'ennemi et attaque
 import math
+import random
 
 
 class MajorDaftSimple:
@@ -9,6 +10,41 @@ class MajorDaftSimple:
     def __init__(self, team_name="A"):
         self.team_name = team_name
         self.bypass_direction = {}
+
+    @staticmethod
+    def get_formation(team_id, width, height, config):
+        """
+        Formation MAUVAISE - Soldats dispersés au hasard.
+        Pas de stratégie, juste du chaos.
+        """
+        positions = []
+        
+        # Zone de spawn (1/4 de la map du côté de l'équipe)
+        if team_id == 0:
+            x_min, x_max = 1, width // 4
+        else:
+            x_min, x_max = width * 3 // 4, width - 2
+        
+        y_min, y_max = 2, height - 2
+        occupied = set()
+        
+        # Spawn dans un ordre aléatoire (pas optimisé du tout)
+        all_units = []
+        for unit_type, count in config.items():
+            all_units.extend([unit_type] * count)
+        random.shuffle(all_units)  # Ordre aléatoire = mauvais
+        
+        for unit_type in all_units:
+            # Position aléatoire
+            for _ in range(50):  # Max 50 tentatives
+                px = random.randint(x_min, x_max)
+                py = random.randint(y_min, y_max)
+                if (px, py) not in occupied:
+                    occupied.add((px, py))
+                    positions.append((unit_type, px, py))
+                    break
+        
+        return positions
 
     def update(self, map_instance):
         """Renvoie des actions (attack / move)."""

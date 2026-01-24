@@ -1,245 +1,287 @@
 # src/ColonelSMART.py
-# IA SUPREME : CONCAVE FORMATION + KITING + FLANKING
+# IA ULTRA-DOMINANTE V3 - STRATÉGIE DE VICTOIRE ABSOLUE
 import math
 import random
 
 
 class ColonelSMART:
     """
-    IA ULTRA-COMPETITIVE :
-    1. Formation Arc (Concave) pour maximiser la surface de tir/contact.
-    2. Kiting pour les Arbalétriers (reculent si menacés).
-    3. Flanking pour les Paladins.
-    4. Focus Fire mathématique.
+    IA SUPRÊME - Conçue pour DOMINER et GAGNER à chaque fois.
+    
+    STRATÉGIE PRINCIPALE:
+    1. Formation en "Mur de Fer" - Protection maximale des Arbalétriers
+    2. Ciblage par CONTRE - Chaque unité chasse son contre
+    3. Mouvement coordonné - Pas de files d'attente, tout le monde attaque
+    4. Focus Fire - Concentrer les dégâts pour éliminer vite
     """
     
-    TARGET_PRIORITY = {
-        "Paladin": ["Arbalester", "Paladin", "Halberdier"],
-        "Halberdier": ["Paladin", "Halberdier", "Arbalester"],
-        "Arbalester": ["Halberdier", "Arbalester", "Paladin"],
+    # Qui chasse qui (rock-paper-scissors)
+    HUNT_TARGET = {
+        "Paladin": "Arbalester",      # Paladins chassent les Arbalétriers
+        "Halberdier": "Paladin",      # Hallebardiers chassent les Paladins
+        "Arbalester": "Halberdier",   # Arbalétriers chassent les Hallebardiers
+    }
+    
+    # Qui fuir
+    FLEE_FROM = {
+        "Arbalester": "Paladin",      # Arbalétriers fuient les Paladins
+        "Paladin": None,
+        "Halberdier": None,
     }
 
     def __init__(self, team_name=0):
         self.team_name = team_name
-        self.path_memory = {}
-        self.kite_cooldown = {} # Pour éviter d'hésiter entre avancer/reculer
+        self.spread_direction = {}  # Mémorise la direction de décalage par unité
 
     @staticmethod
     def get_formation(team_id, width, height, config):
         """
-        Formation 'PHALANX' (Cubique/Lignes) :
-        - Organisation stricte en lignes verticales pour un impact maximal de front.
-        - Arbalester en arrière, Paladins au milieu/flancs, Halberdiers devant.
+        Formation en COLONNES ORGANISÉES - Simple et efficace.
+        Identique à l'ancienne formation par défaut.
+        
+        [ARRIÈRE]  [MILIEU]  [FRONT]
+           Arb       Pal      Halb
+           Arb       Pal      Halb
+           Arb       Pal      Halb
         """
         positions = []
-        center_y = height / 2
-        forward = 1 if team_id == 0 else -1
-        base_x = 5 if team_id == 0 else width - 6
         
-        def place_block(unit_type, count, start_x_offset, spacing_y=1.5):
-            if count <= 0: return
+        if team_id == 0:
+            start_x = 2
+            x_dir = 1
+        else:
+            start_x = width - 3
+            x_dir = -1
+        
+        col_spacing = 2
+        row_spacing = 1.3
+        center_y = height / 2
+        
+        # ORDRE: Arbalester (fond) -> Paladin (milieu) -> Halberdier (front)
+        unit_order = ["Arbalester", "Paladin", "Halberdier"]
+        current_col = 0
+        
+        for unit_type in unit_order:
+            count = config.get(unit_type, 0)
+            if count <= 0:
+                continue
             
-            # Placement en bloc compact (colonne par colonne)
-            # On remplit la hauteur diponible, puis on passe à la colonne suivante (vers l'arrière)
-            available_h = height - 4
-            max_per_col = int(available_h // spacing_y)
-            if max_per_col < 1: max_per_col = 1
+            x = start_x + (current_col * col_spacing * x_dir)
             
-            items_placed = 0
-            col = 0
+            # Centrage vertical
+            total_height = (count - 1) * row_spacing
+            start_y = center_y - total_height / 2
             
-            while items_placed < count:
-                n_curr = min(count - items_placed, max_per_col)
-                
-                # Coordonnée X de la colonne (on recule pour chaque nouvelle colonne)
-                # start_x_offset est le "front" du bloc
-                x = base_x + ((start_x_offset - col * 2) * forward)
-                
-                # Centrage Y
-                block_h = (n_curr - 1) * spacing_y
-                start_y = center_y - block_h / 2
-                
-                for i in range(n_curr):
-                    y = start_y + i * spacing_y
-                    
-                    # Clamp
-                    fx = max(2, min(width - 3, int(x)))
-                    fy = max(2, min(height - 2, int(y)))
-                    
-                    positions.append((unit_type, fx, fy))
-                
-                items_placed += n_curr
-                col += 1
-
-        # 1. HALBERDIERS (Frontline Stricte)
-        # Mur devant
-        hal_count = config.get("Halberdier", 0)
-        place_block("Halberdier", hal_count, start_x_offset=10)
-
-        # 2. PALADINS (Seconde Ligne / Flancs compacts)
-        # Juste derrière les hallebardiers
-        pal_count = config.get("Paladin", 0)
-        place_block("Paladin", pal_count, start_x_offset=8)
-
-        # 3. ARBALESTERS (Arrière Garde)
-        # Bloc derrière
-        arb_count = config.get("Arbalester", 0)
-        place_block("Arbalester", arb_count, start_x_offset=4)
+            for i in range(count):
+                y = start_y + i * row_spacing
+                fx = max(1, min(width - 2, int(x)))
+                fy = max(1, min(height - 2, int(y)))
+                positions.append((unit_type, fx, fy))
+            
+            current_col += 1
         
         return positions
 
     def update(self, map_instance):
+        """Mise à jour ultra-intelligente de toutes les unités."""
         actions = []
-        allies = [u for u in map_instance.all_soldats if getattr(u, "team", None) == self.team_name]
-        enemies = [u for u in map_instance.all_soldats if getattr(u, "team", None) != self.team_name]
-
+        
+        allies = [u for u in map_instance.all_soldats if u.team == self.team_name and u.is_alive]
+        enemies = [u for u in map_instance.all_soldats if u.team != self.team_name and u.is_alive]
+        
         if not enemies:
             return actions
-
+        
+        # Pré-calcul: grouper les ennemis par type
+        enemy_by_type = {
+            "Arbalester": [e for e in enemies if e.name == "Arbalester"],
+            "Paladin": [e for e in enemies if e.name == "Paladin"],
+            "Halberdier": [e for e in enemies if e.name == "Halberdier"],
+        }
+        
         for unit in allies:
-            # Stats
             tile = unit.rect.width
-            # Sécurité
-            safe_dist = tile * 4.0 if unit.name == "Arbalester" else tile * 2.0
-            attack_range = (unit.attack_range * tile) if getattr(unit, "attack_range", 0) > 0 else tile * 1.2
+            # AUGMENTATION DE LA PORTÉE D'ATTAQUE
+            attack_range = (unit.attack_range * tile) if unit.attack_range > 0 else tile * 1.6
             
-            # Plus proche ennemi
-            nearest_enemy = min(enemies, key=lambda e: self._distance(unit, e))
-            dist_nearest = self._distance(unit, nearest_enemy)
-
-            # === 1. KITING (Pour Arbalester) ===
+            # === 1. KITING (Arbalétriers fuient les Paladins) ===
             if unit.name == "Arbalester":
-                # On ne fuit PAS les autres Arbalesters (duel de tir)
-                if nearest_enemy.name != "Arbalester" and dist_nearest < safe_dist:
-                    dx, dy = self._flee(unit, nearest_enemy, allies + enemies, tile, map_instance.width, map_instance.height)
-                    if dx != 0 or dy != 0:
-                        actions.append(("move", unit, dx, dy))
-                        # Pas de continue ici ! On veut pouvoir tirer en reculant (Hit & Run)
-
-            # === 2. ATTAQUE ===
-            target = self._get_smart_target(unit, enemies, attack_range)
+                threat_type = self.FLEE_FROM.get(unit.name)
+                if threat_type:
+                    threats = enemy_by_type.get(threat_type, [])
+                    if threats:
+                        nearest_threat = min(threats, key=lambda t: self._dist(unit, t))
+                        if self._dist(unit, nearest_threat) < tile * 5:
+                            # FUIR !
+                            dx, dy = self._calculate_flee(unit, nearest_threat, allies, enemies, tile, map_instance)
+                            if dx != 0 or dy != 0:
+                                actions.append(("move", unit, dx, dy))
+                                # Continuer pour tenter de tirer aussi (Hit & Run)
             
-            # --- SPECIAL HALBERDIER FOCUS ---
-            # Si on est un Hallebardier et qu'on vise autre chose qu'un Paladin...
-            if unit.name == "Halberdier" and target and target.name != "Paladin":
-                # Vérifier s'il reste des Paladins en vie sur la map
-                paladins_alive = any(e.name == "Paladin" for e in enemies)
-                if paladins_alive:
-                    # OUI -> On IGNORE la cible actuelle (ex: un autre Hallebardier)
-                    # Pour forcer le mouvement vers le Paladin (via Move Tactic plus bas)
-                    target = None
-
+            # === 2. ATTAQUE - Cibler le CONTRE en priorité ===
+            target = self._find_best_target(unit, enemies, enemy_by_type, attack_range)
+            
             if target:
                 actions.append(("attack", unit, target))
-                if id(unit) in self.path_memory: del self.path_memory[id(unit)]
-                continue
-
-            # === 3. MOUVEMENT TACTIQUE ===
-            move_target = self._get_strategic_target(unit, enemies)
+                continue  # Attaque faite, pas besoin de bouger
+            
+            # === 3. MOUVEMENT vers la cible prioritaire ===
+            hunt_type = self.HUNT_TARGET.get(unit.name)
+            move_target = None
+            
+            # Chercher la cible de chasse
+            if hunt_type and enemy_by_type.get(hunt_type):
+                move_target = min(enemy_by_type[hunt_type], key=lambda e: self._dist(unit, e))
+            else:
+                # Sinon, aller vers le plus proche
+                move_target = min(enemies, key=lambda e: self._dist(unit, e))
+            
             if move_target:
-                dx, dy = self._smart_move(unit, move_target, allies + enemies, tile)
+                dx, dy = self._smart_pathfind(unit, move_target, allies, enemies, tile, map_instance)
                 if dx != 0 or dy != 0:
                     actions.append(("move", unit, dx, dy))
-                else:
-                    # SI BLOQUÉ : on essaie de bouger un peu au hasard pour se débloquer (Wiggle)
-                    # Cela évite les embouteillages statiques
-                    wiggle = self._wiggle(unit, allies + enemies, tile)
-                    if wiggle:
-                        actions.append(("move", unit, wiggle[0], wiggle[1]))
-
+        
         return actions
 
-    def _get_smart_target(self, unit, enemies, range_px):
-        candidates = [e for e in enemies if self._distance(unit, e) <= range_px]
-        if not candidates: return None
-        priorities = self.TARGET_PRIORITY.get(unit.name, [])
-        candidates.sort(key=lambda e: (priorities.index(e.name) if e.name in priorities else 99, e.hp, self._distance(unit, e)))
-        return candidates[0]
+    def _find_best_target(self, unit, enemies, enemy_by_type, attack_range):
+        """Trouve la meilleure cible dans la portée d'attaque."""
+        in_range = [e for e in enemies if self._dist(unit, e) <= attack_range]
+        if not in_range:
+            return None
+        
+        # Priorité 1: Cible de chasse (contre)
+        hunt_type = self.HUNT_TARGET.get(unit.name)
+        if hunt_type:
+            counters_in_range = [e for e in in_range if e.name == hunt_type]
+            if counters_in_range:
+                # Focus fire: cibler celui avec le moins de HP
+                return min(counters_in_range, key=lambda e: e.hp)
+        
+        # Priorité 2: Celui avec le moins de HP (focus fire)
+        return min(in_range, key=lambda e: e.hp)
 
-    def _get_strategic_target(self, unit, enemies):
-        priorities = self.TARGET_PRIORITY.get(unit.name, [])
-        for p_name in priorities:
-            targets = [e for e in enemies if e.name == p_name]
-            if targets: return min(targets, key=lambda e: self._distance(unit, e))
-        return min(enemies, key=lambda e: self._distance(unit, e))
-
-    def _flee(self, unit, threat, obstacles, tile, map_w, map_h):
+    def _calculate_flee(self, unit, threat, allies, enemies, tile, map_inst):
+        """Calcule la direction de fuite intelligente."""
         ux, uy = unit.rect.centerx, unit.rect.centery
         tx, ty = threat.rect.centerx, threat.rect.centery
-        dx = 1 if ux > tx else -1 if ux < tx else 0
-        dy = 1 if uy > ty else -1 if uy < ty else 0
         
-        # Test 1 : Fuite directe
-        if not self._is_blocked_prediction(unit, dx, dy, obstacles, tile, map_w, map_h):
-            return dx, dy
-            
-        # Test 2 : Glissement (X ou Y seulement)
-        if dx != 0 and not self._is_blocked_prediction(unit, dx, 0, obstacles, tile, map_w, map_h): return dx, 0
-        if dy != 0 and not self._is_blocked_prediction(unit, 0, dy, obstacles, tile, map_w, map_h): return 0, dy
+        # Direction opposée à la menace
+        flee_dx = 1 if ux > tx else -1 if ux < tx else 0
+        flee_dy = 1 if uy > ty else -1 if uy < ty else 0
+        
+        all_units = allies + enemies
+        
+        # Essayer plusieurs directions de fuite
+        directions = [
+            (flee_dx, flee_dy),      # Fuite directe
+            (flee_dx, 0),            # Horizontal
+            (0, flee_dy),            # Vertical
+            (flee_dx, -flee_dy),     # Diagonal alternatif
+            (-flee_dx, flee_dy),     # Autre diagonal
+        ]
+        
+        for dx, dy in directions:
+            if dx == 0 and dy == 0:
+                continue
+            if self._can_move_to(unit, dx, dy, all_units, tile, map_inst):
+                return dx, dy
         
         return 0, 0
 
-    def _smart_move(self, unit, target, obstacles, tile):
+    def _smart_pathfind(self, unit, target, allies, enemies, tile, map_inst):
+        """Pathfinding intelligent avec décalage automatique."""
         unit_id = id(unit)
         ux, uy = unit.rect.centerx, unit.rect.centery
         tx, ty = target.rect.centerx, target.rect.centery
         
-        dx = 1 if tx > ux + 5 else -1 if tx < ux - 5 else 0
-        dy = 1 if ty > uy + 5 else -1 if ty < uy - 5 else 0
+        # Direction vers la cible
+        want_dx = 1 if tx > ux + 3 else -1 if tx < ux - 3 else 0
+        want_dy = 1 if ty > uy + 3 else -1 if ty < uy - 3 else 0
         
-        if dx == 0 and dy == 0: return 0, 0
-
-        # Mouvement direct libre ?
-        if not self._is_blocked(unit, dx, dy, obstacles, tile):
-            if unit_id in self.path_memory: del self.path_memory[unit_id]
-            return dx, dy
+        if want_dx == 0 and want_dy == 0:
+            return 0, 0
+        
+        all_units = allies + enemies
+        
+        # 1. Essayer mouvement direct
+        if self._can_move_to(unit, want_dx, want_dy, all_units, tile, map_inst):
+            self.spread_direction.pop(unit_id, None)
+            return want_dx, want_dy
+        
+        # 2. DÉCALAGE INTELLIGENT si bloqué par un allié
+        blocking_ally = self._get_blocking_ally(unit, want_dx, want_dy, allies, tile)
+        
+        if blocking_ally:
+            # Choisir une direction de décalage cohérente
+            if unit_id not in self.spread_direction:
+                # Décider: haut ou bas / gauche ou droite
+                if uy > ty:
+                    self.spread_direction[unit_id] = -1  # Aller vers le haut
+                else:
+                    self.spread_direction[unit_id] = 1   # Aller vers le bas
             
-        # Contournement mémorisé ?
-        if unit_id in self.path_memory:
-            pdx, pdy = self.path_memory[unit_id]
-            if not self._is_blocked(unit, pdx, pdy, obstacles, tile):
-                return pdx, pdy
-            else:
-                del self.path_memory[unit_id] # Bloqué aussi, on oublie
-
-        # Chercher nouveau contournement (8 directions)
-        all_dirs = [(0,1), (0,-1), (1,0), (-1,0), (1,1), (1,-1), (-1,1), (-1,-1)]
-        # Classés par proximité avec la direction voulue (produit scalaire approx)
-        all_dirs.sort(key=lambda d: -(d[0]*dx + d[1]*dy))
+            spread = self.spread_direction[unit_id]
+            
+            # Essayer de glisser latéralement tout en avançant
+            spread_moves = [
+                (want_dx, spread),      # Avancer + décaler
+                (0, spread),            # Juste décaler
+                (want_dx, -spread),     # Essayer l'autre côté
+            ]
+            
+            for dx, dy in spread_moves:
+                if self._can_move_to(unit, dx, dy, all_units, tile, map_inst):
+                    return dx, dy
         
-        for adx, ady in all_dirs:
-            if (adx == dx and ady == dy): continue # Déjà testé
-            if not self._is_blocked(unit, adx, ady, obstacles, tile):
-                self.path_memory[unit_id] = (adx, ady)
-                return adx, ady
-                
+        # 3. Essayer toutes les directions
+        all_dirs = [(1,0), (-1,0), (0,1), (0,-1), (1,1), (1,-1), (-1,1), (-1,-1)]
+        # Trier par proximité avec la direction voulue
+        all_dirs.sort(key=lambda d: -(d[0]*want_dx + d[1]*want_dy))
+        
+        for dx, dy in all_dirs:
+            if self._can_move_to(unit, dx, dy, all_units, tile, map_inst):
+                return dx, dy
+        
         return 0, 0
 
-    def _wiggle(self, unit, obstacles, tile):
-        """Essaie de bouger dans une direction libre au hasard si bloqué."""
-        all_dirs = [(0,1), (0,-1), (1,0), (-1,0), (1,1), (1,-1), (-1,1), (-1,-1)]
-        random.shuffle(all_dirs)
-        for dx, dy in all_dirs:
-            if not self._is_blocked(unit, dx, dy, obstacles, tile):
-                return dx, dy
-        return None
-
-    def _is_blocked(self, unit, dx, dy, obstacles, tile):
-        fx = unit.rect.centerx + dx * tile * 0.9
-        fy = unit.rect.centery + dy * tile * 0.9
-        for o in obstacles:
-            if o is unit: continue
-            if math.hypot(o.rect.centerx - fx, o.rect.centery - fy) < tile * 0.8:
-                return True
-        return False
-        
-    def _is_blocked_prediction(self, unit, dx, dy, obstacles, tile, map_w, map_h):
-        """Vérifie collision et limites de map."""
+    def _get_blocking_ally(self, unit, dx, dy, allies, tile):
+        """Vérifie si un allié bloque le chemin."""
         fx = unit.rect.centerx + dx * tile
         fy = unit.rect.centery + dy * tile
-        if not (0 <= fx < map_w * tile and 0 <= fy < map_h * tile): return True
-        return self._is_blocked(unit, dx, dy, obstacles, tile)
+        
+        for ally in allies:
+            if ally is unit:
+                continue
+            dist = math.hypot(ally.rect.centerx - fx, ally.rect.centery - fy)
+            if dist < tile * 0.9:
+                return ally
+        return None
+
+    def _can_move_to(self, unit, dx, dy, all_units, tile, map_inst):
+        """Vérifie si le mouvement est possible."""
+        if dx == 0 and dy == 0:
+            return False
+            
+        fx = unit.rect.centerx + dx * tile * 0.8
+        fy = unit.rect.centery + dy * tile * 0.8
+        
+        # Limites de la carte
+        max_x = map_inst.width * tile
+        max_y = map_inst.height * tile
+        if fx < tile/2 or fx > max_x - tile/2 or fy < tile/2 or fy > max_y - tile/2:
+            return False
+        
+        # Collision avec autres unités
+        for other in all_units:
+            if other is unit:
+                continue
+            dist = math.hypot(other.rect.centerx - fx, other.rect.centery - fy)
+            if dist < tile * 0.75:
+                return False
+        
+        return True
 
     @staticmethod
-    def _distance(a, b):
+    def _dist(a, b):
+        """Distance entre deux unités."""
         return math.hypot(b.rect.centerx - a.rect.centerx, b.rect.centery - a.rect.centery)

@@ -182,6 +182,9 @@ if __name__ == "__main__":
 
         # Dessiner tous les soldats avec cache d'images
         for unit in game.all_soldats:
+            # Mettre à jour l'animation
+            unit.update_animation()
+            
             world_x = unit.rect.x
             world_y = unit.rect.y
             screen_x, screen_y = game_map.nouvelle_map(world_x, world_y)
@@ -208,8 +211,8 @@ if __name__ == "__main__":
                 pygame.draw.rect(screen, (0, 0, 0), (bar_x, bar_y, bar_width, bar_height))
                 
                 # Couleur de la barre (vert -> rouge selon HP)
-                green = int(255 * hp_ratio)
-                red = int(255 * (1 - hp_ratio))
+                green = max(0, min(255, int(255 * hp_ratio)))
+                red = max(0, min(255, int(255 * (1 - hp_ratio))))
                 bar_color = (red, green, 0)
                 
                 # Barre de vie
