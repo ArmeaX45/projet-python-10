@@ -15,10 +15,12 @@ class Paladin(Soldat):
         else:
             # Team 0: Charger le spritesheet d'animation
             # On initialise d'abord sans image, puis on charge le spritesheet
+            image_path = None
             super().__init__(x=x, y=y, owner=team, img_path=None)
             self.frames = []
             self._load_blue_spritesheet(x, y)
 
+        self.img_path = image_path
         self.name = "Paladin"
         self.tag = "P"
 

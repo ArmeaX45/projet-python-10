@@ -1,6 +1,5 @@
 # main.py
 import time
-import curses
 import pygame
 import sys
 import threading
@@ -35,6 +34,13 @@ def demander_compo(nom_equipe):
         
     return compo
 
+from src.save_manager import save_game_state, load_game_state
+from src.stats_generator import check_end_and_report
+
+# ============================================================
+#                      BLOC PRINCIPAL UNIQUE
+# ============================================================
+
 if __name__ == "__main__":
     
     # --- 1. CONFIGURATION CONSOLE (AVANT PYGAME) ---
@@ -60,8 +66,21 @@ if __name__ == "__main__":
     
     # --- 3. CRÉATION DU JEU ---
     game_map = Map("./assets/image.png", screen.get_rect())
-    # Grille plus grande pour les sprites plus petits (2x plus de cases)
-    game = Game(game_map, SCREEN_WIDTH//32, SCREEN_HEIGHT//32)
+    game = Game(game_map, SCREEN_WIDTH//64, SCREEN_HEIGHT//64)
+
+    # --- 3. GESTION DU CHARGEMENT (CLI) ---
+    is_loaded = False
+    if len(sys.argv) > 2 and sys.argv[1] == "load":
+        filename = sys.argv[2]
+        is_loaded = load_game_state(game, filename)
+
+    # Si on n'a pas chargé de fichier, on crée les soldats par défaut
+    if not is_loaded:
+        # game.create_soldat() retiré car crash et inutile ici
+        print("[*] Nouvelle partie lancée.")
+    else:
+        print(f"[*] Partie chargée depuis {sys.argv[2]}")
+
     
     # --- MINIMAP INDÉPENDANTE ---
     # Charger l'image de la map et créer une version miniature
@@ -86,7 +105,8 @@ if __name__ == "__main__":
     ia_brain = ColonelSMART(team_name=0)
     
     # Création des soldats avec les formations définies par les IA
-    game.create_soldat(full_config, ai_team0=ia_brain, ai_team1=ia_daft)
+    if not is_loaded:
+        game.create_soldat(full_config, ai_team0=ia_brain, ai_team1=ia_daft)
 
     # --- 4. THREAD CONSOLE (Curses) ---
     def run_curses(game):
@@ -123,7 +143,7 @@ if __name__ == "__main__":
                 running = False
             
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_F11:
+                if event.key == pygame.K_ESCAPE: # Petite touche pour quitter proprement aussi
                     running = False
                 elif event.key == pygame.K_SPACE:
                     paused = not paused  # Toggle pause
@@ -139,10 +159,25 @@ if __name__ == "__main__":
                         soldat_selectionne = unit
                         break
             
+            if event.type == pygame.KEYDOWN:
+                # Sauvegarde Rapide (F11)
+                if event.key == pygame.K_F11:
+                    save_game_state(game, "quicksave.dat")
+
+                # Chargement Rapide (F12)
+                elif event.key == pygame.K_F12:
+                    load_game_state(game, "quicksave.dat")
+
+            # La classe map gère les actions possibles sur la map
             game_map.mouvement(event)
 
         # -- Logique (Arrêt si victoire ou pause) --
         if not winner_text and not paused:
+            # Nettoyer les soldats morts
+            for soldat in list(game.all_soldats):
+                if not soldat.is_alive:
+                    game.remove_soldat(soldat)
+            
             nb_alive_0 = len([u for u in game.all_soldats if u.team == 0])
             nb_alive_1 = len([u for u in game.all_soldats if u.team == 1])
 
@@ -182,8 +217,9 @@ if __name__ == "__main__":
 
         # Dessiner tous les soldats avec cache d'images
         for unit in game.all_soldats:
-            # Mettre à jour l'animation
-            unit.update_animation()
+            # Mettre à jour l'animation (seulement si la méthode existe)
+            if hasattr(unit, 'update_animation'):
+                unit.update_animation()
             
             world_x = unit.rect.x
             world_y = unit.rect.y
@@ -325,6 +361,25 @@ if __name__ == "__main__":
             hint_rect = hint_text.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2 + 120))
             screen.blit(hint_text, hint_rect)
         
+        # --- 4. LOGIQUE DU JEU ---
+        # --- décisions IA ---
+        actions_A = ia_daft.update(game)
+        actions_B = ia_brain.update(game)
+        all_actions = actions_A + actions_B
+
+        # --- exécution ---
+        for action in all_actions:
+            if action[0] == "move":
+                _, unit, dx, dy = action
+                unit.move(game, dx=dx, dy=dy)
+
+            elif action[0] == "attack":
+                _, unit, target = action
+                if getattr(target, "is_alive", False):
+                    unit.attack(target)
+            if check_end_and_report(game):
+                print("Fin du match enregistrée.")
+        # 5) Affichage          
         pygame.display.flip()
         clock.tick(60) 
 

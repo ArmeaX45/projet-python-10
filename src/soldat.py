@@ -52,7 +52,7 @@ class Soldat(pygame.sprite.Sprite):
         
         if soldat.hp <= 0:
             soldat.is_alive = False
-            soldat.remove()
+            soldat.kill()  # Retire le sprite de tous les groupes pygame
             
         
         print(f"{self.name} cause {damage} at {soldat.name}")
