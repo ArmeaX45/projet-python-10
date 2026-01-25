@@ -66,7 +66,8 @@ class ColonelSMART:
             if count <= 0:
                 continue
             
-            x = start_x + (current_col * col_spacing * x_dir)
+            # Plus d'espacement pour élargir la formation
+            x = start_x + (current_col * col_spacing * 1.5 * x_dir)
             
             # Centrage vertical
             total_height = (count - 1) * row_spacing
@@ -74,8 +75,9 @@ class ColonelSMART:
             
             for i in range(count):
                 y = start_y + i * row_spacing
-                fx = max(1, min(width - 2, int(x)))
-                fy = max(1, min(height - 2, int(y)))
+                # Utiliser toute la largeur disponible (plus d'espace sur les côtés)
+                fx = max(0, min(width - 1, int(x)))
+                fy = max(0, min(height - 1, int(y)))
                 positions.append((unit_type, fx, fy))
             
             current_col += 1
@@ -104,7 +106,7 @@ class ColonelSMART:
             # AUGMENTATION DE LA PORTÉE D'ATTAQUE
             attack_range = (unit.attack_range * tile) if unit.attack_range > 0 else tile * 1.6
             
-            # === 1. KITING (Arbalétriers fuient les Paladins) ===
+            # === 1. KITING (Arbalétriers) ===
             if unit.name == "Arbalester":
                 threat_type = self.FLEE_FROM.get(unit.name)
                 if threat_type:
@@ -112,50 +114,72 @@ class ColonelSMART:
                     if threats:
                         nearest_threat = min(threats, key=lambda t: self._dist(unit, t))
                         if self._dist(unit, nearest_threat) < tile * 5:
-                            # FUIR !
                             dx, dy = self._calculate_flee(unit, nearest_threat, allies, enemies, tile, map_instance)
                             if dx != 0 or dy != 0:
                                 actions.append(("move", unit, dx, dy))
-                                # Continuer pour tenter de tirer aussi (Hit & Run)
             
-            # === 2. ATTAQUE - Cibler le CONTRE en priorité ===
+            # === 2. ATTAQUE - Priorité ABSOLUE si à portée ou collision ===
+            # On vérifie d'abord si on touche quelqu'un (collision) -> Attaque immédiate pour éviter de vibrer
+            colliding_enemy = None
+            for enemy in enemies:
+                if unit.rect.colliderect(enemy.rect):
+                    colliding_enemy = enemy
+                    break
+            
+            if colliding_enemy:
+                actions.append(("attack", unit, colliding_enemy))
+                continue
+
             target = self._find_best_target(unit, enemies, enemy_by_type, attack_range)
-            
             if target:
                 actions.append(("attack", unit, target))
-                continue  # Attaque faite, pas besoin de bouger
+                continue
             
-            # === 3. MOUVEMENT vers la cible prioritaire ===
+            # === 3. MOUVEMENT ===
             hunt_type = self.HUNT_TARGET.get(unit.name)
             move_target = None
             
-            # Chercher la cible de chasse (contre)
             if hunt_type:
                 candidates = enemy_by_type.get(hunt_type, [])
                 if candidates:
                     move_target = min(candidates, key=lambda e: self._dist(unit, e))
             
-            # Si pas de cible prioritaire trouvée ou pas de preference, aller vers le plus proche absolu
             if not move_target:
                  move_target = min(enemies, key=lambda e: self._dist(unit, e))
             
             if move_target:
                 dx, dy = self._smart_pathfind(unit, move_target, allies, enemies, tile, map_instance)
-                
-                # Si bloqué (0,0) alors qu'on veut bouger, on tente un WIGGLE (mouvement aléatoire)
-                if dx == 0 and dy == 0 and self._dist(unit, move_target) > tile:
-                     # Essayer de se débloquer latéralement
-                     for _ in range(3):
-                         rx = random.choice([-1, 0, 1])
-                         ry = random.choice([-1, 0, 1])
-                         if self._can_move_to(unit, rx, ry, allies + enemies, tile, map_instance):
-                             dx, dy = rx, ry
-                             break
-
                 if dx != 0 or dy != 0:
                     actions.append(("move", unit, dx, dy))
         
         return actions
+
+    # ... (méthodes inchangées omises) ...
+
+    def _can_move_to(self, unit, dx, dy, all_units, tile, map_inst):
+        """Vérifie si le mouvement est possible."""
+        if dx == 0 and dy == 0:
+            return False
+            
+        fx = unit.rect.centerx + dx * tile * 0.8
+        fy = unit.rect.centery + dy * tile * 0.8
+        
+        # Limites de la carte
+        max_x = map_inst.width * tile
+        max_y = map_inst.height * tile
+        if fx < tile/2 or fx > max_x - tile/2 or fy < tile/2 or fy > max_y - tile/2:
+            return False
+        
+        # Collision STRICTE avec autres unités (0.9 au lieu de 0.75)
+        # Empêche la superposition
+        for other in all_units:
+            if other is unit:
+                continue
+            dist = math.hypot(other.rect.centerx - fx, other.rect.centery - fy)
+            if dist < tile * 0.85: # Plus strict
+                return False
+        
+        return True
 
     def _find_best_target(self, unit, enemies, enemy_by_type, attack_range):
         """Trouve la meilleure cible dans la portée d'attaque."""
