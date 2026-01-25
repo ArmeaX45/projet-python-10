@@ -34,9 +34,10 @@ class Soldat(pygame.sprite.Sprite):
     def __str__(self):
         return f"The {self.name} soldat have {self.hp}HP"
     
-    def attack(self, soldat):
+    def attack(self, soldat, current_time=None):
         
-        current_time = time.time()
+        if current_time is None:
+            current_time = time.time()
         
         if current_time - self.last_attack_time < self.reload_time:
             return  # Not enough time has passed since the last attack
@@ -55,7 +56,7 @@ class Soldat(pygame.sprite.Sprite):
             soldat.kill()  # Retire le sprite de tous les groupes pygame
             
         
-        print(f"{self.name} cause {damage} at {soldat.name}")
+        # print(f"{self.name} cause {damage} at {soldat.name}")
         
         return None
     

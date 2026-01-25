@@ -50,12 +50,21 @@ def check_end_and_report(game):
 
     # Si une équipe est décimée
     if len(allies) == 0 or len(enemies) == 0:
-        winner = "Équipe 0 " if len(allies) > 0 else "Équipe 1"
-        if len(allies) == 0 and len(enemies) == 0: winner = "Égalité (Match Nul)"
+        # Déterminer le gagnant et l'IA
+        if len(allies) == 0 and len(enemies) == 0:
+            winner = "Égalité (Match Nul)"
+            winning_ai = "Aucune"
+        elif len(allies) > 0:
+            winner = "Équipe 0"
+            winning_ai = "ColonelSMART"
+        else:
+            winner = "Équipe 1"
+            winning_ai = "MajorDaft"
 
         report = f"""
         ========= FIN DE LA BATAILLE =========
         VAINQUEUR : {winner}
+        IA GAGNANTE : {winning_ai}
         Unités restantes Équipe 0 : {len(allies)}
         Unités restantes Équipe 1 : {len(enemies)}
         Points de Vie Totaux 0 : {sum(u.hp for u in allies)}
