@@ -14,8 +14,16 @@ from src.arbalester import Arbalester
 class Game():
     def __init__(self, game_map, width, height):
         self.map = game_map
-        self.width = width
-        self.height = height
+        
+        # Calculer les dimensions réelles de la grille basées sur l'image de la map
+        # Taille d'une case = 32 pixels (taille des sprites)
+        TILE_SIZE = 32
+        self.width = game_map.original_image.get_width() // TILE_SIZE
+        self.height = game_map.original_image.get_height() // TILE_SIZE
+        
+        print(f"[GAME] Map réelle: {game_map.original_image.get_width()}x{game_map.original_image.get_height()} pixels")
+        print(f"[GAME] Grille de jeu: {self.width}x{self.height} cases (tile_size={TILE_SIZE})")
+        
         self.grid = [['-' for _ in range(self.width)] for _ in range(self.height)]
         
         self.all_soldats = pygame.sprite.Group()
@@ -61,49 +69,59 @@ class Game():
             self.add_on_grid(soldat)
 
     def _default_formation(self, team_id, config, class_map):
-        """Formation par défaut en bloc (colonnes successives)."""
-        if team_id == 0:
-            start_x = 2
-            x_dir = 1
-        else:
-            start_x = self.width - 1 # Tout au fond à droite
-            x_dir = -1
+        """Formation par défaut optimisée : placement tactique aux extrémités."""
         
-        current_y = 2
-        col_offset = 0
+        # Calculer le nombre total d'unités
+        total_units = sum(config.values())
+        if total_units == 0:
+            return
         
-        # ORDRE STRICT : Arbalester (Fond), Paladin (Milieu), Halberdier (Front)
-        # Car plus on spawn tôt, plus on est "en arrière" (x + col_offset)
-        # Wait... X augmente pour Team 0. Donc col_offset 0 = Gauche (Arrière pour Team 0).
-        # Pour Team 1, X diminue. start_x = Right. col_offset * -1 => Vers gauche (Avant).
-        # Ah ! Team 1 avance vers la gauche.
-        # Start X = Width. Col 0 = Width. Col 1 = Width - 1.
-        # Donc Col 0 est L'ARRIERE pour Team 1 aussi ?
-        # Non, Team 1 est à Droite, regarde à Gauche. L'arrière est à Droite (X grand).
-        # Donc Col 0 (X grand) est l'arrière.
-        # Donc PREMIER spawn = ARRIERE pour les deux équipes !
-        
+        # ORDRE TACTIQUE : Arbalester (arrière), Paladin (milieu), Halberdier (front)
         ordered_keys = ["Arbalester", "Paladin", "Halberdier"]
         
-        for unit_name in ordered_keys:
+        # Déterminer les positions de base selon l'équipe
+        # self.width et self.height sont maintenant basés sur l'image réelle de la map
+        if team_id == 0:
+            # Équipe 0 : GAUCHE de la map (x = 0, 1, 2)
+            column_positions = [0, 1, 2]
+        else:
+            # Équipe 1 : DROITE de la map
+            column_positions = [self.width - 1, self.width - 2, self.width - 3]
+        
+        # Centre vertical de la map
+        center_y = self.height // 2
+        
+        # Placer chaque type d'unité dans sa colonne dédiée
+        for col_index, unit_name in enumerate(ordered_keys):
             count = config.get(unit_name, 0)
-            if count == 0: continue
+            if count == 0:
+                continue
             
-            for _ in range(count):
-                # Calcul de position
-                px = start_x + (col_offset * x_dir)
-                py = current_y
+            # Position X de cette colonne
+            px = column_positions[col_index]
+            
+            # Calculer les positions Y pour centrer les unités de ce type
+            # Si count est pair : -count/2+0.5, -count/2+1.5, ..., +count/2-1.5, +count/2-0.5
+            # Si count est impair : -count/2, ..., 0, ..., +count/2
+            start_offset = -(count // 2)
+            
+            for i in range(count):
+                # Position Y : centrer autour de center_y
+                py = center_y + start_offset + i
                 
-                # Placement sécurisé
+                # Vérifier les limites de la map
                 if 0 <= px < self.width and 0 <= py < self.height:
                     soldat = class_map[unit_name](px, py, team_id)
                     self.add_to_soldat_group(soldat)
-                
-                # Avancer curseur
-                current_y += 1
-                if current_y > self.height - 2:
-                    current_y = 2
-                    col_offset += 1
+                else:
+                    # Si on dépasse les limites, essayer de placer ailleurs
+                    # Chercher une position valide proche
+                    for offset_y in range(-2, 3):
+                        alt_py = py + offset_y
+                        if 0 <= alt_py < self.height:
+                            soldat = class_map[unit_name](px, alt_py, team_id)
+                            self.add_to_soldat_group(soldat)
+                            break
     
     def add_on_grid(self, soldat):
         if soldat.is_alive:

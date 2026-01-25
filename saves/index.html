@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Lecteur DAT Force Brute</title>
+    <style>
+        body { background-color: #111; color: #0f0; font-family: monospace; padding: 20px; }
+        #ecran {
+            border: 2px solid #0f0;
+            padding: 20px;
+            white-space: pre-wrap; /* Garde la mise en page exacte */
+            min-height: 200px;
+        }
+        h2 { margin-top: 0; border-bottom: 1px solid #0f0; padding-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <h2>CONTENU DE : monfichier.dat</h2>
+    <div id="ecran">Chargement des données...</div>
+
+    <script>
+        // LE NOM DU FICHIER EST ICI
+        const fichierCible = 'quicksave.dat';
+
+        // Code "compliqué" pour forcer la lecture
+        var rawFile = new XMLHttpRequest();
+        
+        // On ouvre le fichier
+        rawFile.open("GET", fichierCible, false);
+        
+        // On surveille quand le fichier est prêt
+        rawFile.onreadystatechange = function () {
+            if(rawFile.readyState === 4) {
+                if(rawFile.status === 200 || rawFile.status == 0) {
+                    var allText = rawFile.responseText;
+                    document.getElementById("ecran").textContent = allText;
+                } else {
+                    document.getElementById("ecran").textContent = "ERREUR : Impossible de lire le fichier. \nAssure-toi de lancer ce site via le fichier START.bat";
+                    document.getElementById("ecran").style.color = "red";
+                    document.getElementById("ecran").style.borderColor = "red";
+                }
+            }
+        }
+        
+        // On lance la demande
+        try {
+            rawFile.send(null);
+        } catch (e) {
+            document.getElementById("ecran").textContent = "ERREUR DE SÉCURITÉ NAVIGATEUR \n\nLe navigateur bloque l'accès au fichier local.\nTu DOIS utiliser le fichier 'START.bat' pour ouvrir ce site.";
+            document.getElementById("ecran").style.color = "red";
+            document.getElementById("ecran").style.borderColor = "red";
+        }
+    </script>
+</body>
+</html>

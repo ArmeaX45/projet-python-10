@@ -50,7 +50,7 @@ def check_end_and_report(game):
 
     # Si une équipe est décimée
     if len(allies) == 0 or len(enemies) == 0:
-        winner = "Équipe 0 (DAFT)" if len(allies) > 0 else "Équipe 1 (BRAIN)"
+        winner = "Équipe 0 " if len(allies) > 0 else "Équipe 1"
         if len(allies) == 0 and len(enemies) == 0: winner = "Égalité (Match Nul)"
 
         report = f"""

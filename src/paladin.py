@@ -44,7 +44,7 @@ class Paladin(Soldat):
         # Bonus
         self.vs = {
             'Paladin' : -3,
-            'Arbalester' : 20,
+            'Arbalester' : 8,
             'Halberdier' : -5
         }
         

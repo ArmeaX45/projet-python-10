@@ -131,6 +131,11 @@ if __name__ == "__main__":
     winner_text = ""
     paused = False  # État de pause
     
+    # --- SYSTÈME DE NOTIFICATIONS ---
+    notification_text = ""
+    notification_time = 0
+    NOTIFICATION_DURATION = 2.0  # Durée d'affichage en secondes
+    
     # --- CACHE D'IMAGES POUR OPTIMISATION ---
     # Stocke les images mises à l'échelle pour chaque taille
     image_cache = {}
@@ -163,10 +168,14 @@ if __name__ == "__main__":
                 # Sauvegarde Rapide (F11)
                 if event.key == pygame.K_F11:
                     save_game_state(game, "quicksave.dat")
+                    notification_text = "Sauvegarde effectuée"
+                    notification_time = time.time()
 
                 # Chargement Rapide (F12)
                 elif event.key == pygame.K_F12:
                     load_game_state(game, "quicksave.dat")
+                    notification_text = "Chargement effectué"
+                    notification_time = time.time()
 
             # La classe map gère les actions possibles sur la map
             game_map.mouvement(event)
@@ -361,24 +370,40 @@ if __name__ == "__main__":
             hint_rect = hint_text.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2 + 120))
             screen.blit(hint_text, hint_rect)
         
-        # --- 4. LOGIQUE DU JEU ---
-        # --- décisions IA ---
-        actions_A = ia_daft.update(game)
-        actions_B = ia_brain.update(game)
-        all_actions = actions_A + actions_B
-
-        # --- exécution ---
-        for action in all_actions:
-            if action[0] == "move":
-                _, unit, dx, dy = action
-                unit.move(game, dx=dx, dy=dy)
-
-            elif action[0] == "attack":
-                _, unit, target = action
-                if getattr(target, "is_alive", False):
-                    unit.attack(target)
-            if check_end_and_report(game):
-                print("Fin du match enregistrée.")
+        # --- AFFICHAGE DES NOTIFICATIONS (en bas à droite) ---
+        if notification_text and (time.time() - notification_time) < NOTIFICATION_DURATION:
+            # Calculer l'opacité (fade out dans la dernière seconde)
+            time_remaining = NOTIFICATION_DURATION - (time.time() - notification_time)
+            alpha = min(255, int(255 * (time_remaining / 1.0))) if time_remaining < 1.0 else 255
+            
+            # Créer le texte de notification
+            font_notif = pygame.font.SysFont(None, 35)
+            notif_surf = font_notif.render(notification_text, True, (255, 255, 255))
+            
+            # Dimensions de la notification
+            notif_w = notif_surf.get_width() + 30
+            notif_h = notif_surf.get_height() + 20
+            
+            # Position en bas à droite
+            notif_x = actual_screen_w - notif_w - 20
+            notif_y = actual_screen_h - notif_h - 20
+            
+            # Fond semi-transparent avec alpha
+            notif_bg = pygame.Surface((notif_w, notif_h), pygame.SRCALPHA)
+            notif_bg.fill((40, 40, 40, min(200, alpha)))
+            screen.blit(notif_bg, (notif_x, notif_y))
+            
+            # Bordure dorée
+            pygame.draw.rect(screen, (212, 175, 55), (notif_x, notif_y, notif_w, notif_h), 2)
+            
+            # Texte avec alpha
+            notif_text_alpha = notif_surf.copy()
+            notif_text_alpha.set_alpha(alpha)
+            screen.blit(notif_text_alpha, (notif_x + 15, notif_y + 10))
+        elif notification_text and (time.time() - notification_time) >= NOTIFICATION_DURATION:
+            # Réinitialiser la notification après expiration
+            notification_text = ""
+        
         # 5) Affichage          
         pygame.display.flip()
         clock.tick(60) 

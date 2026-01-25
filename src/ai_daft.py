@@ -24,7 +24,7 @@ class MajorDaftSimple:
             start_x = 2
             x_dir = 1
         else:
-            start_x = width - 4
+            start_x = width-3
             x_dir = -1
             
         current_x = start_x

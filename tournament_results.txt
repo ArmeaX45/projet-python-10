@@ -78496,3 +78496,30 @@
         Points de Vie Totaux 1 : 0
         ======================================
         
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 
+        Unités restantes Équipe 0 : 6
+        Unités restantes Équipe 1 : 0
+        Points de Vie Totaux 0 : 307
+        Points de Vie Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 
+        Unités restantes Équipe 0 : 6
+        Unités restantes Équipe 1 : 0
+        Points de Vie Totaux 0 : 307
+        Points de Vie Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 
+        Unités restantes Équipe 0 : 6
+        Unités restantes Équipe 1 : 0
+        Points de Vie Totaux 0 : 307
+        Points de Vie Totaux 1 : 0
+        ======================================
+        
