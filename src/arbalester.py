@@ -13,13 +13,14 @@ class Arbalester(Soldat):
 
         # Static Stats
         self.hp = 35
+        self.max_hp = 35
         self.damage = 5
         self.armor = 0
         self.armor_pierce = 0
         self.attack_range = 5
         self.vision_range = 7
-        self.speed = 0.96
-        self.reload_time = 2.0
+        self.speed = 1.6
+        self.reload_time = 0.6
         
         self.frame_delay = 15
         self.attack_delay = 0.35
@@ -34,5 +35,7 @@ class Arbalester(Soldat):
         # self.vs_paladin = 0
         # self.vs_halberdier = 3
         self.vs = {
-            'Halberdier' : 3,
+            'Halberdier' : 8,
+            'Paladin' : -3,
+            'Arbalester' : 0
         }

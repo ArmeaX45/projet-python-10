@@ -16,13 +16,14 @@ class Halberdier(Soldat):
      
         # Static Stats
         self.hp = 55
+        self.max_hp = 55
         self.damage = 4
         self.armor = 0
         self.armor_pierce = 0
         self.attack_range = 0       # melee
         self.vision_range = 4
-        self.speed = 1.0
-        self.reload_time = 3.0
+        self.speed = 2.0
+        self.reload_time = 0.5
 
         # Boolen Stat
         self.is_close_combat = True
@@ -34,4 +35,6 @@ class Halberdier(Soldat):
         # self.vs_halberdier = 0
         self.vs = {
             'Paladin' : 22,
+            'Arbalester' : -5,
+            'Halberdier' : 0
         }
