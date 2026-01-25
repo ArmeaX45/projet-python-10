@@ -14,36 +14,37 @@ class MajorDaftSimple:
     @staticmethod
     def get_formation(team_id, width, height, config):
         """
-        Formation MAUVAISE - Soldats dispersés au hasard.
-        Pas de stratégie, juste du chaos.
+        Formation SIMPLE BLOC - Pour éviter tout bug de placement.
+        Les soldats sont regroupés en un carré au fond.
         """
         positions = []
+        center_y = height / 2
         
-        # Zone de spawn (1/4 de la map du côté de l'équipe)
         if team_id == 0:
-            x_min, x_max = 1, width // 4
+            start_x = 2
+            x_dir = 1
         else:
-            x_min, x_max = width * 3 // 4, width - 2
+            start_x = width - 4
+            x_dir = -1
+            
+        current_x = start_x
+        current_y = 2
         
-        y_min, y_max = 2, height - 2
-        occupied = set()
-        
-        # Spawn dans un ordre aléatoire (pas optimisé du tout)
         all_units = []
         for unit_type, count in config.items():
             all_units.extend([unit_type] * count)
-        random.shuffle(all_units)  # Ordre aléatoire = mauvais
+        random.shuffle(all_units) # Mélange mais placement propre
         
+        # Placement en grille simple
         for unit_type in all_units:
-            # Position aléatoire
-            for _ in range(50):  # Max 50 tentatives
-                px = random.randint(x_min, x_max)
-                py = random.randint(y_min, y_max)
-                if (px, py) not in occupied:
-                    occupied.add((px, py))
-                    positions.append((unit_type, px, py))
-                    break
-        
+            positions.append((unit_type, current_x, current_y))
+            
+            # Avancer en Y
+            current_y += 1.5
+            if current_y > height - 3:
+                current_y = 2
+                current_x += x_dir * 1.5 # Reculer d'une colonne
+                
         return positions
 
     def update(self, map_instance):

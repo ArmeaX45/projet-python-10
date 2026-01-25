@@ -9,7 +9,7 @@ import threading
 from src.map import Map 
 from src.game import Game
 from src.ai_daft import MajorDaftSimple
-from src.ai_braindead import CaptainBraindead
+from src.ia_braindead import GeneralBrainDead
 from src.ColonelSMART import ColonelSMART
 
 
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     print(f"[MINIMAP] Créée: {final_mm_w}x{final_mm_h}, scale={minimap_scale:.4f}")
 
     # IA (créées AVANT les soldats pour définir les formations)
-    ia_daft = MajorDaftSimple(team_name=1)
+    ia_daft = GeneralBrainDead(team_name=1)
     ia_brain = ColonelSMART(team_name=0)
     
     # Création des soldats avec les formations définies par les IA

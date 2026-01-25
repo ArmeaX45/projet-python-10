@@ -129,15 +129,29 @@ class ColonelSMART:
             hunt_type = self.HUNT_TARGET.get(unit.name)
             move_target = None
             
-            # Chercher la cible de chasse
-            if hunt_type and enemy_by_type.get(hunt_type):
-                move_target = min(enemy_by_type[hunt_type], key=lambda e: self._dist(unit, e))
-            else:
-                # Sinon, aller vers le plus proche
-                move_target = min(enemies, key=lambda e: self._dist(unit, e))
+            # Chercher la cible de chasse (contre)
+            if hunt_type:
+                candidates = enemy_by_type.get(hunt_type, [])
+                if candidates:
+                    move_target = min(candidates, key=lambda e: self._dist(unit, e))
+            
+            # Si pas de cible prioritaire trouvée ou pas de preference, aller vers le plus proche absolu
+            if not move_target:
+                 move_target = min(enemies, key=lambda e: self._dist(unit, e))
             
             if move_target:
                 dx, dy = self._smart_pathfind(unit, move_target, allies, enemies, tile, map_instance)
+                
+                # Si bloqué (0,0) alors qu'on veut bouger, on tente un WIGGLE (mouvement aléatoire)
+                if dx == 0 and dy == 0 and self._dist(unit, move_target) > tile:
+                     # Essayer de se débloquer latéralement
+                     for _ in range(3):
+                         rx = random.choice([-1, 0, 1])
+                         ry = random.choice([-1, 0, 1])
+                         if self._can_move_to(unit, rx, ry, allies + enemies, tile, map_instance):
+                             dx, dy = rx, ry
+                             break
+
                 if dx != 0 or dy != 0:
                     actions.append(("move", unit, dx, dy))
         
