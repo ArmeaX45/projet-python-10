@@ -14,6 +14,10 @@ class Map:
         # --- CHARGEMENT DE L'IMAGE ---
         try:
             self.original_image = pygame.image.load(image_path).convert()
+            # AUGMENTATION RÉSOLUTION MAP (1.5x)
+            w = self.original_image.get_width()
+            h = self.original_image.get_height()
+            self.original_image = pygame.transform.scale(self.original_image, (int(w * 1.5), int(h * 1.5)))
         except pygame.error as e:
             print(f"ERREUR : Impossible de charger l'image : {image_path}")
             sys.exit()

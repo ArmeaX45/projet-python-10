@@ -108,9 +108,9 @@ class HeadlessGame:
         if soldat in self.all_soldats:
             self.all_soldats.remove(soldat)
 
-def _setup_headless_game(config_0, config_1):
+def _setup_headless_game(config_0, config_1, width=60, height=34):
     """Prépare une instance de HeadlessGame avec les soldats."""
-    game = HeadlessGame(width=60, height=34)
+    game = HeadlessGame(width=width, height=height)
     
     class_map = {
         "Halberdier": Halberdier,
@@ -319,7 +319,7 @@ def _get_result_dict(game, turn, winner, ai1, ai2, initial_counts):
         "ai2": ai2.__name__,
     }
 
-def run_headless_battle(config_0, config_1, ai1_class, ai2_class, max_turns=10000):
+def run_headless_battle(config_0, config_1, ai1_class, ai2_class, max_turns=10000, width=60, height=34):
     """
     Exécute une bataille en mode 100% headless (rapide, sans affichage).
     Utilisé pour les tournois.
@@ -330,10 +330,10 @@ def run_headless_battle(config_0, config_1, ai1_class, ai2_class, max_turns=1000
     if not pygame.display.get_init():
         pygame.display.init()
         # Créer une surface factice cachée si possible, ou juste init
-        if not pygame.display.get_surface():
+    if not pygame.display.get_surface():
             pygame.display.set_mode((1, 1), pygame.HIDDEN)
             
-    game = _setup_headless_game(config_0, config_1)
+    game = _setup_headless_game(config_0, config_1, width=width, height=height)
     initial_counts = _get_initial_counts(config_0, config_1)
 
     
@@ -472,6 +472,12 @@ def run_graphical_battle(config_0, config_1, ai1_class, ai2_class, load_file=Non
     
     # Minimap
     minimap_original = pygame.image.load("./assets/image.png").convert()
+    
+    # Correction Minimap: Upscale 1.5x pour correspondre à la map physique
+    w = minimap_original.get_width()
+    h = minimap_original.get_height()
+    minimap_original = pygame.transform.scale(minimap_original, (int(w * 1.5), int(h * 1.5)))
+    
     MINIMAP_W, MINIMAP_H = 200, 113
     orig_ratio = minimap_original.get_width() / minimap_original.get_height()
     if orig_ratio > MINIMAP_W / MINIMAP_H:
@@ -727,9 +733,11 @@ def run_graphical_battle(config_0, config_1, ai1_class, ai2_class, load_file=Non
 
 def _run_batch_battle(args):
     """Helper pour le multiprocessing: unpack args et lance run_headless_battle"""
+def _run_batch_battle(args):
+    """Helper pour le multiprocessing: unpack args et lance run_headless_battle"""
     config_0, config_1, ai1_class, ai2_class = args
-    # On limite les tours pour éviter les boucles infinies qui ralentissent
-    return run_headless_battle(config_0, config_1, ai1_class, ai2_class, max_turns=1000)
+    # OPTIMISATION PLOT: Map réduite (30x20) pour forcer le combat rapide + max_turns réduit
+    return run_headless_battle(config_0, config_1, ai1_class, ai2_class, max_turns=2000, width=30, height=20)
 
 def cmd_plot(args):
     """Génère un graphique (loi de Lanchester) - Optimisé Multiprocess."""
@@ -746,7 +754,27 @@ def cmd_plot(args):
     ai2_class = get_ai_class(args.ai2)
     
     unit_type = args.unit
-    min_val, max_val = args.range
+    
+    # Parsing range string `range(1,100)` or `1-100`
+    import re
+    range_str = args.range
+    min_val, max_val = 1, 50
+    
+    match = re.search(r'range\(\s*(\d+)\s*,\s*(\d+)\s*\)', range_str)
+    if match:
+        min_val = int(match.group(1))
+        max_val = int(match.group(2))
+    elif '-' in range_str:
+        try:
+            parts = range_str.split('-')
+            min_val = int(parts[0])
+            max_val = int(parts[1])
+        except:
+             print(f"[!] Format de plage invalide: {range_str}. Utilisez range(1,100) ou 1-100")
+             return
+    else:
+         print(f"[!] Format de plage inconnu: {range_str}")
+         return
     
     print(f"[*] Plotting: {args.ai1} vs {args.ai2}")
     print(f"[*] Variation: {unit_type} de {min_val} à {max_val} (Rounds: {args.rounds})")
@@ -1015,7 +1043,7 @@ EXEMPLES D'UTILISATION :
    python battle.py tourney -G ColonelSMART MajorDaftSimple -N 10 -S Duel
 
 5. GRAPHIQUE D'ANALYSE (Loi de Lanchester)
-   python battle.py plot ColonelSMART MajorDaft -N 5 --unit Halberdier --range 1 50
+   python battle.py plot ColonelSMART MajorDaft -N 5 --unit Halberdier --range "range(1,50)"
    (Génère une courbe de victoire en fonction du nombre de Hallebardiers)
 
 6. CHARGER UNE SAUVEGARDE
@@ -1070,8 +1098,8 @@ COMMANDES DISPONIBLES :
     plot_parser.add_argument("ai2", help="IA équipe fixe (adversaire)")
     plot_parser.add_argument("--unit", type=str, default="Halberdier",
                             help="Type d'unité à varier")
-    plot_parser.add_argument("--range", type=int, nargs=2, default=[1, 50],
-                            help="Plage de nombre (min max)")
+    plot_parser.add_argument("--range", type=str, default="range(1,50)",
+                            help="Plage: 'range(min,max)' ou 'min-max'")
     plot_parser.add_argument("-N", "--rounds", type=int, default=5,
                             help="Rounds par point")
     
