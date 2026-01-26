@@ -1,49 +1,36 @@
-# src/ColonelSMART.py
-# IA ULTRA-DOMINANTE V3 - STRATÉGIE DE VICTOIRE ABSOLUE
 import math
 import random
 
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# IA COLONELSMART : Intelligence artificielle avancée avec stratégie tactique
+# Utilise le système pierre-feuille-ciseaux : chaque unité chasse son contre
+# ═══════════════════════════════════════════════════════════════════════════════
 class ColonelSMART:
-    """
-    IA SUPRÊME - Conçue pour DOMINER et GAGNER à chaque fois.
     
-    STRATÉGIE PRINCIPALE:
-    1. Formation en "Mur de Fer" - Protection maximale des Arbalétriers
-    2. Ciblage par CONTRE - Chaque unité chasse son contre
-    3. Mouvement coordonné - Pas de files d'attente, tout le monde attaque
-    4. Focus Fire - Concentrer les dégâts pour éliminer vite
-    """
-    
-    # Qui chasse qui (rock-paper-scissors)
     HUNT_TARGET = {
-        "Paladin": "Arbalester",      # Paladins chassent les Arbalétriers
-        "Halberdier": "Paladin",      # Hallebardiers chassent les Paladins
-        "Arbalester": "Halberdier",   # Arbalétriers chassent les Hallebardiers
+        "Paladin": "Arbalester",
+        "Halberdier": "Paladin",
+        "Arbalester": "Halberdier",
     }
     
-    # Qui fuir
     FLEE_FROM = {
-        "Arbalester": "Paladin",      # Arbalétriers fuient les Paladins
+        "Arbalester": "Paladin",
         "Paladin": None,
         "Halberdier": None,
     }
 
     def __init__(self, team_name=0):
         self.team_name = team_name
-        self.spread_direction = {}  # Mémorise la direction de décalage par unité
+        self.spread_direction = {}
 
+
+    # ═══════════════════════════════════════════════════════════════════════════════
+    # FORMATION : Placement en colonnes organisées avec ordre tactique
+    # Arbalétriers à l'arrière, Paladins au milieu, Hallebardiers en front
+    # ═══════════════════════════════════════════════════════════════════════════════
     @staticmethod
     def get_formation(team_id, width, height, config):
-        """
-        Formation en COLONNES ORGANISÉES - Simple et efficace.
-        Identique à l'ancienne formation par défaut.
-        
-        [ARRIÈRE]  [MILIEU]  [FRONT]
-           Arb       Pal      Halb
-           Arb       Pal      Halb
-           Arb       Pal      Halb
-        """
         positions = []
         
         if team_id == 0:
@@ -57,7 +44,6 @@ class ColonelSMART:
         row_spacing = 1.3
         center_y = height / 2
         
-        # ORDRE: Arbalester (fond) -> Paladin (milieu) -> Halberdier (front)
         unit_order = ["Arbalester", "Paladin", "Halberdier"]
         current_col = 0
         
@@ -66,16 +52,13 @@ class ColonelSMART:
             if count <= 0:
                 continue
             
-            # Plus d'espacement pour élargir la formation
             x = start_x + (current_col * col_spacing * 1.5 * x_dir)
             
-            # Centrage vertical
             total_height = (count - 1) * row_spacing
             start_y = center_y - total_height / 2
             
             for i in range(count):
                 y = start_y + i * row_spacing
-                # Utiliser toute la largeur disponible (plus d'espace sur les côtés)
                 fx = max(0, min(width - 1, int(x)))
                 fy = max(0, min(height - 1, int(y)))
                 positions.append((unit_type, fx, fy))
@@ -84,8 +67,12 @@ class ColonelSMART:
         
         return positions
 
+
+    # ═══════════════════════════════════════════════════════════════════════════════
+    # MISE À JOUR : Boucle principale avec kiting, attaque prioritaire et mouvement
+    # Gère la fuite des Arbalétriers, le focus fire et le pathfinding intelligent
+    # ═══════════════════════════════════════════════════════════════════════════════
     def update(self, map_instance):
-        """Mise à jour ultra-intelligente de toutes les unités."""
         actions = []
         
         allies = [u for u in map_instance.all_soldats if u.team == self.team_name and u.is_alive]
@@ -94,7 +81,6 @@ class ColonelSMART:
         if not enemies:
             return actions
         
-        # Pré-calcul: grouper les ennemis par type
         enemy_by_type = {
             "Arbalester": [e for e in enemies if e.name == "Arbalester"],
             "Paladin": [e for e in enemies if e.name == "Paladin"],
@@ -103,24 +89,19 @@ class ColonelSMART:
         
         for unit in allies:
             tile = unit.rect.width
-            # AUGMENTATION DE LA PORTÉE D'ATTAQUE
             attack_range = (unit.attack_range * tile) if unit.attack_range > 0 else tile * 1.6
             
-            # === 1. KITING (Arbalétriers) ===
             if unit.name == "Arbalester":
                 threat_type = self.FLEE_FROM.get(unit.name)
                 if threat_type:
                     threats = enemy_by_type.get(threat_type, [])
                     if threats:
                         nearest_threat = min(threats, key=lambda t: self._dist(unit, t))
-                        # FIX VIBRATION: Fuite seulement si très proche (< 3.5 cases) pour pouvoir tirer à 5 cases
                         if self._dist(unit, nearest_threat) < tile * 3.5:
                             dx, dy = self._calculate_flee(unit, nearest_threat, allies, enemies, tile, map_instance)
                             if dx != 0 or dy != 0:
                                 actions.append(("move", unit, dx, dy))
             
-            # === 2. ATTAQUE - Priorité ABSOLUE si à portée ou collision ===
-            # On vérifie d'abord si on touche quelqu'un (collision) -> Attaque immédiate pour éviter de vibrer
             colliding_enemy = None
             for enemy in enemies:
                 if unit.rect.colliderect(enemy.rect):
@@ -136,7 +117,6 @@ class ColonelSMART:
                 actions.append(("attack", unit, target))
                 continue
             
-            # === 3. MOUVEMENT ===
             hunt_type = self.HUNT_TARGET.get(unit.name)
             move_target = None
             
@@ -155,68 +135,44 @@ class ColonelSMART:
         
         return actions
 
-    # ... (méthodes inchangées omises) ...
 
-    def _can_move_to(self, unit, dx, dy, all_units, tile, map_inst):
-        """Vérifie si le mouvement est possible."""
-        if dx == 0 and dy == 0:
-            return False
-            
-        fx = unit.rect.centerx + dx * tile * 0.8
-        fy = unit.rect.centery + dy * tile * 0.8
-        
-        # Limites de la carte
-        max_x = map_inst.width * tile
-        max_y = map_inst.height * tile
-        if fx < tile/2 or fx > max_x - tile/2 or fy < tile/2 or fy > max_y - tile/2:
-            return False
-        
-        # Collision STRICTE avec autres unités (0.9 au lieu de 0.75)
-        # Empêche la superposition
-        for other in all_units:
-            if other is unit:
-                continue
-            dist = math.hypot(other.rect.centerx - fx, other.rect.centery - fy)
-            if dist < tile * 0.85: # Plus strict
-                return False
-        
-        return True
-
+    # ═══════════════════════════════════════════════════════════════════════════════
+    # SÉLECTION DE CIBLE : Trouve la meilleure cible à portée avec priorité au contre
+    # Applique le focus fire en ciblant l'unité avec le moins de PV
+    # ═══════════════════════════════════════════════════════════════════════════════
     def _find_best_target(self, unit, enemies, enemy_by_type, attack_range):
-        """Trouve la meilleure cible dans la portée d'attaque."""
         in_range = [e for e in enemies if self._dist(unit, e) <= attack_range]
         if not in_range:
             return None
         
-        # Priorité 1: Cible de chasse (contre)
         hunt_type = self.HUNT_TARGET.get(unit.name)
         if hunt_type:
             counters_in_range = [e for e in in_range if e.name == hunt_type]
             if counters_in_range:
-                # Focus fire: cibler celui avec le moins de HP
                 return min(counters_in_range, key=lambda e: e.hp)
         
-        # Priorité 2: Celui avec le moins de HP (focus fire)
         return min(in_range, key=lambda e: e.hp)
 
+
+    # ═══════════════════════════════════════════════════════════════════════════════
+    # FUITE INTELLIGENTE : Calcule la direction de fuite pour les Arbalétriers
+    # Essaie plusieurs directions de fuite si la principale est bloquée
+    # ═══════════════════════════════════════════════════════════════════════════════
     def _calculate_flee(self, unit, threat, allies, enemies, tile, map_inst):
-        """Calcule la direction de fuite intelligente."""
         ux, uy = unit.rect.centerx, unit.rect.centery
         tx, ty = threat.rect.centerx, threat.rect.centery
         
-        # Direction opposée à la menace
         flee_dx = 1 if ux > tx else -1 if ux < tx else 0
         flee_dy = 1 if uy > ty else -1 if uy < ty else 0
         
         all_units = allies + enemies
         
-        # Essayer plusieurs directions de fuite
         directions = [
-            (flee_dx, flee_dy),      # Fuite directe
-            (flee_dx, 0),            # Horizontal
-            (0, flee_dy),            # Vertical
-            (flee_dx, -flee_dy),     # Diagonal alternatif
-            (-flee_dx, flee_dy),     # Autre diagonal
+            (flee_dx, flee_dy),
+            (flee_dx, 0),
+            (0, flee_dy),
+            (flee_dx, -flee_dy),
+            (-flee_dx, flee_dy),
         ]
         
         for dx, dy in directions:
@@ -227,13 +183,16 @@ class ColonelSMART:
         
         return 0, 0
 
+
+    # ═══════════════════════════════════════════════════════════════════════════════
+    # PATHFINDING INTELLIGENT : Mouvement vers la cible avec décalage automatique
+    # Gère le contournement des alliés bloquants et essaie plusieurs directions
+    # ═══════════════════════════════════════════════════════════════════════════════
     def _smart_pathfind(self, unit, target, allies, enemies, tile, map_inst):
-        """Pathfinding intelligent avec décalage automatique."""
         unit_id = id(unit)
         ux, uy = unit.rect.centerx, unit.rect.centery
         tx, ty = target.rect.centerx, target.rect.centery
         
-        # Direction vers la cible
         want_dx = 1 if tx > ux + 3 else -1 if tx < ux - 3 else 0
         want_dy = 1 if ty > uy + 3 else -1 if ty < uy - 3 else 0
         
@@ -242,39 +201,32 @@ class ColonelSMART:
         
         all_units = allies + enemies
         
-        # 1. Essayer mouvement direct
         if self._can_move_to(unit, want_dx, want_dy, all_units, tile, map_inst):
             self.spread_direction.pop(unit_id, None)
             return want_dx, want_dy
         
-        # 2. DÉCALAGE INTELLIGENT si bloqué par un allié
         blocking_ally = self._get_blocking_ally(unit, want_dx, want_dy, allies, tile)
         
         if blocking_ally:
-            # Choisir une direction de décalage cohérente
             if unit_id not in self.spread_direction:
-                # Décider: haut ou bas / gauche ou droite
                 if uy > ty:
-                    self.spread_direction[unit_id] = -1  # Aller vers le haut
+                    self.spread_direction[unit_id] = -1
                 else:
-                    self.spread_direction[unit_id] = 1   # Aller vers le bas
+                    self.spread_direction[unit_id] = 1
             
             spread = self.spread_direction[unit_id]
             
-            # Essayer de glisser latéralement tout en avançant
             spread_moves = [
-                (want_dx, spread),      # Avancer + décaler
-                (0, spread),            # Juste décaler
-                (want_dx, -spread),     # Essayer l'autre côté
+                (want_dx, spread),
+                (0, spread),
+                (want_dx, -spread),
             ]
             
             for dx, dy in spread_moves:
                 if self._can_move_to(unit, dx, dy, all_units, tile, map_inst):
                     return dx, dy
         
-        # 3. Essayer toutes les directions
         all_dirs = [(1,0), (-1,0), (0,1), (0,-1), (1,1), (1,-1), (-1,1), (-1,-1)]
-        # Trier par proximité avec la direction voulue
         all_dirs.sort(key=lambda d: -(d[0]*want_dx + d[1]*want_dy))
         
         for dx, dy in all_dirs:
@@ -284,7 +236,6 @@ class ColonelSMART:
         return 0, 0
 
     def _get_blocking_ally(self, unit, dx, dy, allies, tile):
-        """Vérifie si un allié bloque le chemin."""
         fx = unit.rect.centerx + dx * tile
         fy = unit.rect.centery + dy * tile
         
@@ -297,20 +248,17 @@ class ColonelSMART:
         return None
 
     def _can_move_to(self, unit, dx, dy, all_units, tile, map_inst):
-        """Vérifie si le mouvement est possible."""
         if dx == 0 and dy == 0:
             return False
             
         fx = unit.rect.centerx + dx * tile * 0.8
         fy = unit.rect.centery + dy * tile * 0.8
         
-        # Limites de la carte
         max_x = map_inst.width * tile
         max_y = map_inst.height * tile
         if fx < tile/2 or fx > max_x - tile/2 or fy < tile/2 or fy > max_y - tile/2:
             return False
         
-        # Collision avec autres unités
         for other in all_units:
             if other is unit:
                 continue
@@ -322,5 +270,4 @@ class ColonelSMART:
 
     @staticmethod
     def _dist(a, b):
-        """Distance entre deux unités."""
         return math.hypot(b.rect.centerx - a.rect.centerx, b.rect.centery - a.rect.centery)

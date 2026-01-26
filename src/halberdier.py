@@ -21,19 +21,14 @@ class Halberdier(Soldat):
         self.damage = 4
         self.armor = 0
         self.armor_pierce = 0
-        self.attack_range = 0       # melee
+        self.attack_range = 0       
         self.vision_range = 4
         self.speed = 2.0
         self.reload_time = 0.5
 
-        # Boolen Stat
         self.is_close_combat = True
         
 
-        # Bonus
-        # self.vs_arbalester = 0
-        # self.vs_paladin = 32
-        # self.vs_halberdier = 0
         self.vs = {
             'Paladin' : 10,
             'Arbalester' : -3,

@@ -1,22 +1,24 @@
-# src/ai_daft.py
-# IA offensive simple : avance directement vers l'ennemi et attaque
 import math
 import random
 
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# IA MAJORDAFT : Intelligence artificielle offensive simple
+# Avance directement vers l'ennemi le plus proche et attaque à portée
+# ═══════════════════════════════════════════════════════════════════════════════
 class MajorDaftSimple:
-    """IA simple : avance tout droit vers l'ennemi, attaque à portée."""
     
     def __init__(self, team_name="A"):
         self.team_name = team_name
         self.bypass_direction = {}
 
+
+    # ═══════════════════════════════════════════════════════════════════════════════
+    # FORMATION : Placement en bloc simple au départ de la partie
+    # Les unités sont placées en grille près du bord de leur côté
+    # ═══════════════════════════════════════════════════════════════════════════════
     @staticmethod
     def get_formation(team_id, width, height, config):
-        """
-        Formation SIMPLE BLOC - Pour éviter tout bug de placement.
-        Les soldats sont regroupés en un carré au fond.
-        """
         positions = []
         center_y = height / 2
         
@@ -33,22 +35,23 @@ class MajorDaftSimple:
         all_units = []
         for unit_type, count in config.items():
             all_units.extend([unit_type] * count)
-        random.shuffle(all_units) # Mélange mais placement propre
+        random.shuffle(all_units)
         
-        # Placement en grille simple
         for unit_type in all_units:
             positions.append((unit_type, current_x, current_y))
-            
-            # Avancer en Y
             current_y += 1.5
             if current_y > height - 3:
                 current_y = 2
-                current_x += x_dir * 1.5 # Reculer d'une colonne
+                current_x += x_dir * 1.5
                 
         return positions
 
+
+    # ═══════════════════════════════════════════════════════════════════════════════
+    # MISE À JOUR : Boucle principale de décision de l'IA
+    # Pour chaque unité : attaque si à portée, sinon avance vers la cible
+    # ═══════════════════════════════════════════════════════════════════════════════
     def update(self, map_instance):
-        """Renvoie des actions (attack / move)."""
         actions = []
 
         allies = [u for u in map_instance.all_soldats if getattr(u, "team", None) == self.team_name]
@@ -67,29 +70,30 @@ class MajorDaftSimple:
             tile = unit.rect.width
             range_px = (unit.attack_range * tile) if unit.attack_range > 0 else tile * 1.3
 
-            # À portée -> attaquer
             if dist <= range_px:
                 actions.append(("attack", unit, target))
                 if unit_id in self.bypass_direction:
                     del self.bypass_direction[unit_id]
                 continue
 
-            # Sinon avancer
             dx, dy = self._get_direction(unit, target, allies + enemies, tile)
             if dx != 0 or dy != 0:
                 actions.append(("move", unit, dx, dy))
 
         return actions
 
+
+    # ═══════════════════════════════════════════════════════════════════════════════
+    # PATHFINDING : Calcule la direction vers la cible avec contournement
+    # Si bloqué, tente de contourner en changeant de direction
+    # ═══════════════════════════════════════════════════════════════════════════════
     def _get_direction(self, unit, target, all_units, tile):
-        """Direction vers la cible avec contournement basique."""
         ux, uy = unit.rect.centerx, unit.rect.centery
         tx, ty = target.rect.centerx, target.rect.centery
 
         dx = 1 if tx > ux + 5 else -1 if tx < ux - 5 else 0
         dy = 1 if ty > uy + 5 else -1 if ty < uy - 5 else 0
 
-        # Vérifier blocage
         if self._blocked(unit, dx, dy, all_units, tile):
             unit_id = id(unit)
             if unit_id not in self.bypass_direction:

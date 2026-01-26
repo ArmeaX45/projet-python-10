@@ -1,7 +1,10 @@
-"""File: arbalester.py"""
-
 from src.soldat import Soldat
 
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# CLASSE ARBALESTER : Unité à distance avec portée d'attaque de 5 cases
+# Bonus contre les Hallebardiers, vulnérable aux Paladins en mêlée
+# ═══════════════════════════════════════════════════════════════════════════════
 class Arbalester(Soldat):
     
     def __init__(self, x=0, y=0, team=0):
@@ -12,7 +15,6 @@ class Arbalester(Soldat):
         self.name = "Arbalester"
         self.tag = "A"
 
-        # Static Stats
         self.hp = 35
         self.max_hp = 35
         self.damage = 5
@@ -25,16 +27,9 @@ class Arbalester(Soldat):
         
         self.frame_delay = 15
         self.attack_delay = 0.35
-        
-        self.accuracy = 0.85        # 90%
-        
-        # Boolen Stat
+        self.accuracy = 0.85
         self.is_close_combat = False
 
-        # Bonus
-        # self.vs_arbalester = 0
-        # self.vs_paladin = 0
-        # self.vs_halberdier = 3
         self.vs = {
             'Halberdier' : 5,
             'Paladin' : -2,

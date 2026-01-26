@@ -1,0 +1,2009 @@
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 25
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1537
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 23
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1712
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 27
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1300
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 11
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 621
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 25
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1114
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 42
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1958
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 14
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1638
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 44
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1584
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 32
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1438
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 19
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1269
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 25
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1607
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 41
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1606
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 39
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1647
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 6
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1126
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 23
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1695
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 19
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 905
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 21
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1704
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 11
+        PV Totaux 0 : 0
+        PV Totaux 1 : 687
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 14
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 897
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 19
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1242
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 14
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1346
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 26
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 545
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 27
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1838
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 37
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1289
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 38
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1480
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 32
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 875
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 34
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1408
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 21
+        PV Totaux 0 : 0
+        PV Totaux 1 : 2277
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 9
+        PV Totaux 0 : 0
+        PV Totaux 1 : 732
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 30
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1461
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 32
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1460
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 24
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1761
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 21
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 2512
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 30
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1772
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 18
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 622
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 18
+        PV Totaux 0 : 0
+        PV Totaux 1 : 746
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 25
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1990
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 19
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1946
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 10
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 992
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 34
+        PV Totaux 0 : 0
+        PV Totaux 1 : 636
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 27
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1650
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 20
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1192
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 23
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1400
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 12
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 529
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 17
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1447
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 20
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1386
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 27
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1702
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 15
+        PV Totaux 0 : 0
+        PV Totaux 1 : 2252
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (GeneralBrainDead)
+        Unités restantes Équipe 0 : 4
+        Unités restantes Équipe 1 : 0
+        Points de Vie Totaux 0 : 203
+        Points de Vie Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 21
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1152
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 32
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1716
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 22
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1665
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 32
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1099
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 21
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1433
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 14
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1276
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 46
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1730
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 13
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 2004
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 13
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1836
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 29
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1635
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 21
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1470
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 24
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1565
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 15
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1752
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 18
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 2138
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 21
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1662
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 20
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1016
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 31
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1721
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 15
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1179
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 16
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1904
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 35
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1528
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 19
+        PV Totaux 0 : 0
+        PV Totaux 1 : 517
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 27
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1219
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 17
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 786
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 9
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1607
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 14
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 2458
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 24
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 425
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 19
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1881
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 7
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1118
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 13
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 809
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 27
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1983
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 17
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1626
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 28
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1691
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 20
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1448
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 23
+        PV Totaux 0 : 0
+        PV Totaux 1 : 985
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 23
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1278
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 32
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1331
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 19
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1786
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 10
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1168
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 20
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1377
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 22
+        PV Totaux 0 : 0
+        PV Totaux 1 : 2174
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 25
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 641
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 14
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1999
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 22
+        PV Totaux 0 : 0
+        PV Totaux 1 : 866
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 9
+        PV Totaux 0 : 0
+        PV Totaux 1 : 590
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 29
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1590
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 27
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1322
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 26
+        PV Totaux 0 : 0
+        PV Totaux 1 : 2123
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 41
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1202
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 8
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1626
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 11
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1159
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 11
+        PV Totaux 0 : 0
+        PV Totaux 1 : 820
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 23
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1849
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 40
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1661
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 32
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 234
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 27
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1626
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 26
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1776
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 24
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1820
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 21
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1697
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 12
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1552
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 17
+        PV Totaux 0 : 0
+        PV Totaux 1 : 2017
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 25
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1568
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 16
+        PV Totaux 0 : 0
+        PV Totaux 1 : 742
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 24
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1827
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 25
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1842
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 24
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 2352
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 18
+        PV Totaux 0 : 0
+        PV Totaux 1 : 2011
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 16
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1915
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 19
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1578
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 19
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 2027
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 33
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1686
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 6
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1377
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 26
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1217
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 26
+        PV Totaux 0 : 0
+        PV Totaux 1 : 2291
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 19
+        PV Totaux 0 : 0
+        PV Totaux 1 : 759
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 12
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 2149
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 31
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1558
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 29
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1665
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 21
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1233
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 14
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1946
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 34
+        PV Totaux 0 : 0
+        PV Totaux 1 : 2069
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 34
+        PV Totaux 0 : 0
+        PV Totaux 1 : 2248
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 18
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1088
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 21
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1580
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 26
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1961
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 17
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 968
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 19
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1664
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 33
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 2082
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 31
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1218
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 19
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1101
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 14
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 757
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 18
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1512
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 34
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1989
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 19
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1900
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 16
+        PV Totaux 0 : 0
+        PV Totaux 1 : 2190
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 31
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 2160
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 7
+        PV Totaux 0 : 0
+        PV Totaux 1 : 607
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 26
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1759
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 9
+        PV Totaux 0 : 0
+        PV Totaux 1 : 762
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 11
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1051
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 17
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1580
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 24
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1768
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 34
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1072
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 2
+        PV Totaux 0 : 0
+        PV Totaux 1 : 697
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 29
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1588
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 16
+        PV Totaux 0 : 0
+        PV Totaux 1 : 819
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 34
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1162
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 31
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 2391
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 21
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1000
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 24
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1558
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 18
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1224
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 31
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1986
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 31
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1462
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 21
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1890
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 26
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1217
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 22
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1431
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 23
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1612
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 13
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 652
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 22
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1681
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 20
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1186
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 24
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1377
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 37
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1593
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 38
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1515
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 10
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1331
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 29
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1359
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 27
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1667
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 22
+        PV Totaux 0 : 0
+        PV Totaux 1 : 2459
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 19
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1034
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 21
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1843
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 32
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 2392
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 22
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1657
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 16
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1167
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 32
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1623
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 14
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1929
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 21
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1913
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 29
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1585
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 28
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1795
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 22
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1755
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 8
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 984
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 5
+        PV Totaux 0 : 0
+        PV Totaux 1 : 680
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 29
+        PV Totaux 0 : 0
+        PV Totaux 1 : 2318
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 16
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1486
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 16
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1781
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 14
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1923
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 25
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1817
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 12
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1385
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 18
+        PV Totaux 0 : 0
+        PV Totaux 1 : 2397
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 15
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1201
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 18
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1540
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 14
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1684
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 35
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1459
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 23
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1877
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 1
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 417
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 13
+        PV Totaux 0 : 0
+        PV Totaux 1 : 794
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 25
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1277
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 28
+        PV Totaux 0 : 0
+        PV Totaux 1 : 2152
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 8
+        PV Totaux 0 : 0
+        PV Totaux 1 : 977
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 12
+        PV Totaux 0 : 0
+        PV Totaux 1 : 649
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 29
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1775
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 20
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1910
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 33
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1333
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 15
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1380
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 30
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1869
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 17
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1077
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 14
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1878
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 40
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1067
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 32
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1556
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 26
+        PV Totaux 0 : 0
+        PV Totaux 1 : 455
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 28
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1286
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 10
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1796
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (ColonelSMART)
+        Unités restantes Équipe 0 : 26
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1394
+        PV Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 19
+        PV Totaux 0 : 0
+        PV Totaux 1 : 1198
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1 (ColonelSMART)
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 19
+        PV Totaux 0 : 0
+        PV Totaux 1 : 909
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0 (MajorDaftSimple)
+        Unités restantes Équipe 0 : 16
+        Unités restantes Équipe 1 : 0
+        PV Totaux 0 : 1276
+        PV Totaux 1 : 0
+        ======================================
+        
+
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0
+        IA GAGNANTE : ColonelSMART
+        Unités restantes Équipe 0 : 38
+        Unités restantes Équipe 1 : 0
+        Points de Vie Totaux 0 : 1677
+        Points de Vie Totaux 1 : 0
+        ======================================
+        

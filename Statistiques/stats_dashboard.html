@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Statistiques de Tournoi - Bataille Médiévale</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-dark: #0d1117;
+            --bg-card: #161b22;
+            --border: #30363d;
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-red: #f85149;
+            --accent-gold: #d4a72c;
+            --accent-purple: #a371f7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--bg-card), #1a2332);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--accent-gold), #f7d86c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .file-input-section {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .file-input-section input[type="file"] {
+            display: none;
+        }
+
+        .file-label {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, var(--accent-blue), #1f6feb);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .file-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(88, 166, 255, 0.3);
+        }
+
+        .file-status {
+            margin-top: 15px;
+            color: var(--text-secondary);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .stat-value.blue {
+            color: var(--accent-blue);
+        }
+
+        .stat-value.green {
+            color: var(--accent-green);
+        }
+
+        .stat-value.red {
+            color: var(--accent-red);
+        }
+
+        .stat-value.gold {
+            color: var(--accent-gold);
+        }
+
+        .stat-value.purple {
+            color: var(--accent-purple);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .chart-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid var(--border);
+        }
+
+        .chart-card h3 {
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+        }
+
+        .leaderboard {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+
+        .leaderboard h3 {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            transition: background 0.3s ease;
+        }
+
+        .leaderboard-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .rank {
+            font-size: 1.5rem;
+            font-weight: bold;
+            width: 50px;
+            text-align: center;
+        }
+
+        .rank.gold {
+            color: #ffd700;
+        }
+
+        .rank.silver {
+            color: #c0c0c0;
+        }
+
+        .rank.bronze {
+            color: #cd7f32;
+        }
+
+        .ai-name {
+            flex: 1;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .win-rate {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--accent-green);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: var(--text-secondary);
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--border);
+            border-top-color: var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .matchup-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .matchup-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .matchup-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--accent-blue);
+        }
+
+        .matchup-stats {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .matchup-stat {
+            text-align: center;
+            flex: 1;
+        }
+
+        .matchup-stat .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .matchup-stat .label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>⚔️ Statistiques de Tournoi</h1>
+            <p class="subtitle">Analysez les performances des IA dans les batailles médiévales</p>
+        </header>
+
+        <section class="file-input-section">
+            <label class="file-label" for="fileInput">
+                📁 Charger tournament_results.txt
+            </label>
+            <input type="file" id="fileInput" accept=".txt">
+            <p class="file-status" id="fileStatus">Sélectionnez le fichier tournament_results.txt pour commencer
+                l'analyse</p>
+        </section>
+
+        <div id="content" class="hidden">
+            <section class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="stat-value blue" id="totalBattles">0</div>
+                    <div class="stat-label">Batailles Totales</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value gold" id="totalAIs">0</div>
+                    <div class="stat-label">IAs Différentes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value green" id="avgSurvivors">0</div>
+                    <div class="stat-label">Survivants Moyens (Gagnant)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value purple" id="avgHP">0</div>
+                    <div class="stat-label">PV Moyens Restants</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value red" id="draws">0</div>
+                    <div class="stat-label">Match Nuls</div>
+                </div>
+            </section>
+
+            <section class="leaderboard" id="leaderboard">
+                <h3>🏆 Classement des IA</h3>
+                <div id="leaderboardContent"></div>
+            </section>
+
+            <section class="charts-container">
+                <div class="chart-card">
+                    <h3>📊 Victoires par IA</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="winsChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>🥧 Répartition des Victoires</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>📈 PV Moyens Restants par IA</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="hpChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3>👥 Survivants Moyens par IA</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="survivorsChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section class="chart-card">
+                <h3>⚔️ Matchups Directs</h3>
+                <div class="matchup-grid" id="matchupGrid"></div>
+            </section>
+        </div>
+
+        <div id="loading" class="loading hidden">
+            <div class="loading-spinner"></div>
+            <p>Analyse des données en cours...</p>
+        </div>
+
+        <footer>
+            <p>🎮 Bataille Médiévale - Tableau de Bord Statistique</p>
+        </footer>
+    </div>
+
+    <script>
+        let charts = {};
+
+        document.getElementById('fileInput').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('fileStatus').textContent = `📄 Fichier: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+                document.getElementById('loading').classList.remove('hidden');
+                document.getElementById('content').classList.add('hidden');
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const content = e.target.result;
+                    parseAndDisplay(content);
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        function parseAndDisplay(content) {
+            const battles = parseBattles(content);
+            const stats = calculateStats(battles);
+            displayStats(stats);
+            createCharts(stats);
+
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('content').classList.remove('hidden');
+        }
+
+        function parseBattles(content) {
+            const battles = [];
+            const blocks = content.split('========= FIN DE LA BATAILLE =========');
+
+            for (let i = 1; i < blocks.length; i++) {
+                const block = blocks[i];
+                const battle = {};
+
+                const winnerMatch = block.match(/VAINQUEUR\s*:\s*(.+)/);
+                if (winnerMatch) {
+                    battle.winner = winnerMatch[1].trim();
+                    const aiMatch = battle.winner.match(/\(([^)]+)\)/);
+                    if (aiMatch) {
+                        battle.winningAI = aiMatch[1];
+                    }
+                    const teamMatch = battle.winner.match(/Équipe\s*(\d)/);
+                    if (teamMatch) {
+                        battle.winningTeam = parseInt(teamMatch[1]);
+                    }
+                }
+
+                const iaMatch = block.match(/IA GAGNANTE\s*:\s*(.+)/);
+                if (iaMatch) {
+                    battle.winningAI = iaMatch[1].trim();
+                }
+
+                const toursMatch = block.match(/Tours\s*:\s*(\d+)/);
+                if (toursMatch) {
+                    battle.turns = parseInt(toursMatch[1]);
+                }
+
+                const unitsMatch0 = block.match(/Unités restantes.*0\s*:\s*(\d+)/);
+                const unitsMatch1 = block.match(/Unités restantes.*1\s*:\s*(\d+)/);
+                if (unitsMatch0) battle.unitsRemaining0 = parseInt(unitsMatch0[1]);
+                if (unitsMatch1) battle.unitsRemaining1 = parseInt(unitsMatch1[1]);
+
+                const hpMatch0 = block.match(/(?:PV Totaux|Points de Vie Totaux)\s*0\s*:\s*(\d+)/);
+                const hpMatch1 = block.match(/(?:PV Totaux|Points de Vie Totaux)\s*1\s*:\s*(\d+)/);
+                if (hpMatch0) battle.hp0 = parseInt(hpMatch0[1]);
+                if (hpMatch1) battle.hp1 = parseInt(hpMatch1[1]);
+
+                if (battle.winner || battle.winningAI) {
+                    battles.push(battle);
+                }
+            }
+
+            return battles;
+        }
+
+        function calculateStats(battles) {
+            const stats = {
+                total: battles.length,
+                draws: 0,
+                aiStats: {},
+                matchups: {}
+            };
+
+            battles.forEach(battle => {
+                if (battle.winner && (battle.winner.includes('Nul') || battle.winner.includes('Égalité'))) {
+                    stats.draws++;
+                    return;
+                }
+
+                const ai = battle.winningAI;
+                if (!ai || ai === 'Aucune') return;
+
+                if (!stats.aiStats[ai]) {
+                    stats.aiStats[ai] = {
+                        wins: 0,
+                        totalHP: 0,
+                        totalSurvivors: 0,
+                        battles: 0
+                    };
+                }
+
+                stats.aiStats[ai].wins++;
+                stats.aiStats[ai].battles++;
+
+                if (battle.winningTeam === 0) {
+                    stats.aiStats[ai].totalHP += battle.hp0 || 0;
+                    stats.aiStats[ai].totalSurvivors += battle.unitsRemaining0 || 0;
+                } else if (battle.winningTeam === 1) {
+                    stats.aiStats[ai].totalHP += battle.hp1 || 0;
+                    stats.aiStats[ai].totalSurvivors += battle.unitsRemaining1 || 0;
+                }
+            });
+
+            Object.keys(stats.aiStats).forEach(ai => {
+                const s = stats.aiStats[ai];
+                s.avgHP = s.battles > 0 ? Math.round(s.totalHP / s.battles) : 0;
+                s.avgSurvivors = s.battles > 0 ? Math.round(s.totalSurvivors / s.battles) : 0;
+                s.winRate = stats.total > 0 ? ((s.wins / stats.total) * 100).toFixed(1) : 0;
+            });
+
+            return stats;
+        }
+
+        function displayStats(stats) {
+            document.getElementById('totalBattles').textContent = stats.total.toLocaleString();
+            document.getElementById('totalAIs').textContent = Object.keys(stats.aiStats).length;
+            document.getElementById('draws').textContent = stats.draws;
+
+            let totalSurvivors = 0, totalHP = 0, count = 0;
+            Object.values(stats.aiStats).forEach(s => {
+                totalSurvivors += s.totalSurvivors;
+                totalHP += s.totalHP;
+                count += s.battles;
+            });
+
+            document.getElementById('avgSurvivors').textContent = count > 0 ? Math.round(totalSurvivors / count) : 0;
+            document.getElementById('avgHP').textContent = count > 0 ? Math.round(totalHP / count).toLocaleString() : 0;
+
+            const sorted = Object.entries(stats.aiStats)
+                .sort((a, b) => b[1].wins - a[1].wins);
+
+            const leaderboardHTML = sorted.map((entry, index) => {
+                const [name, data] = entry;
+                const rankClass = index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : '';
+                const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index + 1}`;
+
+                return `
+                    <div class="leaderboard-item">
+                        <div class="rank ${rankClass}">${medal}</div>
+                        <div class="ai-name">${name}</div>
+                        <div class="win-rate">${data.wins} victoires (${data.winRate}%)</div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('leaderboardContent').innerHTML = leaderboardHTML;
+
+            const matchupHTML = sorted.map(([name, data]) => `
+                <div class="matchup-card">
+                    <div class="matchup-title">${name}</div>
+                    <div class="matchup-stats">
+                        <div class="matchup-stat">
+                            <div class="value" style="color: var(--accent-green)">${data.wins}</div>
+                            <div class="label">Victoires</div>
+                        </div>
+                        <div class="matchup-stat">
+                            <div class="value" style="color: var(--accent-blue)">${data.avgSurvivors}</div>
+                            <div class="label">Survivants Moy.</div>
+                        </div>
+                        <div class="matchup-stat">
+                            <div class="value" style="color: var(--accent-purple)">${data.avgHP.toLocaleString()}</div>
+                            <div class="label">PV Moy.</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('matchupGrid').innerHTML = matchupHTML;
+        }
+
+        function createCharts(stats) {
+            Object.values(charts).forEach(chart => chart.destroy());
+            charts = {};
+
+            const aiNames = Object.keys(stats.aiStats);
+            const wins = aiNames.map(ai => stats.aiStats[ai].wins);
+            const avgHP = aiNames.map(ai => stats.aiStats[ai].avgHP);
+            const avgSurvivors = aiNames.map(ai => stats.aiStats[ai].avgSurvivors);
+
+            const colors = [
+                'rgba(88, 166, 255, 0.8)',
+                'rgba(63, 185, 80, 0.8)',
+                'rgba(248, 81, 73, 0.8)',
+                'rgba(163, 113, 247, 0.8)',
+                'rgba(212, 167, 44, 0.8)',
+                'rgba(255, 159, 28, 0.8)'
+            ];
+
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#f0f6fc' }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#8b949e' },
+                        grid: { color: 'rgba(48, 54, 61, 0.5)' }
+                    },
+                    y: {
+                        ticks: { color: '#8b949e' },
+                        grid: { color: 'rgba(48, 54, 61, 0.5)' }
+                    }
+                }
+            };
+
+            charts.wins = new Chart(document.getElementById('winsChart'), {
+                type: 'bar',
+                data: {
+                    labels: aiNames,
+                    datasets: [{
+                        label: 'Victoires',
+                        data: wins,
+                        backgroundColor: colors,
+                        borderColor: colors.map(c => c.replace('0.8', '1')),
+                        borderWidth: 2
+                    }]
+                },
+                options: chartOptions
+            });
+
+            charts.pie = new Chart(document.getElementById('pieChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: aiNames,
+                    datasets: [{
+                        data: wins,
+                        backgroundColor: colors,
+                        borderColor: '#161b22',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: { color: '#f0f6fc' }
+                        }
+                    }
+                }
+            });
+
+            charts.hp = new Chart(document.getElementById('hpChart'), {
+                type: 'bar',
+                data: {
+                    labels: aiNames,
+                    datasets: [{
+                        label: 'PV Moyens',
+                        data: avgHP,
+                        backgroundColor: 'rgba(163, 113, 247, 0.7)',
+                        borderColor: 'rgba(163, 113, 247, 1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: chartOptions
+            });
+
+            charts.survivors = new Chart(document.getElementById('survivorsChart'), {
+                type: 'bar',
+                data: {
+                    labels: aiNames,
+                    datasets: [{
+                        label: 'Survivants Moyens',
+                        data: avgSurvivors,
+                        backgroundColor: 'rgba(63, 185, 80, 0.7)',
+                        borderColor: 'rgba(63, 185, 80, 1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: chartOptions
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,12 +1,3 @@
-# main.py - Point d'entrée unifié pour la simulation de bataille
-"""
-Usage:
-    python main.py                                      # Mode graphique interactif (défaut)
-    python main.py run <AI1> <AI2> [-t] [-d DATAFILE]   # Lancer une bataille
-    python main.py load <savefile>                      # Charger une sauvegarde
-    python main.py tourney [-G AI1 AI2...] [-N 10] [-na] # Lancer un tournoi
-"""
-
 import argparse
 import sys
 import os
@@ -14,9 +5,6 @@ import time
 import threading
 import math
 
-# ============================================================
-#                   IMPORTS DES CLASSES EXISTANTES
-# ============================================================
 from src.map import Map
 from src.game import Game
 from src.ai_daft import MajorDaftSimple
@@ -24,13 +12,15 @@ from src.ia_braindead import GeneralBrainDead
 from src.ColonelSMART import ColonelSMART
 from src.save_manager import save_game_state, load_game_state
 from src.stats_generator import check_end_and_report
-
-# Imports des unités (pour le mode headless)
 from src.halberdier import Halberdier
 from src.paladin import Paladin
 from src.arbalester import Arbalester
 
-# Dictionnaire des IAs disponibles
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# REGISTRE DES IA : Dictionnaire des IA disponibles avec leurs alias
+# Permet d'accéder aux classes IA par leur nom en ligne de commande
+# ═══════════════════════════════════════════════════════════════════════════════
 AI_REGISTRY = {
     "MajorDaftSimple": MajorDaftSimple,
     "MajorDaft": MajorDaftSimple,
@@ -42,58 +32,48 @@ AI_REGISTRY = {
     "SMART": ColonelSMART,
 }
 
-# Scénarios prédéfinis
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SCÉNARIOS : Configurations prédéfinies pour différents types de batailles
+# Standard (60v60), Small, Duel, Archers only, et Horde
+# ═══════════════════════════════════════════════════════════════════════════════
 def get_scenario_configs(name):
-    """Retourne (config_0, config_1) pour un nom de scénario donné."""
     name = name.lower()
     
     if name == "standard":
-        # 20 de chaque
         c = {"Halberdier": 20, "Paladin": 20, "Arbalester": 20}
         return c.copy(), c.copy()
         
     elif name == "small":
-        # Petite escarmouche
         c = {"Halberdier": 5, "Paladin": 2, "Arbalester": 2}
         return c.copy(), c.copy()
         
     elif name == "duel":
-        # 1 Paladin vs 1 Hallebardier
         return {"Paladin": 1}, {"Halberdier": 1}
         
     elif name == "archers":
-        # Full distance
         c = {"Arbalester": 30}
         return c.copy(), c.copy()
         
     elif name == "horde":
-        # Beaucoup de petits vs peu de gros
         return {"Halberdier": 50}, {"Paladin": 10, "Arbalester": 10}
         
     else:
-        # Par défaut Standard
         print(f"[!] Scénario '{name}' inconnu. Utilisation de 'Standard'.")
         c = {"Halberdier": 20, "Paladin": 20, "Arbalester": 20}
         return c.copy(), c.copy()
 
 def get_ai_class(name):
-    """Récupère une classe IA par son nom."""
     if name in AI_REGISTRY:
         return AI_REGISTRY[name]
     raise ValueError(f"IA inconnue: {name}. Disponibles: {list(AI_REGISTRY.keys())}")
 
 
-# ============================================================
-#                   MODE HEADLESS (SANS PYGAME)
-# ============================================================
-
-
-# ============================================================
-#                   MODE HEADLESS & CURSES
-# ============================================================
-
+# ═══════════════════════════════════════════════════════════════════════════════
+# MODE HEADLESS : Version du jeu sans affichage graphique pour les tournois
+# Classe simplifiée qui gère uniquement la logique de combat
+# ═══════════════════════════════════════════════════════════════════════════════
 class HeadlessGame:
-    """Version headless du jeu pour les tournois rapides."""
     
     def __init__(self, width=60, height=34):
         self.width = width
@@ -108,8 +88,12 @@ class HeadlessGame:
         if soldat in self.all_soldats:
             self.all_soldats.remove(soldat)
 
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SETUP HEADLESS : Prépare une partie headless avec les soldats des deux équipes
+# Place les unités en colonnes sur les côtés gauche et droit de la carte
+# ═══════════════════════════════════════════════════════════════════════════════
 def _setup_headless_game(config_0, config_1, width=60, height=34):
-    """Prépare une instance de HeadlessGame avec les soldats."""
     game = HeadlessGame(width=width, height=height)
     
     class_map = {
@@ -118,76 +102,85 @@ def _setup_headless_game(config_0, config_1, width=60, height=34):
         "Arbalester": Arbalester
     }
     
-    # Créer les soldats équipe 0 (gauche)
+    # Normalize unit type names (handle typos)
+    def normalize_key(key):
+        key_lower = key.lower()
+        if "halber" in key_lower or "halbar" in key_lower:
+            return "Halberdier"
+        elif "paladin" in key_lower:
+            return "Paladin"
+        elif "arbal" in key_lower:
+            return "Arbalester"
+        return key
+    
     start_x, start_y = 2, 5
     col = 0
     for unit_type, count in config_0.items():
+        normalized = normalize_key(unit_type)
+        if normalized not in class_map:
+            print(f"[!] Type d'unité inconnu ignoré: {unit_type}")
+            continue
         for i in range(count):
-            soldat = class_map[unit_type](start_x + col, start_y + i, 0)
+            soldat = class_map[normalized](start_x + col, start_y + i, 0)
             game.add_soldat(soldat)
         col += 1
     
-    # Créer les soldats équipe 1 (droite)
     start_x = game.width - 3
     col = 0
     for unit_type, count in config_1.items():
+        normalized = normalize_key(unit_type)
+        if normalized not in class_map:
+            print(f"[!] Type d'unité inconnu ignoré: {unit_type}")
+            continue
         for i in range(count):
-            soldat = class_map[unit_type](start_x - col, start_y + i, 1)
+            soldat = class_map[normalized](start_x - col, start_y + i, 1)
             game.add_soldat(soldat)
         col += 1
         
     return game
 
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# BATAILLE CURSES : Mode terminal avec affichage ASCII en temps réel
+# Utilise la bibliothèque curses pour l'affichage console coloré
+# ═══════════════════════════════════════════════════════════════════════════════
 def run_curses_battle(stdscr, config_0, config_1, ai1_class, ai2_class):
-    """Exécute une bataille visualisée dans le terminal avec curses."""
     import curses
-    import pygame  # Import nécessaire ici pour la fonction
+    import pygame
     
-    # MOCK PYGAME DISPLAY pour éviter les erreurs d'init spritesheet
     if not pygame.display.get_init():
         pygame.display.init()
     if not pygame.display.get_surface():
         pygame.display.set_mode((1, 1), pygame.HIDDEN)
     
-    # Configuration Curses
-    curses.curs_set(0) # Cacher le curseur
-    stdscr.nodelay(True) # Non-bloquant
-    stdscr.timeout(1)  # Rafraîchissement rapide (1ms d'attente)
+    curses.curs_set(0)
+    stdscr.nodelay(True)
+    stdscr.timeout(1)
     
-    # Couleurs
     curses.start_color()
-    curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_BLACK) # Equipe 0
-    curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)  # Equipe 1
-    curses.init_pair(3, curses.COLOR_WHITE, curses.COLOR_BLACK) # UI
+    curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_BLACK)
+    curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
+    curses.init_pair(3, curses.COLOR_WHITE, curses.COLOR_BLACK)
     
-    # Initialisation Jeu
     game = _setup_headless_game(config_0, config_1)
     
-    # IAs
     ia_0 = ai1_class(team_name=0)
     ia_1 = ai2_class(team_name=1)
     
     turn = 0
     paused = False
-    
-    # Vitesse : combien de tours logiques par rafraîchissement d'écran ?
-    # Augmentez ce nombre pour que ça aille "plus vite" visuellement
     KEY_REPEAT = 5 
     
     while True:
-        # -- Gestion Entrées --
         key = stdscr.getch()
         if key == ord('q'):
-            return None # Quitter
+            return None
         elif key == ord('p') or key == ord(' '):
             paused = not paused
         
-        # -- Logique Jeu (Boucle accélérée) --
-        # On calcule plusieurs tours de jeu AVANT d'afficher
-        # Cela accélère considérablement le "temps de jeu"
         turns_to_process = KEY_REPEAT if not paused else 0
         
-        # Si c'est la fin de partie, on force 1 tour pour détecter le gagnant
         alive_0 = [s for s in game.all_soldats if s.team == 0 and s.is_alive]
         alive_1 = [s for s in game.all_soldats if s.team == 1 and s.is_alive]
         
@@ -197,24 +190,20 @@ def run_curses_battle(stdscr, config_0, config_1, ai1_class, ai2_class):
         elif not alive_1: winner = 0
             
         if winner is not None:
-             # Fin de partie détectée
             stdscr.addstr(game.height + 2, 0, f"FIN DE LA PARTIE ! Vainqueur: {'EQUIPE 1' if winner==1 else 'EQUIPE 0' if winner==0 else 'EGALITE'}", curses.A_BOLD)
             stdscr.addstr(game.height + 3, 0, "Appuyez sur 'q' pour quitter.", curses.A_BLINK)
             stdscr.refresh()
-            stdscr.timeout(-1) # Bloquant
+            stdscr.timeout(-1)
             while True:
                 kp = stdscr.getch()
                 if kp == ord('q'): return _get_result_dict(game, turn, winner, ai1_class, ai2_class, _get_initial_counts(config_0, config_1))
 
-        # Boucle de simulation multiple
         for _ in range(turns_to_process):
             turn += 1
-             # Obtenir les actions des IAs
             actions_0 = ia_0.update(game)
             actions_1 = ia_1.update(game)
             all_actions = actions_0 + actions_1
             
-            # Exécuter les actions
             for action in all_actions:
                 if action[0] == "move":
                     _, unit, dx, dy = action
@@ -225,27 +214,20 @@ def run_curses_battle(stdscr, config_0, config_1, ai1_class, ai2_class):
                     if unit.is_alive and target.is_alive:
                         unit.attack(target)
             
-            # Nettoyer les morts après chaque sous-tour
             game.all_soldats = [s for s in game.all_soldats if s.is_alive]
             
-            # Vérifier victoire dans la sous-boucle pour s'arrêter net
             alive_0 = [s for s in game.all_soldats if s.team == 0 and s.is_alive]
             alive_1 = [s for s in game.all_soldats if s.team == 1 and s.is_alive]
             if not alive_0 or not alive_1:
                 break
         
-        # -- Affichage --
         try:
             stdscr.erase()
-            
-            # Dimensions actuelles du terminal
             max_y, max_x = stdscr.getmaxyx()
             
-            # Info Header
             header1 = f"Tour: {turn} | {'PAUSE' if paused else 'EN COURS'} | (q: quitter, p: pause)"
             header2 = f"Bleus: {len(alive_0)} | Rouges: {len(alive_1)}"
             
-            # Vérifier si on a la place d'afficher
             if max_y < game.height + 5 or max_x < game.width + 2:
                 stdscr.addstr(0, 0, "Terminal trop petit !", curses.color_pair(3))
                 stdscr.addstr(1, 0, f"Requis: {game.width+2}x{game.height+5}", curses.color_pair(3))
@@ -256,9 +238,7 @@ def run_curses_battle(stdscr, config_0, config_1, ai1_class, ai2_class):
             stdscr.addstr(0, 0, header1[:max_x-1], curses.color_pair(3))
             stdscr.addstr(1, 0, header2[:max_x-1], curses.color_pair(3))
             
-            # Dessin de la map
             offset_y = 3
-            # Cadre
             stdscr.addstr(offset_y - 1, 0, "+" + "-"*game.width + "+")
             stdscr.addstr(offset_y + game.height, 0, "+" + "-"*game.width + "+")
             
@@ -266,10 +246,8 @@ def run_curses_battle(stdscr, config_0, config_1, ai1_class, ai2_class):
                 stdscr.addch(offset_y + y, 0, "|")
                 try:
                     stdscr.addch(offset_y + y, game.width + 1, "|")
-                except: pass # Ignorer si ça dépasse à l'extrême droite
+                except: pass
                 
-            # Unités
-            # Construire une grille simple pour l'affichage
             display_grid = {}
             for s in game.all_soldats:
                 gx, gy = int(s.rect.x // 32), int(s.rect.y // 32)
@@ -278,14 +256,13 @@ def run_curses_battle(stdscr, config_0, config_1, ai1_class, ai2_class):
             
             for y in range(game.height):
                 for x in range(game.width):
-                    # Coordonnées écran
                     scr_y = offset_y + y
                     scr_x = x + 1
                     
                     if 0 <= scr_y < max_y and 0 <= scr_x < max_x:
                         if (x, y) in display_grid:
                             s = display_grid[(x, y)]
-                            char = s.tag # H, A, P
+                            char = s.tag
                             color = curses.color_pair(1) if s.team == 0 else curses.color_pair(2)
                             try:
                                 stdscr.addch(scr_y, scr_x, char, color)
@@ -297,13 +274,12 @@ def run_curses_battle(stdscr, config_0, config_1, ai1_class, ai2_class):
 
             stdscr.refresh()
         except curses.error:
-            pass # Ignorer les erreurs de dessin (redimensionnement fenêtre, etc)
+            pass
 
 def _get_initial_counts(c0, c1):
     return {0: sum(c0.values()), 1: sum(c1.values())}
 
 def _get_result_dict(game, turn, winner, ai1, ai2, initial_counts):
-    # Résultats finaux pour rapport
     remaining_0 = len([s for s in game.all_soldats if s.team == 0 and s.is_alive])
     remaining_1 = len([s for s in game.all_soldats if s.team == 1 and s.is_alive])
     hp_total_0 = sum(s.hp for s in game.all_soldats if s.team == 0 and s.is_alive)
@@ -319,42 +295,36 @@ def _get_result_dict(game, turn, winner, ai1, ai2, initial_counts):
         "ai2": ai2.__name__,
     }
 
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# BATAILLE HEADLESS : Mode 100% sans affichage pour les tournois rapides
+# Simule la bataille tour par tour avec un temps virtuel pour les cooldowns
+# ═══════════════════════════════════════════════════════════════════════════════
 def run_headless_battle(config_0, config_1, ai1_class, ai2_class, max_turns=10000, width=60, height=34):
-    """
-    Exécute une bataille en mode 100% headless (rapide, sans affichage).
-    Utilisé pour les tournois.
-    """
-    import pygame  # Import nécessaire pour le mock display
+    import pygame
     
-    # MOCK PYGAME DISPLAY pour éviter les erreurs d'init
     if not pygame.display.get_init():
         pygame.display.init()
-        # Créer une surface factice cachée si possible, ou juste init
     if not pygame.display.get_surface():
             pygame.display.set_mode((1, 1), pygame.HIDDEN)
             
     game = _setup_headless_game(config_0, config_1, width=width, height=height)
     initial_counts = _get_initial_counts(config_0, config_1)
 
-    
-    # Créer les IAs
     ia_0 = ai1_class(team_name=0)
     ia_1 = ai2_class(team_name=1)
     
-    # Boucle de jeu
     turn = 0
     winner = None
-    virtual_time = 0.0  # Temps simulé pour les cooldowns
+    virtual_time = 0.0
     
     while turn < max_turns:
         turn += 1
-        virtual_time += 0.1  # Chaque tour = 0.1s simulée (arbitraire mais suffisant pour reload)
+        virtual_time += 0.1
         
-        # Compter les survivants
         alive_0 = [s for s in game.all_soldats if s.team == 0 and s.is_alive]
         alive_1 = [s for s in game.all_soldats if s.team == 1 and s.is_alive]
         
-        # Vérifier fin de partie
         if len(alive_0) == 0 and len(alive_1) == 0:
             winner = None
             break
@@ -365,12 +335,10 @@ def run_headless_battle(config_0, config_1, ai1_class, ai2_class, max_turns=1000
             winner = 0
             break
         
-        # Obtenir les actions des IAs
         actions_0 = ia_0.update(game)
         actions_1 = ia_1.update(game)
         all_actions = actions_0 + actions_1
         
-        # Exécuter les actions
         for action in all_actions:
             if action[0] == "move":
                 _, unit, dx, dy = action
@@ -381,15 +349,16 @@ def run_headless_battle(config_0, config_1, ai1_class, ai2_class, max_turns=1000
                 if unit.is_alive and target.is_alive:
                     unit.attack(target, current_time=virtual_time)
         
-        # Nettoyer les morts
         game.all_soldats = [s for s in game.all_soldats if s.is_alive]
     
     return _get_result_dict(game, turn, winner, ai1_class, ai2_class, initial_counts)
 
 
-
+# ═══════════════════════════════════════════════════════════════════════════════
+# RAPPORT DE BATAILLE : Écrit les résultats dans statistiques/tournament_results.txt
+# Inclut le vainqueur, les tours, les unités restantes et les PV totaux
+# ═══════════════════════════════════════════════════════════════════════════════
 def write_battle_report(result, ai1_name, ai2_name):
-    """Écrit le rapport de bataille dans tournament_results.txt."""
     if result["winner"] == 0:
         winner_str = f"Équipe 0 ({ai1_name})"
         winning_ai = ai1_name
@@ -413,16 +382,20 @@ PV Totaux 0 : {result['remaining_hp'][0]}
 PV Totaux 1 : {result['remaining_hp'][1]}
 ======================================
 """
-    with open("tournament_results.txt", "a", encoding="utf-8") as f:
+    # Create statistiques folder if it doesn't exist
+    if not os.path.exists("statistiques"):
+        os.makedirs("statistiques")
+    
+    with open("statistiques/tournament_results.txt", "a", encoding="utf-8") as f:
         f.write(report + "\n")
 
 
-# ============================================================
-#                   CONFIGURATION CONSOLE
-# ============================================================
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# CONFIGURATION CONSOLE : Demande interactive de la composition des équipes
+# Permet de personnaliser le nombre d'unités de chaque type
+# ═══════════════════════════════════════════════════════════════════════════════
 def demander_compo(nom_equipe):
-    """Demande à l'utilisateur la composition d'une équipe via la console."""
     print(f"\n--- CONFIGURATION {nom_equipe} ---")
     compo = {}
     
@@ -443,12 +416,11 @@ def demander_compo(nom_equipe):
     return compo
 
 
-# ============================================================
-#                   MODE GRAPHIQUE (PYGAME)
-# ============================================================
-
+# ═══════════════════════════════════════════════════════════════════════════════
+# BATAILLE GRAPHIQUE : Mode visuel complet avec Pygame
+# Affiche la carte, les unités animées, la minimap et les barres de vie
+# ═══════════════════════════════════════════════════════════════════════════════
 def run_graphical_battle(config_0, config_1, ai1_class, ai2_class, load_file=None):
-    """Lance une bataille avec l'interface graphique Pygame."""
     import pygame
     import curses
     
@@ -459,21 +431,16 @@ def run_graphical_battle(config_0, config_1, ai1_class, ai2_class, load_file=Non
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
     pygame.display.set_caption("Bataille Médiévale")
     
-    # Création du jeu
     game_map = Map("./assets/image.png", screen.get_rect())
     game = Game(game_map, SCREEN_WIDTH // 64, SCREEN_HEIGHT // 64)
     
-    # Gestion du chargement
     is_loaded = False
     if load_file:
         is_loaded = load_game_state(game, load_file)
         if is_loaded:
             print(f"[*] Partie chargée depuis {load_file}")
     
-    # Minimap
     minimap_original = pygame.image.load("./assets/image.png").convert()
-    
-    # Correction Minimap: Upscale 1.5x pour correspondre à la map physique
     w = minimap_original.get_width()
     h = minimap_original.get_height()
     minimap_original = pygame.transform.scale(minimap_original, (int(w * 1.5), int(h * 1.5)))
@@ -490,16 +457,13 @@ def run_graphical_battle(config_0, config_1, ai1_class, ai2_class, load_file=Non
     minimap_img = pygame.transform.smoothscale(minimap_original, (final_mm_w, final_mm_h))
     minimap_scale = final_mm_w / minimap_original.get_width()
     
-    # IAs
     ia_0 = ai1_class(team_name=0)
     ia_1 = ai2_class(team_name=1)
     
-    # Création des soldats
     if not is_loaded:
         full_config = {0: config_0, 1: config_1}
         game.create_soldat(full_config, ai_team0=ia_0, ai_team1=ia_1)
     
-    # Thread console (curses)
     def run_curses(g):
         try:
             curses.wrapper(g.start_cmd)
@@ -510,7 +474,6 @@ def run_graphical_battle(config_0, config_1, ai1_class, ai2_class, load_file=Non
     t.daemon = True
     t.start()
     
-    # Boucle de jeu
     running = True
     clock = pygame.time.Clock()
     pygame.font.init()
@@ -526,6 +489,10 @@ def run_graphical_battle(config_0, config_1, ai1_class, ai2_class, load_file=Non
     image_cache = {}
     last_scale = -1
     
+
+    # ═══════════════════════════════════════════════════════════════════════════════
+    # BOUCLE PRINCIPALE : Gère les événements, la logique et l'affichage
+    # ═══════════════════════════════════════════════════════════════════════════════
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -556,7 +523,6 @@ def run_graphical_battle(config_0, config_1, ai1_class, ai2_class, load_file=Non
             
             game_map.mouvement(event)
         
-        # Logique
         if not winner_text and not paused:
             for soldat in list(game.all_soldats):
                 if not soldat.is_alive:
@@ -588,7 +554,10 @@ def run_graphical_battle(config_0, config_1, ai1_class, ai2_class, load_file=Non
                         if getattr(target, "is_alive", False):
                             unit.attack(target)
         
-        # Affichage
+
+        # ═══════════════════════════════════════════════════════════════════════════════
+        # RENDU GRAPHIQUE : Dessine la carte, les unités et l'interface utilisateur
+        # ═══════════════════════════════════════════════════════════════════════════════
         screen.fill((0, 0, 0))
         game_map.draw(screen)
         
@@ -613,7 +582,6 @@ def run_graphical_battle(config_0, config_1, ai1_class, ai2_class, load_file=Non
                 
                 screen.blit(image_cache[cache_key], (screen_x, screen_y))
                 
-                # Barre de vie
                 hp_ratio = unit.hp / unit.max_hp
                 bar_width = int(soldat_w * 0.7)
                 bar_height = max(2, int(3 * current_scale))
@@ -622,17 +590,18 @@ def run_graphical_battle(config_0, config_1, ai1_class, ai2_class, load_file=Non
                 
                 pygame.draw.rect(screen, (0, 0, 0), (bar_x, bar_y, bar_width, bar_height))
                 if unit.team == 0:
-                    # Equipe 0 (Bleu) : Cyan -> Bleu foncé
                     bar_color = (0, int(255 * hp_ratio), 255)
                 else:
-                    # Equipe 1 (Rouge) : Orange -> Rouge foncé
                     bar_color = (255, int(100 * hp_ratio), 0)
                 hp_width = int(bar_width * hp_ratio)
                 if hp_width > 0:
                     pygame.draw.rect(screen, bar_color, (bar_x, bar_y, hp_width, bar_height))
                 pygame.draw.rect(screen, (255, 255, 255), (bar_x, bar_y, bar_width, bar_height), 1)
         
-        # Minimap
+
+        # ═══════════════════════════════════════════════════════════════════════════════
+        # MINIMAP : Affiche la carte réduite avec les positions des unités
+        # ═══════════════════════════════════════════════════════════════════════════════
         actual_screen_w = screen.get_width()
         actual_screen_h = screen.get_height()
         mm_margin = 15
@@ -662,6 +631,10 @@ def run_graphical_battle(config_0, config_1, ai1_class, ai2_class, load_file=Non
             texte = f"{soldat_selectionne.name} : {soldat_selectionne.hp} PV"
             screen.blit(font.render(texte, True, (255, 255, 255)), (20, SCREEN_HEIGHT - 50))
         
+
+        # ═══════════════════════════════════════════════════════════════════════════════
+        # ÉCRANS SPÉCIAUX : Affichage de la victoire et du menu pause
+        # ═══════════════════════════════════════════════════════════════════════════════
         if winner_text:
             color_gold = (255, 215, 0)
             text_surf = font_victory.render(winner_text, True, color_gold)
@@ -700,7 +673,6 @@ def run_graphical_battle(config_0, config_1, ai1_class, ai2_class, load_file=Non
             hint_rect = hint_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 120))
             screen.blit(hint_text, hint_rect)
         
-        # Notifications
         if notification_text and (time.time() - notification_time) < NOTIFICATION_DURATION:
             time_remaining = NOTIFICATION_DURATION - (time.time() - notification_time)
             alpha = min(255, int(255 * (time_remaining / 1.0))) if time_remaining < 1.0 else 255
@@ -730,20 +702,19 @@ def run_graphical_battle(config_0, config_1, ai1_class, ai2_class, load_file=Non
     pygame.quit()
 
 
-# ============================================================
-#                   COMMANDES CLI
-# ============================================================
-
+# ═══════════════════════════════════════════════════════════════════════════════
+# HELPER MULTIPROCESSING : Fonction wrapper pour les batailles en parallèle
+# ═══════════════════════════════════════════════════════════════════════════════
 def _run_batch_battle(args):
-    """Helper pour le multiprocessing: unpack args et lance run_headless_battle"""
-def _run_batch_battle(args):
-    """Helper pour le multiprocessing: unpack args et lance run_headless_battle"""
     config_0, config_1, ai1_class, ai2_class = args
-    # OPTIMISATION PLOT: Map réduite (30x20) pour forcer le combat rapide + max_turns réduit
     return run_headless_battle(config_0, config_1, ai1_class, ai2_class, max_turns=2000, width=30, height=20)
 
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# COMMANDE PLOT : Génère un graphique de performance (loi de Lanchester)
+# Varie le nombre d'unités d'un type et mesure le taux de victoire
+# ═══════════════════════════════════════════════════════════════════════════════
 def cmd_plot(args):
-    """Génère un graphique (loi de Lanchester) - Optimisé Multiprocess."""
     try:
         import matplotlib.pyplot as plt
     except ImportError:
@@ -752,14 +723,12 @@ def cmd_plot(args):
         
     import concurrent.futures
     import os
+    import re
 
     ai1_class = get_ai_class(args.ai1)
     ai2_class = get_ai_class(args.ai2)
     
     unit_type = args.unit
-    
-    # Parsing range string `range(1,100)` or `1-100`
-    import re
     range_str = args.range
     min_val, max_val = 1, 50
     
@@ -783,74 +752,8 @@ def cmd_plot(args):
     print(f"[*] Variation: {unit_type} de {min_val} à {max_val} (Rounds: {args.rounds})")
     print(f"[*] Parallélisme: {os.cpu_count()} coeurs")
     
-    x_values = []
-    y_win_rates = []
-    
-    # Config fixe de l'adversaire
     config_1_fixed = {"Halberdier": 20, "Paladin": 20, "Arbalester": 20}
     
-    # Préparation de toutes les tâches
-    tasks = []
-    total_sims = (max_val - min_val + 1) * args.rounds
-    
-    # Pour chaque quantité d'unité
-    for count in range(min_val, max_val + 1):
-        config_0 = {"Halberdier": 20, "Paladin": 20, "Arbalester": 20}
-        config_0[unit_type] = count
-        
-        # On prépare N batailles pour ce count
-        for _ in range(args.rounds):
-            tasks.append((config_0.copy(), config_1_fixed.copy(), ai1_class, ai2_class))
-
-    print(f"[*] Lancement de {total_sims} simulations...")
-    
-    results = []
-    completed = 0
-    
-    # Exécution parallèle
-    path_py = os.sys.executable
-    with concurrent.futures.ProcessPoolExecutor() as executor:
-        # submit all
-        future_to_task = {executor.submit(_run_batch_battle, task): task for task in tasks}
-        
-        for future in concurrent.futures.as_completed(future_to_task):
-            completed += 1
-            if completed % 10 == 0 or completed == total_sims:
-                print(f"\rProgression: {completed}/{total_sims} simulations", end="", flush=True)
-            
-            try:
-                res = future.result()
-                results.append(res)
-            except Exception as e:
-                print(f"\n[!] Erreur simu: {e}")
-
-    print("\n[*] Analyse des résultats...")
-    
-    # Agrégation des résultats
-    # Il faut mapper les résultats au 'count' qui a généré la config
-    # On sait que l'ordre n'est pas garanti, mais on peut reconstruire
-    # On va refaire une boucle simple pour le plotting en filtrant les résultats
-    # Une méthode plus robuste aurait été de passer le 'count' dans le retour
-    
-    # Re-tri par count
-    stats_by_count = {c: {"wins": 0, "total": 0} for c in range(min_val, max_val + 1)}
-    
-    # On a besoin de savoir quel résultat correspond à quel count.
-    # Hack simple: on regarde le count de unit_type dans initial_counts du résultat
-    
-    for res in results:
-        # res['initial_counts'] = {0: ..., 1: ...} -> NON, c'est la somme total
-        # Ah, run_headless_battle ne retourne pas le détail par unité dans le dict result standard
-        # Il faut modifier run_headless_battle ou _run_batch_battle pour retourner le count
-        pass
-        
-    # CORRECTION : On va modifier _run_batch_battle pour qu'il retourne aussi le count testé
-    # Mais wait, je ne peux pas redéfinir _run_batch_battle facilement sans changer tout le bloc
-    
-    # On va le faire différemment: On exécute par lots de 'count'
-    pass 
-    
-    # --- Approche itérative par count avec parallélisme sur les rounds ---
     x_values = range(min_val, max_val + 1)
     y_win_rates = []
     
@@ -865,7 +768,6 @@ def cmd_plot(args):
             config_0 = {"Halberdier": 20, "Paladin": 20, "Arbalester": 20}
             config_0[unit_type] = count
             
-            # Lancer les N rounds en parallèle pour CE count
             batch_tasks = [(config_0.copy(), config_1_fixed.copy(), ai1_class, ai2_class) for _ in range(args.rounds)]
             
             futures = [executor.submit(_run_batch_battle, t) for t in batch_tasks]
@@ -893,16 +795,17 @@ def cmd_plot(args):
     print(f"[*] Graphique sauvegardé: {filename}")
     plt.show()
 
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# COMMANDE RUN : Lance une bataille unique entre deux IA
+# Supporte le mode graphique et le mode terminal (curses)
+# ═══════════════════════════════════════════════════════════════════════════════
 def cmd_run(args):
-    """Exécute une bataille."""
     ai1_class = get_ai_class(args.ai1)
     ai2_class = get_ai_class(args.ai2)
     
     print(f"[*] Bataille: {args.ai1} vs {args.ai2}")
     
-    
-    # Récupérer la config du scénario
-    # FORCE STANDARD CHECK pour rassurer l'utilisateur
     if args.scenario.lower() == "standard":
         config_0 = {"Halberdier": 20, "Paladin": 20, "Arbalester": 20}
         config_1 = {"Halberdier": 20, "Paladin": 20, "Arbalester": 20}
@@ -910,17 +813,14 @@ def cmd_run(args):
     else:
         config_0, config_1 = get_scenario_configs(args.scenario)
     
-        
     print(f"[*] Bataille: {args.ai1} vs {args.ai2}")
     print(f"[*] Config Equipe 0: {config_0}")
     print(f"[*] Config Equipe 1: {config_1}")
     
     if args.terminal:
-        # Mode terminal (curses)
         print("[*] Mode terminal (curses)")
         import curses
         try:
-             # Utiliser curses.wrapper pour gérer l'init/cleanup
             result = curses.wrapper(run_curses_battle, config_0, config_1, ai1_class, ai2_class)
         except curses.error as e:
             print(f"Erreur Curses: {e}")
@@ -932,18 +832,19 @@ def cmd_run(args):
             print(f"\n[*] Résultat: {winner_str} en {result['turns']} tours")
             
             write_battle_report(result, args.ai1, args.ai2)
-            print("[*] Rapport écrit dans tournament_results.txt")
+            print("[*] Rapport écrit dans statistiques/tournament_results.txt")
             
             if args.datafile:
                 with open(args.datafile, "a", encoding="utf-8") as f:
                     f.write(f"{result}\n")
     else:
-        # Mode graphique
         run_graphical_battle(config_0, config_1, ai1_class, ai2_class)
 
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# COMMANDE LOAD : Charge une sauvegarde existante et reprend la partie
+# ═══════════════════════════════════════════════════════════════════════════════
 def cmd_load(args):
-    """Charge une sauvegarde."""
     print(f"[*] Chargement de {args.savefile}")
     
     config_0 = {"Halberdier": 0, "Paladin": 0, "Arbalester": 0}
@@ -952,8 +853,11 @@ def cmd_load(args):
     run_graphical_battle(config_0, config_1, ColonelSMART, MajorDaftSimple, load_file=args.savefile)
 
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# COMMANDE TOURNEY : Lance un tournoi entre plusieurs IA
+# Exécute tous les matchups possibles avec alternance des positions
+# ═══════════════════════════════════════════════════════════════════════════════
 def cmd_tourney(args):
-    """Lance un tournoi automatique."""
     ai_classes = [get_ai_class(name) for name in args.ais]
     
     print(f"[*] Tournoi: {len(ai_classes)} IAs, {args.rounds} rounds")
@@ -961,10 +865,8 @@ def cmd_tourney(args):
     print(f"    Alternance positions: {not args.no_alternate}")
     
     results = {}
-    results = {}
     config_0, config_1 = get_scenario_configs(args.scenario)
     
-    # Toutes les combinaisons
     from itertools import combinations
     matchups = list(combinations(ai_classes, 2))
     
@@ -993,7 +895,6 @@ def cmd_tourney(args):
             else:
                 results[key]["draws"] += 1
         
-        # Position inversée
         if not args.no_alternate:
             key_inv = f"{ai2.__name__} vs {ai1.__name__}"
             results[key_inv] = {"wins": 0, "losses": 0, "draws": 0}
@@ -1020,13 +921,13 @@ def cmd_tourney(args):
         win_rate = (stats["wins"] / total * 100) if total > 0 else 0
         print(f"{matchup}: {stats['wins']}W / {stats['losses']}L / {stats['draws']}D ({win_rate:.1f}%)")
     print("=" * 50)
-    print("[*] Tous les résultats sont dans tournament_results.txt")
+    print("[*] Tous les résultats sont dans statistiques/tournament_results.txt")
 
 
-# ============================================================
-#                   POINT D'ENTRÉE PRINCIPAL
-# ============================================================
-
+# ═══════════════════════════════════════════════════════════════════════════════
+# POINT D'ENTRÉE PRINCIPAL : Parse les arguments et lance la commande appropriée
+# Si aucune commande, lance le mode interactif graphique par défaut
+# ═══════════════════════════════════════════════════════════════════════════════
 def main():
     epilog_text = """
 EXEMPLES D'UTILISATION :
@@ -1067,7 +968,6 @@ COMMANDES DISPONIBLES :
     
     subparsers = parser.add_subparsers(dest="command", help="Commandes disponibles")
     
-    # === Commande RUN ===
     run_parser = subparsers.add_parser("run", help="Lancer une bataille")
     run_parser.add_argument("ai1", help="IA équipe 0 (ex: ColonelSMART, MajorDaft)")
     run_parser.add_argument("ai2", help="IA équipe 1")
@@ -1078,11 +978,9 @@ COMMANDES DISPONIBLES :
     run_parser.add_argument("-d", "--datafile", type=str, default=None,
                            help="Fichier où écrire les données")
     
-    # === Commande LOAD ===
     load_parser = subparsers.add_parser("load", help="Charger une sauvegarde")
     load_parser.add_argument("savefile", help="Fichier de sauvegarde")
     
-    # === Commande TOURNEY ===
     tourney_parser = subparsers.add_parser("tourney", help="Lancer un tournoi")
     tourney_parser.add_argument("-G", "--ais", nargs="+",
                                default=["ColonelSMART", "MajorDaftSimple"],
@@ -1094,7 +992,6 @@ COMMANDES DISPONIBLES :
     tourney_parser.add_argument("-na", "--no-alternate", action="store_true",
                                help="Ne pas alterner les positions")
     
-    # === Commande PLOT ===
     plot_parser = subparsers.add_parser("plot", help="Générer un graphique de performance")
     plot_parser.add_argument("ai1", help="IA équipe variable (ex: ColonelSMART)")
     plot_parser.add_argument("ai2", help="IA équipe fixe (adversaire)")
@@ -1107,7 +1004,6 @@ COMMANDES DISPONIBLES :
     
     args = parser.parse_args()
     
-    # Si aucune commande, mode interactif graphique par défaut
     if args.command is None:
         print("=== BATAILLE MÉDIÉVALE : CONFIGURATION ===")
         config_0 = demander_compo("EQUIPE BLEUE (0)")
