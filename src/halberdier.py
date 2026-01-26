@@ -8,11 +8,6 @@ import pygame
 class Halberdier(Soldat):
     
     def __init__(self, x=0, y=0, team=0):
-<<<<<<< HEAD
-        image_path =  "./assets/halbardier_1.png" if team==1 else "./assets/harbaldier_0.png"
-
-        super().__init__(x=x, y=y, owner=team, img_path=image_path)
-=======
         if team == 1:
             image_path = "./assets/PikemanRedWalk/Pikemanwalk"
             super().__init__(x=x, y=y, owner=team, img_path=None)
@@ -27,7 +22,6 @@ class Halberdier(Soldat):
             self.load_animation_frames(x, y, image_path)
             
     
->>>>>>> Noah
         self.img_path = image_path
         self.name = "Halberdier"
         self.tag = "H"
@@ -50,9 +44,6 @@ class Halberdier(Soldat):
             'Paladin' : 10,
             'Arbalester' : -3,
             'Halberdier' : 0
-<<<<<<< HEAD
-        }
-=======
         }
         
         self.current_frame = 0
@@ -76,4 +67,3 @@ class Halberdier(Soldat):
         self.rect.y = y * 32
         self.exact_x = float(self.rect.x)
         self.exact_y = float(self.rect.y)
->>>>>>> Noah

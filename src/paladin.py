@@ -10,16 +10,6 @@ class Paladin(Soldat):
     
     def __init__(self, x=0, y=0 , team=0):
         if team == 1:
-<<<<<<< HEAD
-            image_path = "./assets/paladin_1.png"
-            super().__init__(x=x, y=y, owner=team, img_path=image_path)
-            self.frames = []
-        else:
-            image_path = None
-            super().__init__(x=x, y=y, owner=team, img_path=None)
-            self.frames = []
-            self._load_blue_spritesheet(x, y)
-=======
             image_path = "./assets/KnightRedWalk.png"
             super().__init__(x=x, y=y, owner=team, img_path=None)
             self.frames = []
@@ -29,7 +19,6 @@ class Paladin(Soldat):
             super().__init__(x=x, y=y, owner=team, img_path=None)
             self.frames = []
             self._load_blue_spritesheet(x, y, image_path)
->>>>>>> Noah
 
         self.img_path = image_path
         self.name = "Paladin"
@@ -64,15 +53,9 @@ class Paladin(Soldat):
     # CHARGEMENT SPRITESHEET : Charge l'animation du Paladin bleu (équipe 0)
     # Découpe le spritesheet en 6 frames pour l'animation de marche
     # ═══════════════════════════════════════════════════════════════════════════════
-<<<<<<< HEAD
-    def _load_blue_spritesheet(self, grid_x, grid_y):
-        try:
-            spritesheet = pygame.image.load("./assets/1_RBs3JBPgP4sWcEmuhwzPMA.png").convert_alpha()
-=======
     def _load_blue_spritesheet(self, grid_x, grid_y, image_path):
         try:
             spritesheet = pygame.image.load(image_path).convert_alpha()
->>>>>>> Noah
             sheet_w = spritesheet.get_width()
             sheet_h = spritesheet.get_height()
             
