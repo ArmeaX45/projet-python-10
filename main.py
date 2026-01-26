@@ -621,9 +621,12 @@ def run_graphical_battle(config_0, config_1, ai1_class, ai2_class, load_file=Non
                 bar_y = screen_y - bar_height - 1
                 
                 pygame.draw.rect(screen, (0, 0, 0), (bar_x, bar_y, bar_width, bar_height))
-                green = max(0, min(255, int(255 * hp_ratio)))
-                red = max(0, min(255, int(255 * (1 - hp_ratio))))
-                bar_color = (red, green, 0)
+                if unit.team == 0:
+                    # Equipe 0 (Bleu) : Cyan -> Bleu foncé
+                    bar_color = (0, int(255 * hp_ratio), 255)
+                else:
+                    # Equipe 1 (Rouge) : Orange -> Rouge foncé
+                    bar_color = (255, int(100 * hp_ratio), 0)
                 hp_width = int(bar_width * hp_ratio)
                 if hp_width > 0:
                     pygame.draw.rect(screen, bar_color, (bar_x, bar_y, hp_width, bar_height))
@@ -1028,7 +1031,7 @@ def main():
     epilog_text = """
 EXEMPLES D'UTILISATION :
 ------------------------
-
+Possible IA : ColonelSMART  -  MajorDaftSimple  -  
 1. BATAILLE SIMPLE (Mode Graphique)
    python battle.py run ColonelSMART MajorDaftSimple
 
@@ -1044,7 +1047,6 @@ EXEMPLES D'UTILISATION :
 
 5. GRAPHIQUE D'ANALYSE (Loi de Lanchester)
    python battle.py plot ColonelSMART MajorDaft -N 5 --unit Halberdier --range "range(1,50)"
-   (Génère une courbe de victoire en fonction du nombre de Hallebardiers)
 
 6. CHARGER UNE SAUVEGARDE
    python battle.py load quicksave.dat

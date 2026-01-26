@@ -81425,3 +81425,13 @@ PV Totaux 1 : 10
         Points de Vie Totaux 1 : 0
         ======================================
         
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 1
+        IA GAGNANTE : MajorDaft
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 19
+        Points de Vie Totaux 0 : 0
+        Points de Vie Totaux 1 : 590
+        ======================================
+        

@@ -37,6 +37,6 @@ class Arbalester(Soldat):
         # self.vs_halberdier = 3
         self.vs = {
             'Halberdier' : 5,
-            'Paladin' : -3,
+            'Paladin' : -2,
             'Arbalester' : 0
         }

@@ -113,7 +113,8 @@ class ColonelSMART:
                     threats = enemy_by_type.get(threat_type, [])
                     if threats:
                         nearest_threat = min(threats, key=lambda t: self._dist(unit, t))
-                        if self._dist(unit, nearest_threat) < tile * 5:
+                        # FIX VIBRATION: Fuite seulement si très proche (< 3.5 cases) pour pouvoir tirer à 5 cases
+                        if self._dist(unit, nearest_threat) < tile * 3.5:
                             dx, dy = self._calculate_flee(unit, nearest_threat, allies, enemies, tile, map_instance)
                             if dx != 0 or dy != 0:
                                 actions.append(("move", unit, dx, dy))
