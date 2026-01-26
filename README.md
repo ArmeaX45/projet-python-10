@@ -1,1 +1,177 @@
 # projet-python-10
+
+main.py:
+    Chargement dynamique des scénarios
+
+    Chargement dynamique des IA
+
+    Lancement du moteur game.py
+
+    Gestion du headless / terminal
+
+    Gestion des commandes argparse
+
+game.py:
+    Gestion du game loop (ticks, vitesse, pause…)
+
+    Appel aux AIs
+
+    Avancement de la simulation (mouvements, collisions, attaques)
+
+    Gestion de la victoire/défaite
+
+    Liaison avec map.py (positions)
+
+    Liaison avec save_load.py (quick save/load F11/F12)
+
+    Bande passante pour les vues (terminal/isometric)
+
+(fait) map.py:
+    Création d’une grille N×M (min 120×120)
+
+    Cases avec altitude (0–16)
+
+    Obstacles (optionnel)
+
+(fait) ai_base.py:
+    Classe mère que toutes les AIs doivent suivre :
+
+    decide_actions(units, enemy_units, map)
+
+    on_unit_death()
+
+    setup()
+
+    Gestion état interne
+
+(fait) ai_brindead.py:
+    Réagit uniquement si ennemi à proximité
+
+    Pas de stratégie
+
+(fait) ai_daft.py:
+    Attaque la cible la plus proche
+
+    Maintient des formations simples
+
+    Utilise distances et stats (via utils/stats).
+
+ai_smart.py:
+    Counters (Pikemen > Cavalry, Arbalester > Pikemen…)
+
+    Hit & run
+
+    Interception
+
+    Feintes
+
+    Stratégie situative
+
+(fait) soldat.py:
+    HP
+
+    Armure (mélee / pierce)
+
+    Classes
+
+    Bonus damage
+
+    Vitesse
+
+    LOS
+
+    Attack speed
+
+    Range
+
+    Pathfinding simple
+
+    update()
+
+    attack()
+
+    move_towards()
+
+(fait) arbalester.py:
+    Stats AoE2 exactes
+
+    Attack projectiles
+
+    Hitbox simple (pas besoin de ballistics)
+
+(fait) halbertier.py:
+    Bonus vs Cavaliers
+
+    Cheaper but fragile
+
+    Good for counters
+
+(fait) paladin.py:
+    Cavalry tanky
+
+    High damage
+
+    Weak vs halberdiers
+
+barrack.py:
+    créer des unités
+
+scenario.py:
+    classe abstraite
+
+    positions initiales
+
+    nombre d’unités
+
+    limites carte
+
+    IA et camps
+
+battle_scenario.py:
+    Scénario de bataille classique
+
+    Deux armées
+
+    Placement initial
+
+    Conditions de victoire
+
+lanchester.py:
+    Armée A = N
+
+    Armée B = 2N
+
+    Doit permettre de vérifier les lois de Lanchester
+
+    Enregistre statistiques
+
+save_load.py:
+    Sauvegarde map + unités + état AIs
+
+    Chargement complet
+
+    F11 : quick save
+
+    F12 : quick load
+
+stats.py:
+    Calcul DPS
+
+    Distances
+
+    Estimations combat
+
+    Avantages / counters
+
+constants.py:
+    Toutes les valeurs globales :
+
+        vitesse simulation
+
+        altitude multiplier
+
+        couleurs
+
+        paramètres IA
+
+

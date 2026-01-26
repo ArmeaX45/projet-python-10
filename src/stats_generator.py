@@ -1,0 +1,85 @@
+import pickle
+import os
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# RAPPORT DE BATAILLE : Génère un rapport lisible à partir d'une sauvegarde
+# Calcule les statistiques de survivants et PV pour chaque équipe
+# ═══════════════════════════════════════════════════════════════════════════════
+def generate_battle_report(save_filename="quicksave.dat"):
+    filepath = os.path.join("saves", save_filename)
+    
+    if not os.path.exists(filepath):
+        print(f"Erreur : {save_filename} introuvable.")
+        return
+
+    try:
+        with open(filepath, "rb") as f:
+            data = pickle.load(f)
+        
+        units = data["units"]
+        
+        team_0_survivors = [u for u in units if u.team == 0 and u.hp > 0]
+        team_1_survivors = [u for u in units if u.team == 1 and u.hp > 0]
+        
+        hp_total_0 = sum([u.hp for u in team_0_survivors])
+        hp_total_1 = sum([u.hp for u in team_1_survivors])
+
+        report = f"""
+        ======= RAPPORT DE BATAILLE : {save_filename} =======
+        Équipe 0 (DAFT) : {len(team_0_survivors)} survivants | PV Totaux: {hp_total_0}
+        Équipe 1 (BRAIN) : {len(team_1_survivors)} survivants | PV Totaux: {hp_total_1}
+        ----------------------------------------------------
+        GAGNANT : {'Équipe 0' if hp_total_0 > hp_total_1 else 'Équipe 1'}
+        ====================================================
+        """
+        
+        with open("battle_report.txt", "w", encoding="utf-8") as f_out:
+            f_out.write(report)
+            
+        print("[*] Rapport statistique généré dans 'battle_report.txt'")
+        
+    except Exception as e:
+        print(f"Erreur lors de l'analyse : {e}")
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# VÉRIFICATION FIN DE PARTIE : Détecte si une équipe est éliminée
+# Génère automatiquement le rapport dans statistiques/tournament_results.txt
+# ═══════════════════════════════════════════════════════════════════════════════
+def check_end_and_report(game):
+    allies = [u for u in game.all_soldats if u.team == 0 and u.is_alive]
+    enemies = [u for u in game.all_soldats if u.team == 1 and u.is_alive]
+
+    if len(allies) == 0 or len(enemies) == 0:
+        if len(allies) == 0 and len(enemies) == 0:
+            winner = "Égalité (Match Nul)"
+            winning_ai = "Aucune"
+        elif len(allies) > 0:
+            winner = "Équipe 0"
+            winning_ai = "ColonelSMART"
+        else:
+            winner = "Équipe 1"
+            winning_ai = "MajorDaft"
+
+        report = f"""
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : {winner}
+        IA GAGNANTE : {winning_ai}
+        Unités restantes Équipe 0 : {len(allies)}
+        Unités restantes Équipe 1 : {len(enemies)}
+        Points de Vie Totaux 0 : {sum(u.hp for u in allies)}
+        Points de Vie Totaux 1 : {sum(u.hp for u in enemies)}
+        ======================================
+        """
+        
+        # Create statistiques folder if it doesn't exist
+        if not os.path.exists("statistiques"):
+            os.makedirs("statistiques")
+        
+        with open("statistiques/tournament_results.txt", "a", encoding="utf-8") as f:
+            f.write(report + "\n")
+        
+        print("[*] La bataille est finie. Rapport généré dans 'statistiques/tournament_results.txt'")
+        return True
+    return False
