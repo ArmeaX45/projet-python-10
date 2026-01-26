@@ -299,8 +299,9 @@ def _get_result_dict(game, turn, winner, ai1, ai2, initial_counts):
 # ═══════════════════════════════════════════════════════════════════════════════
 # BATAILLE HEADLESS : Mode 100% sans affichage pour les tournois rapides
 # Simule la bataille tour par tour avec un temps virtuel pour les cooldowns
+# track_history=True pour enregistrer l'évolution des unités à chaque tour
 # ═══════════════════════════════════════════════════════════════════════════════
-def run_headless_battle(config_0, config_1, ai1_class, ai2_class, max_turns=10000, width=60, height=34):
+def run_headless_battle(config_0, config_1, ai1_class, ai2_class, max_turns=10000, width=60, height=34, track_history=False):
     import pygame
     
     if not pygame.display.get_init():
@@ -318,12 +319,23 @@ def run_headless_battle(config_0, config_1, ai1_class, ai2_class, max_turns=1000
     winner = None
     virtual_time = 0.0
     
+    # Historique pour graphique d'évolution
+    history_0 = []
+    history_1 = []
+    history_turns = []
+    
     while turn < max_turns:
         turn += 1
         virtual_time += 0.1
         
         alive_0 = [s for s in game.all_soldats if s.team == 0 and s.is_alive]
         alive_1 = [s for s in game.all_soldats if s.team == 1 and s.is_alive]
+        
+        # Enregistrer l'historique si demandé
+        if track_history:
+            history_turns.append(turn)
+            history_0.append(len(alive_0))
+            history_1.append(len(alive_1))
         
         if len(alive_0) == 0 and len(alive_1) == 0:
             winner = None
@@ -351,7 +363,18 @@ def run_headless_battle(config_0, config_1, ai1_class, ai2_class, max_turns=1000
         
         game.all_soldats = [s for s in game.all_soldats if s.is_alive]
     
-    return _get_result_dict(game, turn, winner, ai1_class, ai2_class, initial_counts)
+    result = _get_result_dict(game, turn, winner, ai1_class, ai2_class, initial_counts)
+    
+    # Ajouter l'historique au résultat si demandé
+    if track_history:
+        result["history"] = {
+            "turns": history_turns,
+            "team_0": history_0,
+            "team_1": history_1
+        }
+    
+    return result
+
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -711,14 +734,15 @@ def _run_batch_battle(args):
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# COMMANDE PLOT : Génère un graphique de performance (loi de Lanchester)
-# Varie le nombre d'unités d'un type et mesure le taux de victoire
+# COMMANDE LANCHESTER : Simule la loi de Lanchester (N fixe vs M croissant)
+# Teste une armée fixe contre une armée ennemie de taille croissante
 # ═══════════════════════════════════════════════════════════════════════════════
 def cmd_plot(args):
     try:
         import matplotlib.pyplot as plt
+        import numpy as np
     except ImportError:
-        print("[!] Matplotlib introuvable. Installez-le avec: pip install matplotlib")
+        print("[!] Matplotlib/NumPy introuvable. Installez avec: pip install matplotlib numpy")
         return
         
     import concurrent.futures
@@ -728,72 +752,214 @@ def cmd_plot(args):
     ai1_class = get_ai_class(args.ai1)
     ai2_class = get_ai_class(args.ai2)
     
-    unit_type = args.unit
+    # Parse range
     range_str = args.range
-    min_val, max_val = 1, 50
+    min_enemy, max_enemy = 1, 30
     
     match = re.search(r'range\(\s*(\d+)\s*,\s*(\d+)\s*\)', range_str)
     if match:
-        min_val = int(match.group(1))
-        max_val = int(match.group(2))
+        min_enemy = int(match.group(1))
+        max_enemy = int(match.group(2))
     elif '-' in range_str:
         try:
             parts = range_str.split('-')
-            min_val = int(parts[0])
-            max_val = int(parts[1])
+            min_enemy = int(parts[0])
+            max_enemy = int(parts[1])
         except:
-             print(f"[!] Format de plage invalide: {range_str}. Utilisez range(1,100) ou 1-100")
-             return
-    else:
-         print(f"[!] Format de plage inconnu: {range_str}")
-         return
+            print(f"[!] Format de plage invalide: {range_str}")
+            return
     
-    print(f"[*] Plotting: {args.ai1} vs {args.ai2}")
-    print(f"[*] Variation: {unit_type} de {min_val} à {max_val} (Rounds: {args.rounds})")
+    # Fixed army size for team 0
+    fixed_army = args.fixed
+    unit_type = args.unit
+    
+    print("=" * 60)
+    print("        LOI DE LANCHESTER - SIMULATION")
+    print("=" * 60)
+    print(f"[*] Armée fixe (Équipe 0): {fixed_army} {unit_type}")
+    print(f"[*] Armée ennemie (Équipe 1): {min_enemy} à {max_enemy} {unit_type}")
+    print(f"[*] IA: {args.ai1} vs {args.ai2}")
+    print(f"[*] Rounds par point: {args.rounds}")
     print(f"[*] Parallélisme: {os.cpu_count()} coeurs")
+    print("=" * 60)
     
-    config_1_fixed = {"Halberdier": 20, "Paladin": 20, "Arbalester": 20}
+    x_enemy_counts = list(range(min_enemy, max_enemy + 1))
+    y_survivors_A = []  # Survivants moyens de l'armée A (équipe 0)
+    y_survivors_B = []  # Survivants moyens de l'armée B (équipe 1)
     
-    x_values = range(min_val, max_val + 1)
-    y_win_rates = []
-    
-    current_idx = 0
-    total_steps = len(x_values)
+    total_steps = len(x_enemy_counts)
     
     with concurrent.futures.ProcessPoolExecutor() as executor:
-        for count in x_values:
-            current_idx += 1
-            print(f"\rAnalysing {unit_type}={count} ({current_idx}/{total_steps})...", end="", flush=True)
+        for idx, enemy_count in enumerate(x_enemy_counts):
+            print(f"\r[{idx+1}/{total_steps}] Test: {fixed_army} vs {enemy_count}...", end="", flush=True)
             
-            config_0 = {"Halberdier": 20, "Paladin": 20, "Arbalester": 20}
-            config_0[unit_type] = count
+            # Config: équipe 0 fixe, équipe 1 variable
+            config_0 = {unit_type: fixed_army}
+            config_1 = {unit_type: enemy_count}
             
-            batch_tasks = [(config_0.copy(), config_1_fixed.copy(), ai1_class, ai2_class) for _ in range(args.rounds)]
+            batch_tasks = [(config_0.copy(), config_1.copy(), ai1_class, ai2_class) 
+                          for _ in range(args.rounds)]
             
             futures = [executor.submit(_run_batch_battle, t) for t in batch_tasks]
             
-            wins = 0
-            for f in concurrent.futures.as_completed(futures):
-                if f.result()["winner"] == 0:
-                    wins += 1
+            total_survivors_0 = 0
+            total_survivors_1 = 0
             
-            y_win_rates.append((wins / args.rounds) * 100)
-
-    print("\n[*] Génération du graphique...")
+            for f in concurrent.futures.as_completed(futures):
+                result = f.result()
+                total_survivors_0 += result["remaining_counts"][0]
+                total_survivors_1 += result["remaining_counts"][1]
+            
+            # Moyenne des survivants
+            avg_survivors_A = total_survivors_0 / args.rounds
+            avg_survivors_B = total_survivors_1 / args.rounds
+            
+            y_survivors_A.append(avg_survivors_A)
+            y_survivors_B.append(avg_survivors_B)
     
-    plt.figure(figsize=(10, 6))
-    plt.plot(list(x_values), y_win_rates, marker='o', linestyle='-', color='b')
-    plt.title(f"Win Rate of {args.ai1} vs {args.ai2}")
-    plt.xlabel(f"Number of {unit_type}")
-    plt.ylabel("Win Rate (%)")
-    plt.grid(True)
-    plt.axhline(y=50, color='r', linestyle='--', label="50% Win Rate")
-    plt.legend()
+    print("\n[*] Génération du graphique Lanchester...")
     
-    filename = f"plot_{args.ai1}_vs_{args.ai2}_{unit_type}.png"
-    plt.savefig(filename)
+    # Calcul de la courbe théorique de Lanchester (Square Law)
+    # Survivants A = sqrt(N² - M²) si N > M, sinon 0
+    # Survivants B = sqrt(M² - N²) si M > N, sinon 0
+    N = fixed_army
+    y_theory_A = []
+    y_theory_B = []
+    
+    for M in x_enemy_counts:
+        if N > M:
+            y_theory_A.append(np.sqrt(N**2 - M**2))
+            y_theory_B.append(0)
+        elif M > N:
+            y_theory_A.append(0)
+            y_theory_B.append(np.sqrt(M**2 - N**2))
+        else:
+            y_theory_A.append(0)
+            y_theory_B.append(0)
+    
+    # Créer le graphique
+    fig, ax = plt.subplots(figsize=(12, 7))
+    fig.suptitle(f"Loi de Lanchester: {fixed_army} {unit_type} (A) vs Armée Croissante (B)", 
+                 fontsize=14, fontweight='bold')
+    
+    # Courbes de simulation
+    ax.plot(x_enemy_counts, y_survivors_A, 'b-', linewidth=2.5, markersize=5, 
+            label=f'Survivants Armée A (simulation)', marker='o')
+    ax.plot(x_enemy_counts, y_survivors_B, 'r-', linewidth=2.5, markersize=5, 
+            label=f'Survivants Armée B (simulation)', marker='s')
+    
+    # Courbes théoriques (Lanchester)
+    ax.plot(x_enemy_counts, y_theory_A, 'b--', linewidth=1.5, alpha=0.7, 
+            label='Théorie Lanchester A')
+    ax.plot(x_enemy_counts, y_theory_B, 'r--', linewidth=1.5, alpha=0.7, 
+            label='Théorie Lanchester B')
+    
+    # Remplissage sous les courbes
+    ax.fill_between(x_enemy_counts, y_survivors_A, alpha=0.2, color='blue')
+    ax.fill_between(x_enemy_counts, y_survivors_B, alpha=0.2, color='red')
+    
+    # Ligne d'équilibre (N = M)
+    ax.axvline(x=fixed_army, color='green', linestyle=':', linewidth=2, 
+               label=f'Équilibre (N=M={fixed_army})')
+    
+    # Point d'intersection théorique
+    ax.plot(fixed_army, 0, 'go', markersize=10, zorder=5)
+    
+    ax.set_xlabel(f"Taille de l'Armée B ({unit_type})", fontsize=12)
+    ax.set_ylabel("Nombre de Survivants", fontsize=12)
+    ax.legend(loc='upper right', fontsize=10)
+    ax.grid(True, alpha=0.3)
+    ax.set_xlim(min_enemy, max_enemy)
+    ax.set_ylim(0, max(max(y_survivors_A), max(y_survivors_B), fixed_army) * 1.1)
+    
+    # Annotation
+    ax.annotate(f'Armée A fixe: {fixed_army}', xy=(min_enemy + 1, fixed_army * 0.95), 
+                fontsize=10, color='blue')
+    
+    plt.tight_layout()
+    
+    # Sauvegarder dans statistiques/
+    if not os.path.exists("statistiques"):
+        os.makedirs("statistiques")
+    
+    filename = f"statistiques/lanchester_{args.ai1}_vs_{args.ai2}_{unit_type}.png"
+    plt.savefig(filename, dpi=150)
     print(f"[*] Graphique sauvegardé: {filename}")
+    
+    # Afficher les statistiques
+    print("\n" + "=" * 60)
+    print("RÉSULTATS DE LA SIMULATION - LOI DE LANCHESTER")
+    print("=" * 60)
+    print(f"[*] Armée A (fixe): {fixed_army} {unit_type}")
+    print(f"[*] Armée B (variable): {min_enemy} à {max_enemy} {unit_type}")
+    
+    # Trouver le point d'équilibre (où les deux courbes se croisent)
+    for i, (a, b) in enumerate(zip(y_survivors_A, y_survivors_B)):
+        if b >= a and i > 0:
+            print(f"[*] Point de croisement: ~{x_enemy_counts[i]} unités ennemies")
+            break
+    
+    print("=" * 60)
+    
+    # Sauvegarder le premier graphique
+    plt.savefig(filename.replace('.png', '_survivants.png'), dpi=150)
+    
+    # === DEUXIÈME GRAPHIQUE : Évolution temporelle pour le dernier cas ===
+    print("\n[*] Simulation détaillée du dernier cas avec évolution temporelle...")
+    
+    # Exécuter une bataille avec l'historique pour le dernier cas (max_enemy)
+    config_0_final = {unit_type: fixed_army}
+    config_1_final = {unit_type: max_enemy}
+    
+    final_result = run_headless_battle(
+        config_0_final, config_1_final, 
+        ai1_class, ai2_class, 
+        max_turns=5000, width=40, height=30, 
+        track_history=True
+    )
+    
+    if "history" in final_result:
+        history = final_result["history"]
+        
+        # Créer le graphique d'évolution temporelle
+        fig2, ax2 = plt.subplots(figsize=(12, 6))
+        fig2.suptitle(f"Évolution au cours du temps: {fixed_army} vs {max_enemy} {unit_type}", 
+                      fontsize=14, fontweight='bold')
+        
+        ax2.plot(history["turns"], history["team_0"], 'b-', linewidth=2, 
+                 label=f'Armée A ({args.ai1})', marker='')
+        ax2.plot(history["turns"], history["team_1"], 'r-', linewidth=2, 
+                 label=f'Armée B ({args.ai2})', marker='')
+        
+        ax2.fill_between(history["turns"], history["team_0"], alpha=0.3, color='blue')
+        ax2.fill_between(history["turns"], history["team_1"], alpha=0.3, color='red')
+        
+        ax2.set_xlabel("Tours", fontsize=12)
+        ax2.set_ylabel("Nombre d'unités vivantes", fontsize=12)
+        ax2.legend(loc='upper right', fontsize=10)
+        ax2.grid(True, alpha=0.3)
+        ax2.set_xlim(0, max(history["turns"]))
+        ax2.set_ylim(0, max(fixed_army, max_enemy) * 1.1)
+        
+        # Annotations
+        ax2.axhline(y=fixed_army, color='blue', linestyle=':', alpha=0.5)
+        ax2.axhline(y=max_enemy, color='red', linestyle=':', alpha=0.5)
+        
+        # Résultat
+        winner_text = f"Vainqueur: {'Armée A' if final_result['winner'] == 0 else 'Armée B'}"
+        ax2.annotate(winner_text, xy=(0.02, 0.02), xycoords='axes fraction', 
+                     fontsize=12, fontweight='bold',
+                     color='blue' if final_result['winner'] == 0 else 'red')
+        
+        plt.tight_layout()
+        
+        filename2 = f"statistiques/lanchester_{args.ai1}_vs_{args.ai2}_{unit_type}_evolution.png"
+        plt.savefig(filename2, dpi=150)
+        print(f"[*] Graphique d'évolution sauvegardé: {filename2}")
+    
     plt.show()
+
+
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -946,8 +1112,8 @@ Possible IA : ColonelSMART  -  MajorDaftSimple  -
 4. TOURNOI AUTOMATIQUE
    python battle.py tourney -G ColonelSMART MajorDaftSimple -N 10 -S Duel
 
-5. GRAPHIQUE D'ANALYSE (Loi de Lanchester)
-   python battle.py plot ColonelSMART MajorDaft -N 5 --unit Halberdier --range "range(1,50)"
+5. LOI DE LANCHESTER (N fixe vs M croissant)
+   python battle.py plot ColonelSMART MajorDaft --fixed 20 --range "range(1,30)" --unit Halberdier
 
 6. CHARGER UNE SAUVEGARDE
    python battle.py load quicksave.dat
@@ -956,8 +1122,9 @@ COMMANDES DISPONIBLES :
 -----------------------
   run       Lancer une bataille unique
   tourney   Lancer un tournoi (plusieurs rounds)
-  plot      Générer un graphique de performance
+  plot      Simuler la loi de Lanchester (graphique)
   load      Charger une sauvegarde existante
+
 """
     parser = argparse.ArgumentParser(
         prog="battle.py",
@@ -992,16 +1159,19 @@ COMMANDES DISPONIBLES :
     tourney_parser.add_argument("-na", "--no-alternate", action="store_true",
                                help="Ne pas alterner les positions")
     
-    plot_parser = subparsers.add_parser("plot", help="Générer un graphique de performance")
-    plot_parser.add_argument("ai1", help="IA équipe variable (ex: ColonelSMART)")
-    plot_parser.add_argument("ai2", help="IA équipe fixe (adversaire)")
+    plot_parser = subparsers.add_parser("plot", help="Simuler la loi de Lanchester")
+    plot_parser.add_argument("ai1", help="IA équipe 0 (armée fixe)")
+    plot_parser.add_argument("ai2", help="IA équipe 1 (armée croissante)")
     plot_parser.add_argument("--unit", type=str, default="Halberdier",
-                            help="Type d'unité à varier")
-    plot_parser.add_argument("--range", type=str, default="range(1,50)",
-                            help="Plage: 'range(min,max)' ou 'min-max'")
+                            help="Type d'unité (Halberdier, Paladin, Arbalester)")
+    plot_parser.add_argument("--fixed", "-F", type=int, default=20,
+                            help="Taille de l'armée fixe (équipe 0)")
+    plot_parser.add_argument("--range", type=str, default="range(1,30)",
+                            help="Plage armée ennemie: 'range(min,max)' ou 'min-max'")
     plot_parser.add_argument("-N", "--rounds", type=int, default=5,
-                            help="Rounds par point")
+                            help="Rounds par point de données")
     
+
     args = parser.parse_args()
     
     if args.command is None:
