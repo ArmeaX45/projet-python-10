@@ -11,6 +11,7 @@ class Arbalester(Soldat):
         # Team 1 (rouge): image statique
         # Team 0 (bleu): on charge le spritesheet
         if team == 1:
+<<<<<<< HEAD
             image_path = "./assets/arbalester_1.png"
             super().__init__(x=x, y=y, owner=team, img_path=image_path)
             self.frames = []
@@ -21,6 +22,19 @@ class Arbalester(Soldat):
             super().__init__(x=x, y=y, owner=team, img_path=None)
             self.frames = []
             self.load_animation_frames(x, y)
+=======
+            image_path = f"./assets/ArlebestRedWalk/Arlebestwalk"
+            super().__init__(x=x, y=y, owner=team, img_path=None)
+            self.frames = []
+            self.load_animation_frames(x, y, image_path)
+        else:
+            # Team 0: Charger le spritesheet d'animation
+            # On initialise d'abord sans image, puis on charge le spritesheet
+            image_path = f"./assets/ArlebestBleuWalk/Arlebestwalk"
+            super().__init__(x=x, y=y, owner=team, img_path=None)
+            self.frames = []
+            self.load_animation_frames(x, y, image_path)
+>>>>>>> Noah
         
         
         self.img_path = image_path
@@ -63,10 +77,17 @@ class Arbalester(Soldat):
         self.animation_timer = 0
         self.animation_speed = 5  # Vitesse d'animation
         
+<<<<<<< HEAD
     def load_animation_frames(self, x, y):
         """Charge les frames d'animation pour l'Arbalester."""
         images = []
         path = f"./assets/ArlebestWalk/Arlebestwalk"
+=======
+    def load_animation_frames(self, x, y, image_path):
+        """Charge les frames d'animation pour l'Arbalester."""
+        images = []
+        path = image_path
+>>>>>>> Noah
         
         for num in range(1, 15):
             img_path = f"{path}{num}.png"
