@@ -14,7 +14,7 @@ class Halberdier(Soldat):
         self.img_path = image_path
         self.name = "Halberdier"
         self.tag = "H"
-     
+        self.frames = []
         # Static Stats
         self.hp = 55
         self.max_hp = 55

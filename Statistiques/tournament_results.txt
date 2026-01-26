@@ -2007,3 +2007,13 @@
         Points de Vie Totaux 1 : 0
         ======================================
         
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0
+        IA GAGNANTE : ColonelSMART
+        Unités restantes Équipe 0 : 45
+        Unités restantes Équipe 1 : 0
+        Points de Vie Totaux 0 : 2214
+        Points de Vie Totaux 1 : 0
+        ======================================
+        

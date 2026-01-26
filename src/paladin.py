@@ -92,17 +92,3 @@ class Paladin(Soldat):
             self.frames = []
 
 
-    # ═══════════════════════════════════════════════════════════════════════════════
-    # ANIMATION : Met à jour la frame courante pour l'animation du Paladin
-    # Cycle à travers les frames du spritesheet selon la vitesse définie
-    # ═══════════════════════════════════════════════════════════════════════════════
-    def update_animation(self):
-        if not self.frames:
-            return
-        
-        self.animation_timer += 1
-        
-        if self.animation_timer >= self.animation_speed:
-            self.animation_timer = 0
-            self.current_frame = (self.current_frame + 1) % len(self.frames)
-            self.image = self.frames[self.current_frame]
