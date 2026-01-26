@@ -102,7 +102,6 @@ def _setup_headless_game(config_0, config_1, width=60, height=34):
         "Arbalester": Arbalester
     }
     
-    # Normalize unit type names (handle typos)
     def normalize_key(key):
         key_lower = key.lower()
         if "halber" in key_lower or "halbar" in key_lower:
@@ -319,7 +318,6 @@ def run_headless_battle(config_0, config_1, ai1_class, ai2_class, max_turns=1000
     winner = None
     virtual_time = 0.0
     
-    # Historique pour graphique d'évolution
     history_0 = []
     history_1 = []
     history_turns = []
@@ -331,7 +329,6 @@ def run_headless_battle(config_0, config_1, ai1_class, ai2_class, max_turns=1000
         alive_0 = [s for s in game.all_soldats if s.team == 0 and s.is_alive]
         alive_1 = [s for s in game.all_soldats if s.team == 1 and s.is_alive]
         
-        # Enregistrer l'historique si demandé
         if track_history:
             history_turns.append(turn)
             history_0.append(len(alive_0))
@@ -365,7 +362,6 @@ def run_headless_battle(config_0, config_1, ai1_class, ai2_class, max_turns=1000
     
     result = _get_result_dict(game, turn, winner, ai1_class, ai2_class, initial_counts)
     
-    # Ajouter l'historique au résultat si demandé
     if track_history:
         result["history"] = {
             "turns": history_turns,
@@ -405,7 +401,6 @@ PV Totaux 0 : {result['remaining_hp'][0]}
 PV Totaux 1 : {result['remaining_hp'][1]}
 ======================================
 """
-    # Create statistiques folder if it doesn't exist
     if not os.path.exists("statistiques"):
         os.makedirs("statistiques")
     
@@ -730,7 +725,7 @@ def run_graphical_battle(config_0, config_1, ai1_class, ai2_class, load_file=Non
 # ═══════════════════════════════════════════════════════════════════════════════
 def _run_batch_battle(args):
     config_0, config_1, ai1_class, ai2_class = args
-    return run_headless_battle(config_0, config_1, ai1_class, ai2_class, max_turns=2000, width=30, height=20)
+    return run_headless_battle(config_0, config_1, ai1_class, ai2_class, max_turns=10000, width=50, height=40)
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -784,8 +779,8 @@ def cmd_plot(args):
     print("=" * 60)
     
     x_enemy_counts = list(range(min_enemy, max_enemy + 1))
-    y_survivors_A = []  # Survivants moyens de l'armée A (équipe 0)
-    y_survivors_B = []  # Survivants moyens de l'armée B (équipe 1)
+    y_survivors_A = []  
+    y_survivors_B = []  
     
     total_steps = len(x_enemy_counts)
     
