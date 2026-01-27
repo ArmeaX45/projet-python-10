@@ -2017,8 +2017,6 @@
         Points de Vie Totaux 1 : 0
         ======================================
         
-<<<<<<< HEAD
-=======
 
         ========= FIN DE LA BATAILLE =========
         VAINQUEUR : Équipe 0
@@ -2029,14 +2027,393 @@
         Points de Vie Totaux 1 : 0
         ======================================
         
->>>>>>> Noah
 
         ========= FIN DE LA BATAILLE =========
         VAINQUEUR : Équipe 1
         IA GAGNANTE : MajorDaft
         Unités restantes Équipe 0 : 0
-        Unités restantes Équipe 1 : 7
+        Unités restantes Équipe 1 : 9
         Points de Vie Totaux 0 : 0
-        Points de Vie Totaux 1 : 273
+        Points de Vie Totaux 1 : 402
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0
+        IA GAGNANTE : ColonelSMART
+        Unités restantes Équipe 0 : 44
+        Unités restantes Équipe 1 : 0
+        Points de Vie Totaux 0 : 2047
+        Points de Vie Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0
+        IA GAGNANTE : ColonelSMART
+        Unités restantes Équipe 0 : 34
+        Unités restantes Équipe 1 : 0
+        Points de Vie Totaux 0 : 1704
+        Points de Vie Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0
+        IA GAGNANTE : ColonelSMART
+        Unités restantes Équipe 0 : 39
+        Unités restantes Équipe 1 : 0
+        Points de Vie Totaux 0 : 1837
+        Points de Vie Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0
+        IA GAGNANTE : ColonelSMART
+        Unités restantes Équipe 0 : 44
+        Unités restantes Équipe 1 : 0
+        Points de Vie Totaux 0 : 1921
+        Points de Vie Totaux 1 : 0
+        ======================================
+        
+
+========= FIN DE LA BATAILLE =========
+VAINQUEUR : Équipe 0 (ColonelSMART)
+IA GAGNANTE : ColonelSMART
+Tours : 459
+Unités initiales 0 : 1
+Unités initiales 1 : 1
+Unités restantes 0 : 1
+Unités restantes 1 : 0
+PV Totaux 0 : 16
+PV Totaux 1 : 0
+======================================
+
+
+========= FIN DE LA BATAILLE =========
+VAINQUEUR : Équipe 0 (ColonelSMART)
+IA GAGNANTE : ColonelSMART
+Tours : 459
+Unités initiales 0 : 1
+Unités initiales 1 : 1
+Unités restantes 0 : 1
+Unités restantes 1 : 0
+PV Totaux 0 : 16
+PV Totaux 1 : 0
+======================================
+
+
+========= FIN DE LA BATAILLE =========
+VAINQUEUR : Équipe 0 (ColonelSMART)
+IA GAGNANTE : ColonelSMART
+Tours : 459
+Unités initiales 0 : 1
+Unités initiales 1 : 1
+Unités restantes 0 : 1
+Unités restantes 1 : 0
+PV Totaux 0 : 16
+PV Totaux 1 : 0
+======================================
+
+
+========= FIN DE LA BATAILLE =========
+VAINQUEUR : Équipe 0 (ColonelSMART)
+IA GAGNANTE : ColonelSMART
+Tours : 459
+Unités initiales 0 : 1
+Unités initiales 1 : 1
+Unités restantes 0 : 1
+Unités restantes 1 : 0
+PV Totaux 0 : 16
+PV Totaux 1 : 0
+======================================
+
+
+========= FIN DE LA BATAILLE =========
+VAINQUEUR : Équipe 0 (ColonelSMART)
+IA GAGNANTE : ColonelSMART
+Tours : 459
+Unités initiales 0 : 1
+Unités initiales 1 : 1
+Unités restantes 0 : 1
+Unités restantes 1 : 0
+PV Totaux 0 : 16
+PV Totaux 1 : 0
+======================================
+
+
+========= FIN DE LA BATAILLE =========
+VAINQUEUR : Équipe 0 (ColonelSMART)
+IA GAGNANTE : ColonelSMART
+Tours : 459
+Unités initiales 0 : 1
+Unités initiales 1 : 1
+Unités restantes 0 : 1
+Unités restantes 1 : 0
+PV Totaux 0 : 16
+PV Totaux 1 : 0
+======================================
+
+
+========= FIN DE LA BATAILLE =========
+VAINQUEUR : Équipe 0 (ColonelSMART)
+IA GAGNANTE : ColonelSMART
+Tours : 459
+Unités initiales 0 : 1
+Unités initiales 1 : 1
+Unités restantes 0 : 1
+Unités restantes 1 : 0
+PV Totaux 0 : 16
+PV Totaux 1 : 0
+======================================
+
+
+========= FIN DE LA BATAILLE =========
+VAINQUEUR : Équipe 0 (ColonelSMART)
+IA GAGNANTE : ColonelSMART
+Tours : 459
+Unités initiales 0 : 1
+Unités initiales 1 : 1
+Unités restantes 0 : 1
+Unités restantes 1 : 0
+PV Totaux 0 : 16
+PV Totaux 1 : 0
+======================================
+
+
+========= FIN DE LA BATAILLE =========
+VAINQUEUR : Équipe 0 (ColonelSMART)
+IA GAGNANTE : ColonelSMART
+Tours : 459
+Unités initiales 0 : 1
+Unités initiales 1 : 1
+Unités restantes 0 : 1
+Unités restantes 1 : 0
+PV Totaux 0 : 16
+PV Totaux 1 : 0
+======================================
+
+
+========= FIN DE LA BATAILLE =========
+VAINQUEUR : Équipe 0 (ColonelSMART)
+IA GAGNANTE : ColonelSMART
+Tours : 459
+Unités initiales 0 : 1
+Unités initiales 1 : 1
+Unités restantes 0 : 1
+Unités restantes 1 : 0
+PV Totaux 0 : 16
+PV Totaux 1 : 0
+======================================
+
+
+========= FIN DE LA BATAILLE =========
+VAINQUEUR : Équipe 1 (ColonelSMART)
+IA GAGNANTE : ColonelSMART
+Tours : 459
+Unités initiales 0 : 1
+Unités initiales 1 : 1
+Unités restantes 0 : 0
+Unités restantes 1 : 1
+PV Totaux 0 : 0
+PV Totaux 1 : 10
+======================================
+
+
+========= FIN DE LA BATAILLE =========
+VAINQUEUR : Équipe 1 (ColonelSMART)
+IA GAGNANTE : ColonelSMART
+Tours : 459
+Unités initiales 0 : 1
+Unités initiales 1 : 1
+Unités restantes 0 : 0
+Unités restantes 1 : 1
+PV Totaux 0 : 0
+PV Totaux 1 : 10
+======================================
+
+
+========= FIN DE LA BATAILLE =========
+VAINQUEUR : Équipe 1 (ColonelSMART)
+IA GAGNANTE : ColonelSMART
+Tours : 459
+Unités initiales 0 : 1
+Unités initiales 1 : 1
+Unités restantes 0 : 0
+Unités restantes 1 : 1
+PV Totaux 0 : 0
+PV Totaux 1 : 10
+======================================
+
+
+========= FIN DE LA BATAILLE =========
+VAINQUEUR : Équipe 1 (ColonelSMART)
+IA GAGNANTE : ColonelSMART
+Tours : 459
+Unités initiales 0 : 1
+Unités initiales 1 : 1
+Unités restantes 0 : 0
+Unités restantes 1 : 1
+PV Totaux 0 : 0
+PV Totaux 1 : 10
+======================================
+
+
+========= FIN DE LA BATAILLE =========
+VAINQUEUR : Équipe 1 (ColonelSMART)
+IA GAGNANTE : ColonelSMART
+Tours : 459
+Unités initiales 0 : 1
+Unités initiales 1 : 1
+Unités restantes 0 : 0
+Unités restantes 1 : 1
+PV Totaux 0 : 0
+PV Totaux 1 : 10
+======================================
+
+
+========= FIN DE LA BATAILLE =========
+VAINQUEUR : Équipe 1 (ColonelSMART)
+IA GAGNANTE : ColonelSMART
+Tours : 459
+Unités initiales 0 : 1
+Unités initiales 1 : 1
+Unités restantes 0 : 0
+Unités restantes 1 : 1
+PV Totaux 0 : 0
+PV Totaux 1 : 10
+======================================
+
+
+========= FIN DE LA BATAILLE =========
+VAINQUEUR : Équipe 1 (ColonelSMART)
+IA GAGNANTE : ColonelSMART
+Tours : 459
+Unités initiales 0 : 1
+Unités initiales 1 : 1
+Unités restantes 0 : 0
+Unités restantes 1 : 1
+PV Totaux 0 : 0
+PV Totaux 1 : 10
+======================================
+
+
+========= FIN DE LA BATAILLE =========
+VAINQUEUR : Équipe 1 (ColonelSMART)
+IA GAGNANTE : ColonelSMART
+Tours : 459
+Unités initiales 0 : 1
+Unités initiales 1 : 1
+Unités restantes 0 : 0
+Unités restantes 1 : 1
+PV Totaux 0 : 0
+PV Totaux 1 : 10
+======================================
+
+
+========= FIN DE LA BATAILLE =========
+VAINQUEUR : Équipe 1 (ColonelSMART)
+IA GAGNANTE : ColonelSMART
+Tours : 459
+Unités initiales 0 : 1
+Unités initiales 1 : 1
+Unités restantes 0 : 0
+Unités restantes 1 : 1
+PV Totaux 0 : 0
+PV Totaux 1 : 10
+======================================
+
+
+========= FIN DE LA BATAILLE =========
+VAINQUEUR : Équipe 1 (ColonelSMART)
+IA GAGNANTE : ColonelSMART
+Tours : 459
+Unités initiales 0 : 1
+Unités initiales 1 : 1
+Unités restantes 0 : 0
+Unités restantes 1 : 1
+PV Totaux 0 : 0
+PV Totaux 1 : 10
+======================================
+
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Égalité (Match Nul)
+        IA GAGNANTE : Aucune
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 0
+        Points de Vie Totaux 0 : 0
+        Points de Vie Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Égalité (Match Nul)
+        IA GAGNANTE : Aucune
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 0
+        Points de Vie Totaux 0 : 0
+        Points de Vie Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Égalité (Match Nul)
+        IA GAGNANTE : Aucune
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 0
+        Points de Vie Totaux 0 : 0
+        Points de Vie Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Égalité (Match Nul)
+        IA GAGNANTE : Aucune
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 0
+        Points de Vie Totaux 0 : 0
+        Points de Vie Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Égalité (Match Nul)
+        IA GAGNANTE : Aucune
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 0
+        Points de Vie Totaux 0 : 0
+        Points de Vie Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Égalité (Match Nul)
+        IA GAGNANTE : Aucune
+        Unités restantes Équipe 0 : 0
+        Unités restantes Équipe 1 : 0
+        Points de Vie Totaux 0 : 0
+        Points de Vie Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0
+        IA GAGNANTE : ColonelSMART
+        Unités restantes Équipe 0 : 38
+        Unités restantes Équipe 1 : 0
+        Points de Vie Totaux 0 : 1851
+        Points de Vie Totaux 1 : 0
+        ======================================
+        
+
+        ========= FIN DE LA BATAILLE =========
+        VAINQUEUR : Équipe 0
+        IA GAGNANTE : ColonelSMART
+        Unités restantes Équipe 0 : 39
+        Unités restantes Équipe 1 : 0
+        Points de Vie Totaux 0 : 1950
+        Points de Vie Totaux 1 : 0
         ======================================
         

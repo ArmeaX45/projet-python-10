@@ -14,7 +14,7 @@ class ColonelSMART:
         "Arbalester": "Halberdier",
     }
     
-    FLEE_FROM = {
+    fuit_qui = {
         "Arbalester": "Paladin",
         "Paladin": None,
         "Halberdier": None,
@@ -92,7 +92,7 @@ class ColonelSMART:
             attack_range = (unit.attack_range * tile) if unit.attack_range > 0 else tile * 1.6
             
             if unit.name == "Arbalester":
-                threat_type = self.FLEE_FROM.get(unit.name)
+                threat_type = self.fuit_qui.get(unit.name)
                 if threat_type:
                     threats = enemy_by_type.get(threat_type, [])
                     if threats:

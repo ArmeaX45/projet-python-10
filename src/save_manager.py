@@ -64,11 +64,38 @@ def load_game_state(game, filename="quicksave.dat"):
         game.all_soldats.empty()
         for unit in data["units"]:
             class_name = getattr(unit, '_class_name', unit.__class__.__name__)
-            
-            if class_name == "Paladin" and unit.team == 0:
+            # Recalculer les positions de grille
+            gx = int(unit.rect.x // 32)
+            gy = int(unit.rect.y // 32)
+
+            # --- GESTION DES ANIMATIONS AU CHARGEMENT ---
+            if class_name == "Halberdier":
+                if unit.team == 1:
+                    path = "./assets/PikemanRedWalk/Pikemanwalk"
+                else:
+                    path = "./assets/PikemanBleuWalk/Pikemanwalk"
                 unit.frames = []
-                unit._load_blue_spritesheet(unit.rect.x // unit.rect.width, unit.rect.y // unit.rect.height)
+                unit.load_animation_frames(gx, gy, path)
+                
+            elif class_name == "Arbalester":
+                if unit.team == 1:
+                    path = "./assets/ArlebestRedWalk/Arlebestwalk"
+                else:
+                    path = "./assets/ArlebestBleuWalk/Arlebestwalk"
+                unit.frames = []
+                unit.load_animation_frames(gx, gy, path)
+                
+            elif class_name == "Paladin":
+                if unit.team == 1:
+                    path = "./assets/KnightRedWalk.png"
+                else:
+                    path = "./assets/KnightBleuWalk.png"
+                unit.frames = []
+                # Paladin utilise une méthode différente (_load_blue_spritesheet)
+                unit._load_blue_spritesheet(gx, gy, path)
+                
             elif unit.img_path:
+                # Fallback pour les unités sans animation complexe
                 original_img = pygame.image.load(unit.img_path)
                 new_w = original_img.get_width() // 2
                 new_h = original_img.get_height() // 2

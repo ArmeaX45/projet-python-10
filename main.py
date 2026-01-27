@@ -66,8 +66,8 @@ def get_scenario_configs(name):
 def get_ai_class(name):
     if name in AI_REGISTRY:
         return AI_REGISTRY[name]
-    raise ValueError(f"IA inconnue: {name}. Disponibles: {list(AI_REGISTRY.keys())}")
-
+    else:
+        raise ValueError(f"IA inconnue: {name}. Disponibles: {list(AI_REGISTRY.keys())}")
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # MODE HEADLESS : Version du jeu sans affichage graphique pour les tournois
@@ -141,7 +141,7 @@ def _setup_headless_game(config_0, config_1, width=60, height=34):
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# BATAILLE CURSES : Mode terminal avec affichage ASCII en temps réel
+# BATAILLE CURSES : Mode terminal avec affichage en temps réel
 # Utilise la bibliothèque curses pour l'affichage console coloré
 # ═══════════════════════════════════════════════════════════════════════════════
 def run_curses_battle(stdscr, config_0, config_1, ai1_class, ai2_class):
@@ -550,13 +550,13 @@ def run_graphical_battle(config_0, config_1, ai1_class, ai2_class, load_file=Non
             nb_alive_1 = len([u for u in game.all_soldats if u.team == 1])
             
             if nb_alive_0 == 0 and nb_alive_1 == 0:
-                winner_text = "MATCH NUL !"
+                winner_text = "MATCH NUL"
                 check_end_and_report(game)
             elif nb_alive_0 == 0:
-                winner_text = "VICTOIRE ROUGE !"
+                winner_text = "VICTOIRE ROUGE"
                 check_end_and_report(game)
             elif nb_alive_1 == 0:
-                winner_text = "VICTOIRE BLEUE !"
+                winner_text = "VICTOIRE BLEU"
                 check_end_and_report(game)
             else:
                 actions_A = ia_1.update(game)
@@ -608,9 +608,9 @@ def run_graphical_battle(config_0, config_1, ai1_class, ai2_class, load_file=Non
                 
                 pygame.draw.rect(screen, (0, 0, 0), (bar_x, bar_y, bar_width, bar_height))
                 if unit.team == 0:
-                    bar_color = (0, int(255 * hp_ratio), 255)
+                    bar_color = (100, int(255 * hp_ratio), 255)
                 else:
-                    bar_color = (255, int(100 * hp_ratio), 0)
+                    bar_color = (255, int(100 * hp_ratio), 100)
                 hp_width = int(bar_width * hp_ratio)
                 if hp_width > 0:
                     pygame.draw.rect(screen, bar_color, (bar_x, bar_y, hp_width, bar_height))
@@ -1093,22 +1093,23 @@ def main():
     epilog_text = """
 EXEMPLES D'UTILISATION :
 ------------------------
-Possible IA : ColonelSMART  -  MajorDaftSimple  -  
+IA Disponibles : ColonelSMART, MajorDaft, GeneralBrainDead
+
 1. BATAILLE SIMPLE (Mode Graphique)
-   python battle.py run ColonelSMART MajorDaftSimple
+   python battle.py run ColonelSMART MajorDaft
 
 2. BATAILLE SIMPLE (Mode Terminal Rapide)
-   python battle.py run ColonelSMART MajorDaftSimple -t
+   python battle.py run ColonelSMART MajorDaft -t
 
 3. SCÉNARIOS PRÉDÉFINIS
-   python battle.py run ColonelSMART MajorDaftSimple -t -S Horde
+   python battle.py run ColonelSMART MajorDaft -t -S Horde
    Scénarios dispos : Standard, Small, Duel, Archers, Horde
 
 4. TOURNOI AUTOMATIQUE
-   python battle.py tourney -G ColonelSMART MajorDaftSimple -N 10 -S Duel
+   python battle.py tourney -G ColonelSMART MajorDaft -N 10 -S Duel
 
-5. LOI DE LANCHESTER (N fixe vs M croissant)
-   python battle.py plot ColonelSMART MajorDaft --fixed 20 --range "range(1,30)" --unit Halberdier
+5. LOI DE LANCHESTER (Graphiques d'analyse)
+   python battle.py plot ColonelSMART MajorDaft --fixed 20 --range "range(1,40)" 
 
 6. CHARGER UNE SAUVEGARDE
    python battle.py load quicksave.dat
@@ -1119,7 +1120,6 @@ COMMANDES DISPONIBLES :
   tourney   Lancer un tournoi (plusieurs rounds)
   plot      Simuler la loi de Lanchester (graphique)
   load      Charger une sauvegarde existante
-
 """
     parser = argparse.ArgumentParser(
         prog="battle.py",
