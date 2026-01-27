@@ -1,10 +1,10 @@
-"""File: arbalester.py"""
+"""File: crossbowman .py"""
 
 import pygame
 
 from src.soldat import Soldat
 
-class Arbalester(Soldat):
+class Crossbowman (Soldat):
     
     def __init__(self, x=0, y=0, team=0):
         
@@ -24,7 +24,7 @@ class Arbalester(Soldat):
             self.load_animation_frames(x, y, image_path)       
         
         self.img_path = image_path
-        self.name = "Arbalester"
+        self.name = "Crossbowman "
         self.tag = "A"
 
         # Static Stats
@@ -47,13 +47,9 @@ class Arbalester(Soldat):
         self.is_close_combat = False
 
         # Bonus
-        # self.vs_arbalester = 0
-        # self.vs_paladin = 0
-        # self.vs_halberdier = 3
+
         self.vs = {
-            'Halberdier' : 5,
-            'Paladin' : -2,
-            'Arbalester' : 0
+            'Pikeman' : 3,
         }
         
         # Animation
@@ -64,7 +60,7 @@ class Arbalester(Soldat):
         self.animation_speed = 5  # Vitesse d'animation
         
     def load_animation_frames(self, x, y, image_path):
-        """Charge les frames d'animation pour l'Arbalester."""
+        """Charge les frames d'animation pour l'Crossbowman ."""
         images = []
         path = image_path
         

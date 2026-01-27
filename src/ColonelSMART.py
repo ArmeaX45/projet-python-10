@@ -9,15 +9,15 @@ import random
 class ColonelSMART:
     
     HUNT_TARGET = {
-        "Paladin": "Arbalester",
-        "Halberdier": "Paladin",
-        "Arbalester": "Halberdier",
+        "Knight": "Crossbowman ",
+        "Pikeman": "Knight",
+        "Crossbowman ": "Pikeman",
     }
     
     fuit_qui = {
-        "Arbalester": "Paladin",
-        "Paladin": None,
-        "Halberdier": None,
+        "Crossbowman ": "Knight",
+        "Knight": None,
+        "Pikeman": None,
     }
 
     def __init__(self, team_name=0):
@@ -27,7 +27,7 @@ class ColonelSMART:
 
     # ═══════════════════════════════════════════════════════════════════════════════
     # FORMATION : Placement en colonnes organisées avec ordre tactique
-    # Arbalétriers à l'arrière, Paladins au milieu, Hallebardiers en front
+    # Arbalétriers à l'arrière, Knights au milieu, Hallebardiers en front
     # ═══════════════════════════════════════════════════════════════════════════════
     @staticmethod
     def get_formation(team_id, width, height, config):
@@ -44,7 +44,7 @@ class ColonelSMART:
         row_spacing = 1.3
         center_y = height / 2
         
-        unit_order = ["Arbalester", "Paladin", "Halberdier"]
+        unit_order = ["Crossbowman ", "Knight", "Pikeman"]
         current_col = 0
         
         for unit_type in unit_order:
@@ -82,16 +82,16 @@ class ColonelSMART:
             return actions
         
         enemy_by_type = {
-            "Arbalester": [e for e in enemies if e.name == "Arbalester"],
-            "Paladin": [e for e in enemies if e.name == "Paladin"],
-            "Halberdier": [e for e in enemies if e.name == "Halberdier"],
+            "Crossbowman ": [e for e in enemies if e.name == "Crossbowman "],
+            "Knight": [e for e in enemies if e.name == "Knight"],
+            "Pikeman": [e for e in enemies if e.name == "Pikeman"],
         }
         
         for unit in allies:
             tile = unit.rect.width
             attack_range = (unit.attack_range * tile) if unit.attack_range > 0 else tile * 1.6
             
-            if unit.name == "Arbalester":
+            if unit.name == "Crossbowman ":
                 threat_type = self.fuit_qui.get(unit.name)
                 if threat_type:
                     threats = enemy_by_type.get(threat_type, [])

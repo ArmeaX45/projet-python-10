@@ -12,9 +12,9 @@ from src.ia_braindead import GeneralBrainDead
 from src.ColonelSMART import ColonelSMART
 from src.save_manager import save_game_state, load_game_state
 from src.stats_generator import check_end_and_report
-from src.halberdier import Halberdier
-from src.paladin import Paladin
-from src.arbalester import Arbalester
+from src.pikeman import Pikeman
+from src.knight import Knight
+from src.crossbowman  import Crossbowman 
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -41,26 +41,26 @@ def get_scenario_configs(name):
     name = name.lower()
     
     if name == "standard":
-        c = {"Halberdier": 20, "Paladin": 20, "Arbalester": 20}
+        c = {"Pikeman": 20, "Knight": 20, "Crossbowman ": 20}
         return c.copy(), c.copy()
         
     elif name == "small":
-        c = {"Halberdier": 5, "Paladin": 2, "Arbalester": 2}
+        c = {"Pikeman": 5, "Knight": 2, "Crossbowman ": 2}
         return c.copy(), c.copy()
         
     elif name == "duel":
-        return {"Paladin": 1}, {"Halberdier": 1}
+        return {"Knight": 1}, {"Pikeman": 1}
         
     elif name == "archers":
-        c = {"Arbalester": 30}
+        c = {"Crossbowman ": 30}
         return c.copy(), c.copy()
         
     elif name == "horde":
-        return {"Halberdier": 50}, {"Paladin": 10, "Arbalester": 10}
+        return {"Pikeman": 50}, {"Knight": 10, "Crossbowman ": 10}
         
     else:
         print(f"[!] Scénario '{name}' inconnu. Utilisation de 'Standard'.")
-        c = {"Halberdier": 20, "Paladin": 20, "Arbalester": 20}
+        c = {"Pikeman": 20, "Knight": 20, "Crossbowman ": 20}
         return c.copy(), c.copy()
 
 def get_ai_class(name):
@@ -97,19 +97,19 @@ def _setup_headless_game(config_0, config_1, width=60, height=34):
     game = HeadlessGame(width=width, height=height)
     
     class_map = {
-        "Halberdier": Halberdier,
-        "Paladin": Paladin,
-        "Arbalester": Arbalester
+        "Pikeman": Pikeman,
+        "Knight": Knight,
+        "Crossbowman ": Crossbowman 
     }
     
     def normalize_key(key):
         key_lower = key.lower()
         if "halber" in key_lower or "halbar" in key_lower:
-            return "Halberdier"
-        elif "paladin" in key_lower:
-            return "Paladin"
+            return "Pikeman"
+        elif "knight" in key_lower:
+            return "Knight"
         elif "arbal" in key_lower:
-            return "Arbalester"
+            return "Crossbowman "
         return key
     
     start_x, start_y = 2, 5
@@ -418,18 +418,18 @@ def demander_compo(nom_equipe):
     compo = {}
     
     try:
-        h = input(f"Nombre de Hallebardiers (Halberdier) pour {nom_equipe} ? (defaut 20) : ")
-        compo["Halberdier"] = int(h) if h.strip() else 20
+        h = input(f"Nombre de Hallebardiers (Pikeman) pour {nom_equipe} ? (defaut 20) : ")
+        compo["Pikeman"] = int(h) if h.strip() else 20
         
-        p = input(f"Nombre de Paladins (Paladin) pour {nom_equipe} ? (defaut 20) : ")
-        compo["Paladin"] = int(p) if p.strip() else 20
+        p = input(f"Nombre de Knights (Knight) pour {nom_equipe} ? (defaut 20) : ")
+        compo["Knight"] = int(p) if p.strip() else 20
         
-        a = input(f"Nombre d'Arbalétriers (Arbalester) pour {nom_equipe} ? (defaut 20) : ")
-        compo["Arbalester"] = int(a) if a.strip() else 20
+        a = input(f"Nombre d'Arbalétriers (Crossbowman ) pour {nom_equipe} ? (defaut 20) : ")
+        compo["Crossbowman "] = int(a) if a.strip() else 20
         
     except ValueError:
         print("Entrée invalide détectée. Valeurs par défaut appliquées (20, 20, 20).")
-        return {"Halberdier": 20, "Paladin": 20, "Arbalester": 20}
+        return {"Pikeman": 20, "Knight": 20, "Crossbowman ": 20}
         
     return compo
 
@@ -968,8 +968,8 @@ def cmd_run(args):
     print(f"[*] Bataille: {args.ai1} vs {args.ai2}")
     
     if args.scenario.lower() == "standard":
-        config_0 = {"Halberdier": 20, "Paladin": 20, "Arbalester": 20}
-        config_1 = {"Halberdier": 20, "Paladin": 20, "Arbalester": 20}
+        config_0 = {"Pikeman": 20, "Knight": 20, "Crossbowman ": 20}
+        config_1 = {"Pikeman": 20, "Knight": 20, "Crossbowman ": 20}
         print("[DEBUG] SCENARIO STANDARD FORCE (20/20/20)")
     else:
         config_0, config_1 = get_scenario_configs(args.scenario)
@@ -1008,8 +1008,8 @@ def cmd_run(args):
 def cmd_load(args):
     print(f"[*] Chargement de {args.savefile}")
     
-    config_0 = {"Halberdier": 0, "Paladin": 0, "Arbalester": 0}
-    config_1 = {"Halberdier": 0, "Paladin": 0, "Arbalester": 0}
+    config_0 = {"Pikeman": 0, "Knight": 0, "Crossbowman ": 0}
+    config_1 = {"Pikeman": 0, "Knight": 0, "Crossbowman ": 0}
     
     run_graphical_battle(config_0, config_1, ColonelSMART, MajorDaftSimple, load_file=args.savefile)
 
@@ -1157,8 +1157,8 @@ COMMANDES DISPONIBLES :
     plot_parser = subparsers.add_parser("plot", help="Simuler la loi de Lanchester")
     plot_parser.add_argument("ai1", help="IA équipe 0 (armée fixe)")
     plot_parser.add_argument("ai2", help="IA équipe 1 (armée croissante)")
-    plot_parser.add_argument("--unit", type=str, default="Halberdier",
-                            help="Type d'unité (Halberdier, Paladin, Arbalester)")
+    plot_parser.add_argument("--unit", type=str, default="Pikeman",
+                            help="Type d'unité (Pikeman, Knight, Crossbowman )")
     plot_parser.add_argument("--fixed", "-F", type=int, default=20,
                             help="Taille de l'armée fixe (équipe 0)")
     plot_parser.add_argument("--range", type=str, default="range(1,30)",

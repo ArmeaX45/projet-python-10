@@ -57,7 +57,7 @@ game.py:
     Utilise distances et stats (via utils/stats).
 
 ai_smart.py:
-    Counters (Pikemen > Cavalry, Arbalester > Pikemen…)
+    Counters (Pikemen > Cavalry, Crossbowman  > Pikemen…)
 
     Hit & run
 
@@ -92,7 +92,7 @@ ai_smart.py:
 
     move_towards()
 
-(fait) arbalester.py:
+(fait) crossbowman .py:
     Stats AoE2 exactes
 
     Attack projectiles
@@ -106,12 +106,12 @@ ai_smart.py:
 
     Good for counters
 
-(fait) paladin.py:
+(fait) knight.py:
     Cavalry tanky
 
     High damage
 
-    Weak vs halberdiers
+    Weak vs pikemans
 
 barrack.py:
     créer des unités

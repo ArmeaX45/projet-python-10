@@ -6,7 +6,7 @@ import pygame
 # CLASSE PALADIN : Unité de combat lourde avec haute résistance
 # Bonus contre les Arbalétriers, faible contre les Hallebardiers
 # ═══════════════════════════════════════════════════════════════════════════════
-class Paladin(Soldat):
+class Knight(Soldat):
     
     def __init__(self, x=0, y=0 , team=0):
         if team == 1:
@@ -21,7 +21,7 @@ class Paladin(Soldat):
             self._load_blue_spritesheet(x, y, image_path)
 
         self.img_path = image_path
-        self.name = "Paladin"
+        self.name = "Knight"
         self.tag = "P"
 
         self.hp = 100
@@ -39,9 +39,7 @@ class Paladin(Soldat):
         self.is_close_combat = True
 
         self.vs = {
-            'Paladin' : -3,
-            'Arbalester' : 7,
-            'Halberdier' : -5
+            'Knight' : -3,
         }
         
         self.current_frame = 0
@@ -50,7 +48,7 @@ class Paladin(Soldat):
 
 
     # ═══════════════════════════════════════════════════════════════════════════════
-    # CHARGEMENT SPRITESHEET : Charge l'animation du Paladin bleu (équipe 0)
+    # CHARGEMENT SPRITESHEET : Charge l'animation du Knight bleu (équipe 0)
     # Découpe le spritesheet en 6 frames pour l'animation de marche
     # ═══════════════════════════════════════════════════════════════════════════════
     def _load_blue_spritesheet(self, grid_x, grid_y, image_path):
@@ -82,7 +80,7 @@ class Paladin(Soldat):
                 raise Exception("Aucune frame chargée")
                 
         except Exception as e:
-            print(f"Erreur chargement spritesheet Paladin bleu: {e}")
+            print(f"Erreur chargement spritesheet Knight bleu: {e}")
             self.image = pygame.Surface((32, 32), pygame.SRCALPHA)
             self.image.fill((50, 50, 200))
             self.rect = self.image.get_rect()

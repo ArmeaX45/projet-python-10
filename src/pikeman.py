@@ -1,11 +1,11 @@
-"""File: halberdier.py"""
+"""File: pikeman.py"""
 
 from src.soldat import Soldat
 
 import pygame
 
 
-class Halberdier(Soldat):
+class Pikeman(Soldat):
     
     def __init__(self, x=0, y=0, team=0):
         if team == 1:
@@ -23,7 +23,7 @@ class Halberdier(Soldat):
             
     
         self.img_path = image_path
-        self.name = "Halberdier"
+        self.name = "Pikeman"
         self.tag = "H"
         self.frames = []
         # Static Stats
@@ -41,9 +41,7 @@ class Halberdier(Soldat):
         
 
         self.vs = {
-            'Paladin' : 10,
-            'Arbalester' : -3,
-            'Halberdier' : 0
+            'Knight' : 22
         }
         
         self.current_frame = 0

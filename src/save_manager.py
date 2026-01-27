@@ -49,7 +49,7 @@ def save_game_state(game, filename="quicksave.dat"):
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # CHARGEMENT : Restaure l'état du jeu et recharge les images depuis le disque
-# Gère les spritesheets (Paladin bleu) et les images statiques
+# Gère les spritesheets (Knight bleu) et les images statiques
 # ═══════════════════════════════════════════════════════════════════════════════
 def load_game_state(game, filename="quicksave.dat"):
     filepath = os.path.join("saves", filename)
@@ -69,7 +69,7 @@ def load_game_state(game, filename="quicksave.dat"):
             gy = int(unit.rect.y // 32)
 
             # --- GESTION DES ANIMATIONS AU CHARGEMENT ---
-            if class_name == "Halberdier":
+            if class_name == "Pikeman":
                 if unit.team == 1:
                     path = "./assets/PikemanRedWalk/Pikemanwalk"
                 else:
@@ -77,7 +77,7 @@ def load_game_state(game, filename="quicksave.dat"):
                 unit.frames = []
                 unit.load_animation_frames(gx, gy, path)
                 
-            elif class_name == "Arbalester":
+            elif class_name == "Crossbowman ":
                 if unit.team == 1:
                     path = "./assets/ArlebestRedWalk/Arlebestwalk"
                 else:
@@ -85,13 +85,13 @@ def load_game_state(game, filename="quicksave.dat"):
                 unit.frames = []
                 unit.load_animation_frames(gx, gy, path)
                 
-            elif class_name == "Paladin":
+            elif class_name == "Knight":
                 if unit.team == 1:
                     path = "./assets/KnightRedWalk.png"
                 else:
                     path = "./assets/KnightBleuWalk.png"
                 unit.frames = []
-                # Paladin utilise une méthode différente (_load_blue_spritesheet)
+                # Knight utilise une méthode différente (_load_blue_spritesheet)
                 unit._load_blue_spritesheet(gx, gy, path)
                 
             elif unit.img_path:

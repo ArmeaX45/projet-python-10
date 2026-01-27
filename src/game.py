@@ -4,9 +4,9 @@ import time
 import threading
 import math
 
-from src.halberdier import Halberdier
-from src.paladin import Paladin
-from src.arbalester import Arbalester
+from src.pikeman import Pikeman
+from src.knight import Knight
+from src.crossbowman  import Crossbowman 
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -37,9 +37,9 @@ class Game():
         self.all_soldats.empty()
         
         class_map = {
-            "Halberdier": Halberdier,
-            "Paladin": Paladin,
-            "Arbalester": Arbalester
+            "Pikeman": Pikeman,
+            "Knight": Knight,
+            "Crossbowman ": Crossbowman 
         }
 
         if ai_team0 and hasattr(ai_team0, 'get_formation'):
@@ -66,14 +66,14 @@ class Game():
 
     # ═══════════════════════════════════════════════════════════════════════════════
     # FORMATION PAR DÉFAUT : Placement tactique en colonnes aux extrémités
-    # Ordre : Arbalétriers à l'arrière, Paladins au milieu, Hallebardiers au front
+    # Ordre : Arbalétriers à l'arrière, Knights au milieu, Hallebardiers au front
     # ═══════════════════════════════════════════════════════════════════════════════
     def _default_formation(self, team_id, config, class_map):
         total_units = sum(config.values())
         if total_units == 0:
             return
         
-        ordered_keys = ["Arbalester", "Paladin", "Halberdier"]
+        ordered_keys = ["Crossbowman ", "Knight", "Pikeman"]
         
         if team_id == 0:
             column_positions = [0, 1, 2]

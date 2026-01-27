@@ -125,7 +125,7 @@ class Soldat(pygame.sprite.Sprite):
                         self.rect.y = int(self.exact_y)
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# ANIMATION : Met à jour la frame courante pour l'animation du Paladin
+# ANIMATION : Met à jour la frame courante pour l'animation du Knight
 # Cycle à travers les frames du spritesheet selon la vitesse définie
 # ═══════════════════════════════════════════════════════════════════════════════
     def update_animation(self):
