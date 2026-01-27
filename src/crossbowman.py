@@ -25,7 +25,7 @@ class Crossbowman (Soldat):
         
         self.img_path = image_path
         self.name = "Crossbowman "
-        self.tag = "A"
+        self.tag = "C"
 
         # Static Stats
         self.hp = 35

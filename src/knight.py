@@ -22,7 +22,7 @@ class Knight(Soldat):
 
         self.img_path = image_path
         self.name = "Knight"
-        self.tag = "P"
+        self.tag = "K"
 
         self.hp = 100
         self.max_hp = 100

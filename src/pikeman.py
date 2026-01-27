@@ -24,7 +24,7 @@ class Pikeman(Soldat):
     
         self.img_path = image_path
         self.name = "Pikeman"
-        self.tag = "H"
+        self.tag = "P"
         self.frames = []
         # Static Stats
         self.hp = 55

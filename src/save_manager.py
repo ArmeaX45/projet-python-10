@@ -77,7 +77,7 @@ def load_game_state(game, filename="quicksave.dat"):
                 unit.frames = []
                 unit.load_animation_frames(gx, gy, path)
                 
-            elif class_name == "Crossbowman ":
+            elif class_name == "Crossbowman":
                 if unit.team == 1:
                     path = "./assets/ArlebestRedWalk/Arlebestwalk"
                 else:
@@ -96,10 +96,17 @@ def load_game_state(game, filename="quicksave.dat"):
                 
             elif unit.img_path:
                 # Fallback pour les unités sans animation complexe
-                original_img = pygame.image.load(unit.img_path)
-                new_w = original_img.get_width() // 2
-                new_h = original_img.get_height() // 2
-                unit.image = pygame.transform.scale(original_img, (new_w, new_h))
+                # ATTENTION: Si img_path est un prefixe d'animation, cela va planter ici
+                # On ajoute un try/except pour eviter le crash total
+                try:
+                    original_img = pygame.image.load(unit.img_path)
+                    new_w = original_img.get_width() // 2
+                    new_h = original_img.get_height() // 2
+                    unit.image = pygame.transform.scale(original_img, (new_w, new_h))
+                except Exception as e:
+                    print(f"[WARN] Impossible de charger l'image fallback pour {class_name}: {e}")
+                    unit.image = pygame.Surface((32, 32), pygame.SRCALPHA)
+                    unit.image.fill((100, 100, 100)) # Gris par defaut
             else:
                 unit.image = pygame.Surface((32, 32), pygame.SRCALPHA)
                 color = (50, 50, 200) if unit.team == 0 else (200, 50, 50)
